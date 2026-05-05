@@ -15,7 +15,7 @@ interface AgendaEvent {
 }
 
 const GC_LOCATION_URL = "https://www.google.com/maps/place/R.+Augusto+dos+Anjos,+139+-+Melville+Empresarial+II,+Barueri+-+SP,+06485-370/@-23.4835537,-46.8479933,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf024161977ca9:0x4c79892493db5477!8m2!3d-23.4835537!4d-46.8479933!16s%2Fg%2F11c1ckvdhj?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D";
-const GC_ADDRESS = "R. Augusto dos Anjos, 139";
+const GC_ADDRESS = " Casa da Keth R. Augusto dos Anjos, 139";
 
 const DINAMUS_MAPS_URL = "https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D";
 
@@ -70,7 +70,7 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'GC',
     time: '15:00',
-    description: 'GC às 15h na casa da Keth',
+    description: 'Encontro do GC Lobby',
     location: GC_ADDRESS,
     mapsUrl: GC_LOCATION_URL
   },
