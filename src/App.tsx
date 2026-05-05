@@ -36,9 +36,9 @@ const EVENTS: AgendaEvent[] = [
     date: '16/05',
     day: 16,
     weekday: 'Sábado',
-    title: 'Lab (apenas GCD)',
+    title: 'Lab (apenas GCD e LÍDERES)',
     time: '09:00',
-    description: 'Lab preparatório apenas para o GCD no prédio da igreja.',
+    description: 'Lab no prédio da igreja.',
     location: 'Igreja Dinamus Alphaville',
     mapsUrl: DINAMUS_MAPS_URL
   },
