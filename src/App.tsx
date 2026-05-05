@@ -48,7 +48,7 @@ const EVENTS: AgendaEvent[] = [
     day: 16,
     weekday: 'Sábado',
     title: 'CHURRAS NO HUGO',
-    time: '17:00',
+    time: '13:00',
     description: 'Churras da Lobby',
     location: 'Casa do Hugo'
   },
@@ -69,7 +69,7 @@ const EVENTS: AgendaEvent[] = [
     day: 30,
     weekday: 'Sábado',
     title: 'GC',
-    time: '15:0',
+    time: '15:00',
     description: 'GC às 15h na casa da Keth',
     location: GC_ADDRESS,
     mapsUrl: GC_LOCATION_URL
