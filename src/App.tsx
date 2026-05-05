@@ -50,7 +50,7 @@ const EVENTS: AgendaEvent[] = [
     title: 'CHURRAS NO HUGO',
     time: '17:00',
     description: 'Churras da Lobby',
-    location: 'Endereço em breve'
+    location: 'Casa do Hugo'
   },
   {
     id: '3',
@@ -64,13 +64,24 @@ const EVENTS: AgendaEvent[] = [
     mapsUrl: DINAMUS_MAPS_URL
   },
   {
+    id: '6',
+    date: '30/05',
+    day: 30,
+    weekday: 'Sábado',
+    title: 'GC',
+    time: '15:0',
+    description: 'GC às 15h na casa da Keth',
+    location: 'GC_ADDRESS',
+    mapsUrl: GC_LOCATION_URL
+  },
+  {
     id: '4',
     date: '30/05',
     day: 30,
     weekday: 'Sábado',
-    title: 'GC + MOVENITE',
-    time: '15:00 / 19:00',
-    description: 'GC às 15h e MOVENITE às 19h.',
+    title: 'MOVENITE',
+    time: '19:00',
+    description: 'MOVENITE às 19h.',
     location: 'Igreja Dinamus Alphaville',
     mapsUrl: DINAMUS_MAPS_URL
   }
