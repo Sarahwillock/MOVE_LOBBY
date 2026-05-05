@@ -88,10 +88,10 @@ const EVENTS: AgendaEvent[] = [
 ];
 
 const BACKGROUND_IMAGES = [
-  'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80'
+  '/images/IMG_3794.jpg',
+  '/images/IMG_3726.jpg',
+  '/images/lider1.jpg',
+  '/images/junho.manu.jpg'
 ];
 
 const GENERAL_EVENTS = [
