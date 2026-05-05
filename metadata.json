@@ -1,0 +1,6 @@
+{
+  "name": "Agenda GC Lobby - Maio",
+  "description": "Uma agenda interativa para os eventos do GC Lobby em Maio, com integração de lembretes para WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
