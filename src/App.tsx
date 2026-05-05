@@ -71,7 +71,7 @@ const EVENTS: AgendaEvent[] = [
     title: 'GC',
     time: '15:0',
     description: 'GC às 15h na casa da Keth',
-    location: 'GC_ADDRESS',
+    location: GC_ADDRESS,
     mapsUrl: GC_LOCATION_URL
   },
   {
