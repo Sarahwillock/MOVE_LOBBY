@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Clock, MessageSquare, Share2, Bell, Sparkles, X } from 'lucide-react';
+import { Calendar, Clock, MessageSquare, Share2, Bell, Sparkles, X, MapPin } from 'lucide-react';
 
 interface AgendaEvent {
   id: string;
@@ -11,9 +11,17 @@ interface AgendaEvent {
   time: string;
   description?: string;
   link?: string;
+  location?: string;
+  mapsUrl?: string;
 }
 
 const ORIGEM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSedtZ_ZARZikrsqdW2M4jO_tMz6WGHe7rlFtylIgYhOsbK7wQ/viewform';
+
+const GC_LOCATION_URL = "https://www.google.com/maps/place/R.+Augusto+dos+Anjos,+139+-+Melville+Empresarial+II,+Barueri+-+SP,+06485-370/@-23.4835537,-46.8479933,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf024161977ca9:0x4c79892493db5477!8m2!3d-23.4835537!4d-46.8479933!16s%2Fg%2F11c1ckvdhj?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D";
+const GC_ADDRESS = "Casa da Keth - R. Augusto dos Anjos, 139";
+
+const DINAMUS_MAPS_URL = "https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D";
+const DINAMUS_ADDRESS = "Igreja Dinamus Alphaville";
 
 const EVENTS: AgendaEvent[] = [
   {
@@ -63,16 +71,20 @@ const MAY_EVENTS: AgendaEvent[] = [
     title: 'Origem',
     time: '09:00',
     description: 'Apenas para novos membros.',
-    link: ORIGEM_LINK
+    link: ORIGEM_LINK,
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
   },
   {
     id: 'maio-2',
     date: '30/05',
     day: 30,
     weekday: 'Sábado',
-    title: 'GC LOBBY na casa da Keth',
+    title: 'GC LOBBY na Casa da Keth',
     time: '15:00',
-    description: 'Encontro do GC Lobby na casa da Keth.'
+    description: 'Encontro do GC Lobby na Casa da Keth.',
+    location: GC_ADDRESS,
+    mapsUrl: GC_LOCATION_URL
   },
   {
     id: 'maio-3',
@@ -81,7 +93,9 @@ const MAY_EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'MOVENITE',
     time: '19:00',
-    description: 'Culto dos jovens.'
+    description: 'Culto dos jovens.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
   }
 ];
 
@@ -109,14 +123,12 @@ const MONTH_COVER = [
   }
 ];
 
-const DINAMUS_MAPS_URL = 'https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu';
-
 const GENERAL_EVENTS = [
   {
     day: 'Domingos',
     title: 'Culto',
     time: '10:00',
-    location: 'Igreja Dinamus Alphaville',
+    location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL,
     type: 'weekly'
   },
@@ -124,7 +136,7 @@ const GENERAL_EVENTS = [
     day: 'Terças',
     title: 'Escola Huios',
     time: '19:00',
-    location: 'Igreja Dinamus Alphaville',
+    location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL,
     type: 'weekly'
   },
@@ -132,7 +144,7 @@ const GENERAL_EVENTS = [
     day: 'Quartas',
     title: 'Oração dos Homens',
     time: '06:00',
-    location: 'Igreja Dinamus Alphaville',
+    location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL,
     type: 'weekly'
   },
@@ -140,7 +152,7 @@ const GENERAL_EVENTS = [
     day: 'Quartas',
     title: 'Oração das Mulheres',
     time: '08:00',
-    location: 'Igreja Dinamus Alphaville',
+    location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL,
     type: 'weekly'
   }
@@ -176,7 +188,7 @@ export default function App() {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Move Lobby//Agenda//PT',
+      'PRODID:-//MOVE//Agenda//PT',
       'BEGIN:VEVENT',
       `UID:${event.id}-2026-move-lobby`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
@@ -184,7 +196,7 @@ export default function App() {
       `DTEND:${endDate}`,
       `SUMMARY:${event.title}`,
       `DESCRIPTION:${event.description || ''}`,
-      `LOCATION:A definir`,
+      `LOCATION:${event.location || 'A definir'}`,
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -201,7 +213,7 @@ export default function App() {
   };
 
   const shareOnWhatsApp = (event: AgendaEvent) => {
-    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n${event.link ? `\n🔗 Inscrição: ${event.link}` : ''}\n\n*Nos vemos lá!* 🙌`;
+    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location || 'A definir'}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n${event.link ? `\n🔗 Inscrição: ${event.link}` : ''}\n${event.mapsUrl ? `\n🗺️ Mapa: ${event.mapsUrl}` : ''}\n\n*Nos vemos lá!* 🙌`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
     window.open(url, '_blank', 'noreferrer');
@@ -307,7 +319,7 @@ export default function App() {
               </div>
 
               <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
-                Eventos<br />do semestre
+                Eventos<br />da MOVE
               </h2>
 
               <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
@@ -517,6 +529,18 @@ export default function App() {
                       <Clock className="w-4 h-4 mr-2 text-brand-primary/60" />
                       {nextEvent.time}
                     </div>
+
+                    {nextEvent.location && (
+                      <a
+                        href={nextEvent.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center text-sm font-semibold text-brand-primary underline underline-offset-2"
+                      >
+                        <MapPin className="w-4 h-4 mr-2" />
+                        {nextEvent.location}
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -650,6 +674,18 @@ function EventCard({
         <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-500">
           {event.description}
         </p>
+      )}
+
+      {event.location && (
+        <a
+          href={event.mapsUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-2 flex items-center gap-1 text-xs font-bold text-brand-primary underline underline-offset-2"
+        >
+          <MapPin className="h-3.5 w-3.5" />
+          {event.location}
+        </a>
       )}
 
       <div className="mt-3 flex gap-2">
