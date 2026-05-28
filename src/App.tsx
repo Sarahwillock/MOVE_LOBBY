@@ -102,7 +102,7 @@ const MAY_EVENTS: AgendaEvent[] = [
 const BACKGROUND_IMAGES = [
   '/images/IMG_3794.jpg',
   '/images/lider1.jpg',
-  '/images/junho.manu.jpg'
+  '/images/abril.jpg'
 ];
 
 const MONTH_COVER = [
