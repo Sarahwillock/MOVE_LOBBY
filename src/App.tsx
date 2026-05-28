@@ -122,10 +122,8 @@ const MAY_EVENTS: AgendaEvent[] = [
 ];
 
 const BACKGROUND_IMAGES = [
-  '/images/IMG_3794.jpg',
   '/images/WhatsApp Image 2026-05-28 at 16.44.45 (1).jpeg',
   '/images/WhatsApp Image 2026-05-28 at 16.44.46 (1).jpeg',
-  '/images/lider1.jpg',
   '/images/junho.manu.jpg',
   '/images/images/WhatsApp Image 2026-05-28 at 16.44.44.jpeg'
 ];
