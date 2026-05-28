@@ -213,7 +213,7 @@ export default function App() {
   };
 
   const shareOnWhatsApp = (event: AgendaEvent) => {
-    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location || 'A definir'}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n${event.link ? `\n🔗 Inscrição: ${event.link}` : ''}\n${event.mapsUrl ? `\n🗺️ Mapa: ${event.mapsUrl}` : ''}\n\n*Nos vemos lá!* 🙌`;
+    const message = `🚨 *LEMBRETE MOVE* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location || 'A definir'}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n${event.link ? `\n🔗 Inscrição: ${event.link}` : ''}\n${event.mapsUrl ? `\n🗺️ Mapa: ${event.mapsUrl}` : ''}\n\n*Nos vemos lá!* 🙌`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
     window.open(url, '_blank', 'noreferrer');
@@ -319,7 +319,7 @@ export default function App() {
               </div>
 
               <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
-                Eventos<br />da MOVE
+                EVENTOS<br />DA MOVE
               </h2>
 
               <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
