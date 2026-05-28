@@ -32,7 +32,9 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Quinta-feira',
     title: 'Resenha com a Move',
     time: '17:00',
-    description: 'Um tempo especial de comunhão, resenha e conexão com a Move.'
+    description: 'Um tempo especial de comunhão, resenha e conexão com a Move.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
   },
   {
     id: 'junho-2',
@@ -54,8 +56,6 @@ const EVENTS: AgendaEvent[] = [
     title: 'Jogo do Brasil',
     time: 'A definir',
     description: 'Dia de torcer juntos pelo Brasil.',
-    location: DINAMUS_ADDRESS,
-    mapsUrl: DINAMUS_MAPS_URL
   },
   {
     id: 'junho-4',
@@ -125,7 +125,7 @@ const MONTH_COVER = [
   {
     label: 'Aguarde novidades',
     subtitle: 'Novas datas chegando',
-    image: '/images/lider1.jpg'
+    image: '/images/abril.jpg'
   }
 ];
 
