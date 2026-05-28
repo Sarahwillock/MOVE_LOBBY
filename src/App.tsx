@@ -14,9 +14,6 @@ interface AgendaEvent {
   mapsUrl?: string;
 }
 
-const GC_LOCATION_URL = "https://www.google.com/maps/place/R.+Augusto+dos+Anjos,+139+-+Melville+Empresarial+II,+Barueri+-+SP,+06485-370/@-23.4835537,-46.8479933,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf024161977ca9:0x4c79892493db5477!8m2!3d-23.4835537!4d-46.8479933!16s%2Fg%2F11c1ckvdhj?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D";
-const GC_ADDRESS = " Casa da Keth R. Augusto dos Anjos, 139";
-
 const DINAMUS_MAPS_URL = "https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D";
 
 const EVENTS: AgendaEvent[] = [
@@ -114,14 +111,6 @@ const GENERAL_EVENTS = [
     location: 'Igreja Dinamus Alphaville',
     mapsUrl: DINAMUS_MAPS_URL,
     type: 'weekly'
-  },
-  {
-    day: '30/05',
-    title: 'Origem',
-    time: '09:00',
-    location: 'Igreja Dinamus Alphaville',
-    mapsUrl: DINAMUS_MAPS_URL,
-    type: 'special'
   }
 ];
 
@@ -131,15 +120,7 @@ export default function App() {
   const [showNotification, setShowNotification] = React.useState(false);
   const [selectedMonth, setSelectedMonth] = React.useState<typeof MONTH_COVER[number] | null>(null);
 
-  const nextEvent = React.useMemo(() => {
-    const now = new Date('2026-05-28T12:00:00Z');
-
-    return EVENTS.find(event => {
-      const [day, month] = event.date.split('/');
-      const eventDate = new Date(2026, parseInt(month) - 1, parseInt(day), 23, 59);
-      return eventDate >= now;
-    }) || EVENTS[0];
-  }, []);
+  const nextEvent = EVENTS[0];
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -163,15 +144,15 @@ export default function App() {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//GC Lobby//Agenda//PT',
+      'PRODID:-//Move Lobby//Agenda//PT',
       'BEGIN:VEVENT',
-      `UID:${event.id}-2026-gc-lobby`,
+      `UID:${event.id}-2026-move-lobby`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
       `DTSTART:${startDate}`,
       `DTEND:${endDate}`,
       `SUMMARY:${event.title}`,
       `DESCRIPTION:${event.description || ''}`,
-      `LOCATION:${event.location || 'Igreja da Cidade'}`,
+      `LOCATION:${event.location || 'A definir'}`,
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -188,7 +169,7 @@ export default function App() {
   };
 
   const shareOnWhatsApp = (event: AgendaEvent) => {
-    const message = `🚨 *LEMBRETE GC LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location || 'A definir'}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n\n*Nos vemos lá!* 🙌`;
+    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n\n*Nos vemos lá!* 🙌`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
     window.open(url, '_blank', 'noreferrer');
@@ -264,7 +245,7 @@ export default function App() {
               </h2>
 
               <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
-                Confira a agenda de Junho e fique ligado nas próximas novidades.
+                Toque em um mês para ver as informações e eventos.
               </p>
 
               <div className="mt-6 grid gap-3">
@@ -327,86 +308,6 @@ export default function App() {
             </div>
           </motion.div>
 
-          <div className="space-y-4">
-            {EVENTS.map((event, index) => (
-              <motion.div
-                key={event.id}
-                id={`event-${event.id}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group relative bg-white/95 rounded-[2rem] p-5 shadow-xl shadow-black/5 border border-white/50 hover:bg-white transition-all overflow-hidden active:scale-[0.98]"
-              >
-                <div className="flex flex-col sm:flex-row gap-5">
-                  <div className="flex sm:flex-col items-center justify-center sm:justify-start gap-1 sm:gap-0 sm:w-12">
-                    <span className="text-[9px] font-black text-brand-primary uppercase tracking-[0.1em]">
-                      JUNHO
-                    </span>
-                    <span className="text-3xl font-display font-bold text-neutral-900 leading-none">
-                      {event.day.toString().padStart(2, '0')}
-                    </span>
-                    <div className="hidden sm:block w-0.5 h-6 bg-neutral-100 rounded-full mt-2" />
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex flex-col gap-0.5">
-                      <h2 className="text-xl font-bold text-neutral-900 leading-tight group-hover:text-brand-secondary transition-colors">
-                        {event.title}
-                      </h2>
-                      <p className="text-neutral-500 text-xs font-semibold flex items-center gap-1.5">
-                        <span className="w-1 h-1 bg-neutral-300 rounded-full" />
-                        {event.weekday}
-                      </p>
-                    </div>
-
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <div className="flex items-center text-[11px] font-bold text-neutral-600 bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200/40">
-                        <Clock className="w-3 h-3 mr-1.5 text-brand-primary" />
-                        {event.time}
-                      </div>
-
-                      {event.location && (
-                        <a
-                          href={event.mapsUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center text-[11px] font-bold text-neutral-600 bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200/40 hover:bg-neutral-200 transition-colors"
-                        >
-                          <MapPin className="w-3 h-3 mr-1.5 text-brand-primary" />
-                          {event.location}
-                        </a>
-                      )}
-                    </div>
-
-                    {event.description && (
-                      <p className="mt-3 text-[13px] text-neutral-600 leading-relaxed font-medium bg-neutral-50 p-3.5 rounded-xl border border-neutral-100">
-                        {event.description}
-                      </p>
-                    )}
-
-                    <div className="mt-5 flex gap-2">
-                      <button
-                        onClick={() => addToCalendar(event)}
-                        className="flex-1 flex items-center justify-center gap-2.5 bg-brand-primary hover:bg-brand-secondary text-white font-black text-[11px] uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all active:scale-[0.96] shadow-lg shadow-brand-primary/10 group/btn"
-                      >
-                        <Calendar className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-                        <span>Marque na sua agenda</span>
-                      </button>
-
-                      <button
-                        onClick={() => shareOnWhatsApp(event)}
-                        className="p-3.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-600 rounded-xl transition-all active:scale-90 border border-neutral-200/50"
-                        title="Compartilhar no WhatsApp"
-                      >
-                        <MessageSquare className="w-4 h-4 fill-current" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -420,7 +321,7 @@ export default function App() {
             </div>
 
             <p className="text-white/40 text-[10px] font-medium leading-relaxed">
-              Toque nos cards para salvar os eventos no seu calendário ou compartilhar com seu GC no WhatsApp.
+              Toque em um mês para ver as informações e eventos.
             </p>
           </motion.div>
 
@@ -439,7 +340,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.92, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.92, y: 20 }}
-                  className="fixed left-5 right-5 top-1/2 z-50 -translate-y-1/2 rounded-[2rem] bg-white p-6 shadow-2xl"
+                  className="fixed left-5 right-5 top-1/2 z-50 max-h-[82vh] -translate-y-1/2 overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl"
                 >
                   <button
                     onClick={() => setSelectedMonth(null)}
@@ -470,9 +371,32 @@ export default function App() {
                           <p className="text-sm font-black text-neutral-900">
                             {event.date} - {event.title}
                           </p>
+
                           <p className="mt-1 text-xs font-semibold text-neutral-500">
-                            {event.time}
+                            {event.weekday} • {event.time}
                           </p>
+
+                          {event.description && (
+                            <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-500">
+                              {event.description}
+                            </p>
+                          )}
+
+                          <div className="mt-3 flex gap-2">
+                            <button
+                              onClick={() => addToCalendar(event)}
+                              className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-[10px] font-black uppercase tracking-widest text-white"
+                            >
+                              Salvar
+                            </button>
+
+                            <button
+                              onClick={() => shareOnWhatsApp(event)}
+                              className="rounded-xl bg-neutral-200 px-4 py-3 text-neutral-600"
+                            >
+                              <MessageSquare className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
                       ))
                     ) : selectedMonth.label === 'Maio' ? (
@@ -511,9 +435,7 @@ export default function App() {
           <div className="w-[1px] h-6 bg-white/10" />
 
           <button
-            onClick={() => {
-              setShowNotification(true);
-            }}
+            onClick={() => setShowNotification(true)}
             className="flex-1 flex flex-col items-center justify-center gap-1 text-white/50 hover:text-white transition-all group relative"
           >
             <div className="relative">
@@ -553,14 +475,9 @@ export default function App() {
                   </div>
 
                   <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">
-                        Lembrete
-                      </span>
-                      <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">
-                        {nextEvent.date}
-                      </span>
-                    </div>
+                    <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">
+                      Lembrete
+                    </span>
 
                     <h2 className="text-xl font-display font-bold text-neutral-900 mt-1">
                       Próximo Evento
@@ -583,35 +500,15 @@ export default function App() {
                       <Clock className="w-4 h-4 mr-2 text-brand-primary/60" />
                       {nextEvent.time}
                     </div>
-
-                    {nextEvent.location && (
-                      <div className="flex items-center text-sm font-semibold text-neutral-600">
-                        <MapPin className="w-4 h-4 mr-2 text-brand-primary/60" />
-                        {nextEvent.location}
-                      </div>
-                    )}
                   </div>
                 </div>
 
-                <div className="flex gap-3">
-                  {nextEvent.mapsUrl && (
-                    <a
-                      href={nextEvent.mapsUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex-1 bg-brand-primary text-white text-center font-black text-[10px] uppercase tracking-widest py-4 rounded-xl shadow-lg shadow-brand-primary/20"
-                    >
-                      Como Chegar
-                    </a>
-                  )}
-
-                  <button
-                    onClick={() => setShowNotification(false)}
-                    className="flex-1 bg-neutral-900 text-white font-black text-[10px] uppercase tracking-widest py-4 rounded-xl"
-                  >
-                    Entendi
-                  </button>
-                </div>
+                <button
+                  onClick={() => setShowNotification(false)}
+                  className="w-full bg-neutral-900 text-white font-black text-[10px] uppercase tracking-widest py-4 rounded-xl"
+                >
+                  Entendi
+                </button>
               </motion.div>
             </>
           )}
