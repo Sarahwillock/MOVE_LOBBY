@@ -300,7 +300,7 @@ export default function App() {
           />
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       <div className="relative z-10 pb-20">
@@ -314,7 +314,7 @@ export default function App() {
               opacity: 1,
               y: 0
             }}
-            className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-neutral-950/55 p-6 shadow-2xl backdrop-blur-xl mb-6"
+            className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-neutral-950/35 p-6 shadow-2xl backdrop-blur-xl mb-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-white/10" />
 
