@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Clock, MessageSquare, MapPin, Share2, Bell, Sparkles, X } from 'lucide-react';
+import { Calendar, Clock, MessageSquare, Share2, Bell, Sparkles, X } from 'lucide-react';
 
 interface AgendaEvent {
   id: string;
@@ -10,11 +10,10 @@ interface AgendaEvent {
   title: string;
   time: string;
   description?: string;
-  location?: string;
-  mapsUrl?: string;
+  link?: string;
 }
 
-const DINAMUS_MAPS_URL = "https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D";
+const ORIGEM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSedtZ_ZARZikrsqdW2M4jO_tMz6WGHe7rlFtylIgYhOsbK7wQ/viewform';
 
 const EVENTS: AgendaEvent[] = [
   {
@@ -55,6 +54,37 @@ const EVENTS: AgendaEvent[] = [
   }
 ];
 
+const MAY_EVENTS: AgendaEvent[] = [
+  {
+    id: 'maio-1',
+    date: '30/05',
+    day: 30,
+    weekday: 'Sábado',
+    title: 'Origem',
+    time: '09:00',
+    description: 'Apenas para novos membros.',
+    link: ORIGEM_LINK
+  },
+  {
+    id: 'maio-2',
+    date: '30/05',
+    day: 30,
+    weekday: 'Sábado',
+    title: 'GC LOBBY na casa da Keth',
+    time: '15:00',
+    description: 'Encontro do GC Lobby na casa da Keth.'
+  },
+  {
+    id: 'maio-3',
+    date: '30/05',
+    day: 30,
+    weekday: 'Sábado',
+    title: 'MOVENITE',
+    time: '19:00',
+    description: 'Culto dos jovens.'
+  }
+];
+
 const BACKGROUND_IMAGES = [
   '/images/IMG_3794.jpg',
   '/images/lider1.jpg',
@@ -64,7 +94,7 @@ const BACKGROUND_IMAGES = [
 const MONTH_COVER = [
   {
     label: 'Maio',
-    subtitle: 'Eventos anteriores',
+    subtitle: 'Eventos confirmados',
     image: '/images/maio.jpg'
   },
   {
@@ -78,6 +108,8 @@ const MONTH_COVER = [
     image: '/images/lider1.jpg'
   }
 ];
+
+const DINAMUS_MAPS_URL = 'https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu';
 
 const GENERAL_EVENTS = [
   {
@@ -120,7 +152,7 @@ export default function App() {
   const [showNotification, setShowNotification] = React.useState(false);
   const [selectedMonth, setSelectedMonth] = React.useState<typeof MONTH_COVER[number] | null>(null);
 
-  const nextEvent = EVENTS[0];
+  const nextEvent = MAY_EVENTS[0];
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -152,7 +184,7 @@ export default function App() {
       `DTEND:${endDate}`,
       `SUMMARY:${event.title}`,
       `DESCRIPTION:${event.description || ''}`,
-      `LOCATION:${event.location || 'A definir'}`,
+      `LOCATION:A definir`,
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -169,10 +201,44 @@ export default function App() {
   };
 
   const shareOnWhatsApp = (event: AgendaEvent) => {
-    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n\n*Nos vemos lá!* 🙌`;
+    const message = `🚨 *LEMBRETE MOVE LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n${event.link ? `\n🔗 Inscrição: ${event.link}` : ''}\n\n*Nos vemos lá!* 🙌`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
     window.open(url, '_blank', 'noreferrer');
+  };
+
+  const renderMonthEvents = () => {
+    if (!selectedMonth) return null;
+
+    if (selectedMonth.label === 'Junho') {
+      return EVENTS.map((event) => (
+        <EventCard
+          key={event.id}
+          event={event}
+          onSave={addToCalendar}
+          onShare={shareOnWhatsApp}
+        />
+      ));
+    }
+
+    if (selectedMonth.label === 'Maio') {
+      return MAY_EVENTS.map((event) => (
+        <EventCard
+          key={event.id}
+          event={event}
+          onSave={addToCalendar}
+          onShare={shareOnWhatsApp}
+        />
+      ));
+    }
+
+    return (
+      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
+        <p className="text-sm font-bold text-neutral-700">
+          Novas datas chegando em breve.
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -184,7 +250,7 @@ export default function App() {
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${BACKGROUND_IMAGES[bgIndex]})` }}
           />
@@ -209,7 +275,7 @@ export default function App() {
                 <div className="flex items-center gap-2 mt-0.5">
                   <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
                   <span className="text-white/70 font-semibold text-[11px] uppercase tracking-wider">
-                    AGENDA MOVE • JUNHO 2026
+                    AGENDA MOVE • MAIO E JUNHO
                   </span>
                 </div>
               </div>
@@ -280,7 +346,7 @@ export default function App() {
                       </div>
 
                       <div className="rounded-2xl bg-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/15">
-                        {index === 1 ? 'Ver agenda' : index === 2 ? 'Em breve' : 'Relembre'}
+                        {index === 1 ? 'Ver agenda' : index === 2 ? 'Em breve' : 'Ver maio'}
                       </div>
                     </div>
                   </motion.button>
@@ -303,7 +369,7 @@ export default function App() {
                 Próximo Evento
               </p>
               <p className="text-white text-sm font-bold">
-                {nextEvent.title} • {nextEvent.date} {nextEvent.time !== 'A definir' ? `às ${nextEvent.time.split(' ')[0]}` : '• horário a definir'}
+                {nextEvent.title} • {nextEvent.date} às {nextEvent.time}
               </p>
             </div>
           </motion.div>
@@ -316,7 +382,7 @@ export default function App() {
           >
             <div className="inline-flex items-center justify-center p-1 bg-white/10 border border-white/20 rounded-full backdrop-blur-md mb-6">
               <span className="text-[9px] font-black text-white px-5 py-1 uppercase tracking-[0.2em]">
-                Agenda Move • Junho e novidades
+                Agenda Move • Maio, Junho e novidades
               </span>
             </div>
 
@@ -362,56 +428,7 @@ export default function App() {
                   </p>
 
                   <div className="mt-5 space-y-3">
-                    {selectedMonth.label === 'Junho' ? (
-                      EVENTS.map((event) => (
-                        <div
-                          key={event.id}
-                          className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4"
-                        >
-                          <p className="text-sm font-black text-neutral-900">
-                            {event.date} - {event.title}
-                          </p>
-
-                          <p className="mt-1 text-xs font-semibold text-neutral-500">
-                            {event.weekday} • {event.time}
-                          </p>
-
-                          {event.description && (
-                            <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-500">
-                              {event.description}
-                            </p>
-                          )}
-
-                          <div className="mt-3 flex gap-2">
-                            <button
-                              onClick={() => addToCalendar(event)}
-                              className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-[10px] font-black uppercase tracking-widest text-white"
-                            >
-                              Salvar
-                            </button>
-
-                            <button
-                              onClick={() => shareOnWhatsApp(event)}
-                              className="rounded-xl bg-neutral-200 px-4 py-3 text-neutral-600"
-                            >
-                              <MessageSquare className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    ) : selectedMonth.label === 'Maio' ? (
-                      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
-                        <p className="text-sm font-bold text-neutral-700">
-                          Eventos anteriores da Move.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
-                        <p className="text-sm font-bold text-neutral-700">
-                          Novas datas chegando em breve.
-                        </p>
-                      </div>
-                    )}
+                    {renderMonthEvents()}
                   </div>
                 </motion.div>
               </>
@@ -605,6 +622,61 @@ export default function App() {
             </>
           )}
         </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function EventCard({
+  event,
+  onSave,
+  onShare
+}: {
+  event: AgendaEvent;
+  onSave: (event: AgendaEvent) => void;
+  onShare: (event: AgendaEvent) => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
+      <p className="text-sm font-black text-neutral-900">
+        {event.date} - {event.title}
+      </p>
+
+      <p className="mt-1 text-xs font-semibold text-neutral-500">
+        {event.weekday} • {event.time}
+      </p>
+
+      {event.description && (
+        <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-500">
+          {event.description}
+        </p>
+      )}
+
+      <div className="mt-3 flex gap-2">
+        {event.link ? (
+          <a
+            href={event.link}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white"
+          >
+            Inscrever-se
+          </a>
+        ) : (
+          <button
+            onClick={() => onSave(event)}
+            className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-[10px] font-black uppercase tracking-widest text-white"
+          >
+            Salvar
+          </button>
+        )}
+
+        <button
+          onClick={() => onShare(event)}
+          className="rounded-xl bg-neutral-200 px-4 py-3 text-neutral-600"
+        >
+          <MessageSquare className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
