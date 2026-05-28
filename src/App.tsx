@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Clock, MessageSquare, MapPin, Share2, Bell } from 'lucide-react';
+import { Calendar, Clock, MessageSquare, MapPin, Share2, Bell, Sparkles } from 'lucide-react';
 
 interface AgendaEvent {
   id: string;
@@ -21,77 +21,66 @@ const DINAMUS_MAPS_URL = "https://www.google.com/maps/place/Igreja+Dinamus+Alpha
 
 const EVENTS: AgendaEvent[] = [
   {
-    id: '1',
-    date: '09/05',
-    day: 9,
-    weekday: 'Sábado',
-    title: 'GC',
-    time: '17:00',
-    description: 'Encontro do GC Lobby.',
-    location: GC_ADDRESS,
-    mapsUrl: GC_LOCATION_URL
+    id: 'junho-1',
+    date: '04/06',
+    day: 4,
+    weekday: 'Quinta-feira',
+    title: 'Resenha com a Move',
+    time: 'A definir',
+    description: 'Um tempo especial de comunhão, resenha e conexão com a Move.'
   },
   {
-    id: '2',
-    date: '16/05',
-    day: 16,
+    id: 'junho-2',
+    date: '06/06',
+    day: 6,
     weekday: 'Sábado',
-    title: 'Lab (apenas GCD e LÍDERES)',
-    time: '09:00',
-    description: 'Lab no prédio da igreja.',
-    location: 'Igreja Dinamus Alphaville',
-    mapsUrl: DINAMUS_MAPS_URL
+    title: 'Encontro com Deus',
+    time: '08:00 - 19:00',
+    description: 'Encontro com Deus das 08h às 19h.'
   },
   {
-    id: '5',
-    date: '16/05',
-    day: 16,
+    id: 'junho-3',
+    date: '13/06',
+    day: 13,
     weekday: 'Sábado',
-    title: 'CHURRAS NO HUGO',
-    time: '13:00',
-    description: 'Churras da Lobby',
-    location: 'Casa do Hugo'
+    title: 'Jogo do Brasil',
+    time: 'A definir',
+    description: 'Dia de torcer juntos pelo Brasil.'
   },
   {
-    id: '3',
-    date: '23/05',
-    day: 23,
+    id: 'junho-4',
+    date: '27/06',
+    day: 27,
     weekday: 'Sábado',
-    title: 'Encontro',
-    time: '08:00 - 17:00',
-    description: 'Encontro especial de dia inteiro.',
-    location: 'Igreja Dinamus Alphaville',
-    mapsUrl: DINAMUS_MAPS_URL
-  },
-  {
-    id: '6',
-    date: '30/05',
-    day: 30,
-    weekday: 'Sábado',
-    title: 'GC',
-    time: '15:00',
-    description: 'Encontro do GC Lobby',
-    location: GC_ADDRESS,
-    mapsUrl: GC_LOCATION_URL
-  },
-  {
-    id: '4',
-    date: '30/05',
-    day: 30,
-    weekday: 'Sábado',
-    title: 'MOVENITE',
-    time: '19:00',
-    description: 'MOVENITE às 19h.',
-    location: 'Igreja Dinamus Alphaville',
-    mapsUrl: DINAMUS_MAPS_URL
+    title: 'Culto na DNMS Santo André',
+    time: 'A definir',
+    description: 'Culto especial na DNMS Santo André.'
   }
 ];
 
 const BACKGROUND_IMAGES = [
   '/images/IMG_3794.jpg',
-  '/images/IMG_3726.jpg',
   '/images/lider1.jpg',
   '/images/junho.manu.jpg'
+];
+
+
+const MONTH_COVER = [
+  {
+    label: 'Maio',
+    subtitle: 'Eventos anteriores',
+    image: '/images/maio.jpg'
+  },
+  {
+    label: 'Junho',
+    subtitle: 'Agenda confirmada',
+    image: '/images/junho.manu.jpg'
+  },
+  {
+    label: 'Aguarde novidades',
+    subtitle: 'Novas datas chegando',
+    image: '/images/lider1.jpg'
+  }
 ];
 
 const GENERAL_EVENTS = [
@@ -144,7 +133,7 @@ export default function App() {
 
   const nextEvent = React.useMemo(() => {
     // We use the fixed date from metadata as "now" since this is a 2026 agenda
-    const now = new Date('2026-05-05T20:45:00Z');
+    const now = new Date('2026-05-28T12:00:00Z');
     return EVENTS.find(event => {
       const [day, month] = event.date.split('/');
       const eventDate = new Date(2026, parseInt(month) - 1, parseInt(day), 23, 59);
@@ -164,7 +153,7 @@ export default function App() {
     const year = 2026;
     
     // Simplistic time parsing for ICS
-    const startTimeStr = event.time.split(' ')[0].replace(':', '');
+    const startTimeStr = event.time.includes(':') ? event.time.split(' ')[0].replace(':', '') : '1900';
     const startDate = `${year}${month}${day}T${startTimeStr}00`;
     
     // Default duration 1 hour if not specified
@@ -236,11 +225,11 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-xl font-display font-bold text-white tracking-tight"
                 >
-                  Agenda de Maio
+                  Agenda de Eventos
                 </motion.h1>
                 <div className="flex items-center gap-2 mt-0.5">
                   <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
-                  <span className="text-white/70 font-semibold text-[11px] uppercase tracking-wider">GC LOBBY • 2026</span>
+                  <span className="text-white/70 font-semibold text-[11px] uppercase tracking-wider">AGENDA MOVE • JUNHO 2026</span>
                 </div>
               </div>
               <motion.div 
@@ -256,6 +245,53 @@ export default function App() {
         </header>
 
         <main className="max-w-md mx-auto px-4 mt-4">
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-neutral-950/55 p-6 shadow-2xl backdrop-blur-xl mb-6"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-white/10" />
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/80 border border-white/10">
+                <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
+                Move Lobby
+              </div>
+              <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
+                Eventos<br />do semestre
+              </h2>
+              <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
+                Confira a agenda de Junho e fique ligado nas próximas novidades.
+              </p>
+
+              <div className="mt-6 grid gap-3">
+                {MONTH_COVER.map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, x: -18 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.08 }}
+                    className="group relative min-h-[92px] overflow-hidden rounded-3xl border border-white/15 bg-white/10"
+                  >
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${item.image})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
+                    <div className="relative z-10 flex h-full min-h-[92px] items-center justify-between p-4">
+                      <div>
+                        <p className="text-2xl font-display font-bold text-white leading-tight">{item.label}</p>
+                        <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/55">{item.subtitle}</p>
+                      </div>
+                      <div className="rounded-2xl bg-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/15">
+                        {index === 1 ? 'Ver agenda' : index === 2 ? 'Em breve' : 'Relembre'}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -267,7 +303,7 @@ export default function App() {
             <div>
               <p className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Próximo Evento</p>
               <p className="text-white text-sm font-bold">
-                {nextEvent.title} • {nextEvent.date} às {nextEvent.time.split(' ')[0]}
+                {nextEvent.title} • {nextEvent.date} {nextEvent.time !== 'A definir' ? `às ${nextEvent.time.split(' ')[0]}` : '• horário a definir'}
               </p>
             </div>
           </motion.div>
@@ -286,7 +322,7 @@ export default function App() {
                   {/* Date Badge */}
                   <div className="flex sm:flex-col items-center justify-center sm:justify-start gap-1 sm:gap-0 sm:w-12">
                     <span className="text-[9px] font-black text-brand-primary uppercase tracking-[0.1em]">
-                      MAIO
+                      JUNHO
                     </span>
                     <span className="text-3xl font-display font-bold text-neutral-900 leading-none">
                       {event.day.toString().padStart(2, '0')}
@@ -359,7 +395,7 @@ export default function App() {
           >
             <div className="inline-flex items-center justify-center p-1 bg-white/10 border border-white/20 rounded-full backdrop-blur-md mb-6">
               <span className="text-[9px] font-black text-white px-5 py-1 uppercase tracking-[0.2em]">
-                Agenda Oficial • Maio 2026
+                Agenda Move • Junho e novidades
               </span>
             </div>
             <p className="text-white/40 text-[10px] font-medium leading-relaxed">
@@ -553,4 +589,3 @@ export default function App() {
     </div>
   );
 }
-
