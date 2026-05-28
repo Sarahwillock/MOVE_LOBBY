@@ -16,6 +16,7 @@ interface AgendaEvent {
 }
 
 const ORIGEM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSedtZ_ZARZikrsqdW2M4jO_tMz6WGHe7rlFtylIgYhOsbK7wQ/viewform';
+const ENCONTROCOMDEUS_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSdgWzeA98aJUBhthxpSdppgh_ho-H8vu5NBsD8E-j4eH-mCZw/viewform';
 
 const GC_LOCATION_URL = "https://www.google.com/maps/place/R.+Augusto+dos+Anjos,+139+-+Melville+Empresarial+II,+Barueri+-+SP,+06485-370/@-23.4835537,-46.8479933,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf024161977ca9:0x4c79892493db5477!8m2!3d-23.4835537!4d-46.8479933!16s%2Fg%2F11c1ckvdhj?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D";
 const GC_ADDRESS = "Casa da Keth - R. Augusto dos Anjos, 139";
@@ -30,7 +31,7 @@ const EVENTS: AgendaEvent[] = [
     day: 4,
     weekday: 'Quinta-feira',
     title: 'Resenha com a Move',
-    time: 'A definir',
+    time: '17:00',
     description: 'Um tempo especial de comunhão, resenha e conexão com a Move.'
   },
   {
@@ -40,7 +41,10 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Encontro com Deus',
     time: '08:00 - 19:00',
-    description: 'Encontro com Deus das 08h às 19h.'
+    description: 'Encontro com Deus das 08h às 19h.',
+    link: ENCONTROCOMDEUS_LINK,
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
   },
   {
     id: 'junho-3',
@@ -49,7 +53,9 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Jogo do Brasil',
     time: 'A definir',
-    description: 'Dia de torcer juntos pelo Brasil.'
+    description: 'Dia de torcer juntos pelo Brasil.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
   },
   {
     id: 'junho-4',
