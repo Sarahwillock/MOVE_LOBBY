@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Clock, MessageSquare, MapPin, Share2, Bell, Sparkles } from 'lucide-react';
+import { Calendar, Clock, MessageSquare, MapPin, Share2, Bell, Sparkles, X } from 'lucide-react';
 
 interface AgendaEvent {
   id: string;
@@ -63,7 +63,6 @@ const BACKGROUND_IMAGES = [
   '/images/lider1.jpg',
   '/images/junho.manu.jpg'
 ];
-
 
 const MONTH_COVER = [
   {
@@ -130,10 +129,11 @@ export default function App() {
   const [bgIndex, setBgIndex] = React.useState(0);
   const [showFullCalendar, setShowFullCalendar] = React.useState(false);
   const [showNotification, setShowNotification] = React.useState(false);
+  const [selectedMonth, setSelectedMonth] = React.useState<typeof MONTH_COVER[number] | null>(null);
 
   const nextEvent = React.useMemo(() => {
-    // We use the fixed date from metadata as "now" since this is a 2026 agenda
     const now = new Date('2026-05-28T12:00:00Z');
+
     return EVENTS.find(event => {
       const [day, month] = event.date.split('/');
       const eventDate = new Date(2026, parseInt(month) - 1, parseInt(day), 23, 59);
@@ -145,18 +145,19 @@ export default function App() {
     const interval = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
     }, 8000);
+
     return () => clearInterval(interval);
   }, []);
 
   const addToCalendar = (event: AgendaEvent) => {
     const [day, month] = event.date.split('/');
     const year = 2026;
-    
-    // Simplistic time parsing for ICS
-    const startTimeStr = event.time.includes(':') ? event.time.split(' ')[0].replace(':', '') : '1900';
+
+    const startTimeStr = event.time.includes(':')
+      ? event.time.split(' ')[0].replace(':', '')
+      : '1900';
+
     const startDate = `${year}${month}${day}T${startTimeStr}00`;
-    
-    // Default duration 1 hour if not specified
     const endDate = `${year}${month}${day}T${(parseInt(startTimeStr) + 100).toString().padStart(4, '0')}00`;
 
     const icsContent = [
@@ -178,6 +179,7 @@ export default function App() {
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
+
     link.href = url;
     link.setAttribute('download', `${event.title.toLowerCase().replace(/\s+/g, '-')}.ics`);
     document.body.appendChild(link);
@@ -186,19 +188,14 @@ export default function App() {
   };
 
   const shareOnWhatsApp = (event: AgendaEvent) => {
-    const message = `🚨 *LEMBRETE GC LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n\n*Nos vemos lá!* 🙌`;
+    const message = `🚨 *LEMBRETE GC LOBBY* 🚨\n\n📅 *Data:* ${event.date} (${event.weekday})\n🕒 *Hora:* ${event.time}\n📍 *Local:* ${event.location || 'A definir'}\n\n📝 *Evento:* ${event.title}\n${event.description ? `\n_${event.description}_` : ''}\n\n*Nos vemos lá!* 🙌`;
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank', 'noreferrer');
-  };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert('Link da agenda copiado!');
+    window.open(url, '_blank', 'noreferrer');
   };
 
   return (
     <div className="min-h-screen relative font-sans overflow-x-hidden selection:bg-brand-primary/30">
-      {/* Dynamic Background */}
       <div className="fixed inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.div
@@ -211,28 +208,32 @@ export default function App() {
             style={{ backgroundImage: `url(${BACKGROUND_IMAGES[bgIndex]})` }}
           />
         </AnimatePresence>
+
         <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
       </div>
 
       <div className="relative z-10 pb-32">
-        {/* Header */}
         <header className="sticky top-0 z-30">
           <div className="bg-white/10 backdrop-blur-2xl border-b border-white/10">
             <div className="max-w-md mx-auto px-5 py-5 flex items-center justify-between">
               <div>
-                <motion.h1 
+                <motion.h1
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-xl font-display font-bold text-white tracking-tight"
                 >
                   Agenda de Eventos
                 </motion.h1>
+
                 <div className="flex items-center gap-2 mt-0.5">
                   <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
-                  <span className="text-white/70 font-semibold text-[11px] uppercase tracking-wider">AGENDA MOVE • JUNHO 2026</span>
+                  <span className="text-white/70 font-semibold text-[11px] uppercase tracking-wider">
+                    AGENDA MOVE • JUNHO 2026
+                  </span>
                 </div>
               </div>
-              <motion.div 
+
+              <motion.div
                 whileHover={{ rotate: 10, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setShowFullCalendar(true)}
@@ -251,42 +252,57 @@ export default function App() {
             className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-neutral-950/55 p-6 shadow-2xl backdrop-blur-xl mb-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-white/10" />
+
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/80 border border-white/10">
                 <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
                 Move Lobby
               </div>
+
               <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
                 Eventos<br />do semestre
               </h2>
+
               <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
                 Confira a agenda de Junho e fique ligado nas próximas novidades.
               </p>
 
               <div className="mt-6 grid gap-3">
                 {MONTH_COVER.map((item, index) => (
-                  <motion.div
+                  <motion.button
+                    type="button"
                     key={item.label}
+                    onClick={() => setSelectedMonth(item)}
                     initial={{ opacity: 0, x: -18 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.08 }}
-                    className="group relative min-h-[92px] overflow-hidden rounded-3xl border border-white/15 bg-white/10"
+                    className="group relative min-h-[92px] w-full overflow-hidden rounded-3xl border border-white/15 bg-white/10 text-left"
                   >
                     <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${item.image})` }}
+                      className="absolute inset-0 bg-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{
+                        backgroundImage: `url(${item.image})`,
+                        backgroundPosition: 'center 28%',
+                      }}
                     />
+
                     <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
+
                     <div className="relative z-10 flex h-full min-h-[92px] items-center justify-between p-4">
                       <div>
-                        <p className="text-2xl font-display font-bold text-white leading-tight">{item.label}</p>
-                        <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/55">{item.subtitle}</p>
+                        <p className="text-2xl font-display font-bold text-white leading-tight">
+                          {item.label}
+                        </p>
+                        <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/55">
+                          {item.subtitle}
+                        </p>
                       </div>
+
                       <div className="rounded-2xl bg-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/15">
                         {index === 1 ? 'Ver agenda' : index === 2 ? 'Em breve' : 'Relembre'}
                       </div>
                     </div>
-                  </motion.div>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -300,8 +316,11 @@ export default function App() {
             <div className="bg-brand-primary p-2 rounded-xl text-white shadow-lg shadow-brand-primary/20">
               <Bell className="w-4 h-4 animate-bounce" />
             </div>
+
             <div>
-              <p className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Próximo Evento</p>
+              <p className="text-[10px] font-black text-brand-primary uppercase tracking-widest">
+                Próximo Evento
+              </p>
               <p className="text-white text-sm font-bold">
                 {nextEvent.title} • {nextEvent.date} {nextEvent.time !== 'A definir' ? `às ${nextEvent.time.split(' ')[0]}` : '• horário a definir'}
               </p>
@@ -319,7 +338,6 @@ export default function App() {
                 className="group relative bg-white/95 rounded-[2rem] p-5 shadow-xl shadow-black/5 border border-white/50 hover:bg-white transition-all overflow-hidden active:scale-[0.98]"
               >
                 <div className="flex flex-col sm:flex-row gap-5">
-                  {/* Date Badge */}
                   <div className="flex sm:flex-col items-center justify-center sm:justify-start gap-1 sm:gap-0 sm:w-12">
                     <span className="text-[9px] font-black text-brand-primary uppercase tracking-[0.1em]">
                       JUNHO
@@ -330,7 +348,6 @@ export default function App() {
                     <div className="hidden sm:block w-0.5 h-6 bg-neutral-100 rounded-full mt-2" />
                   </div>
 
-                  {/* Content */}
                   <div className="flex-1">
                     <div className="flex flex-col gap-0.5">
                       <h2 className="text-xl font-bold text-neutral-900 leading-tight group-hover:text-brand-secondary transition-colors">
@@ -347,10 +364,11 @@ export default function App() {
                         <Clock className="w-3 h-3 mr-1.5 text-brand-primary" />
                         {event.time}
                       </div>
+
                       {event.location && (
-                        <a 
-                          href={event.mapsUrl} 
-                          target="_blank" 
+                        <a
+                          href={event.mapsUrl}
+                          target="_blank"
                           rel="noreferrer"
                           className="flex items-center text-[11px] font-bold text-neutral-600 bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200/40 hover:bg-neutral-200 transition-colors"
                         >
@@ -374,6 +392,7 @@ export default function App() {
                         <Calendar className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
                         <span>Marque na sua agenda</span>
                       </button>
+
                       <button
                         onClick={() => shareOnWhatsApp(event)}
                         className="p-3.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-600 rounded-xl transition-all active:scale-90 border border-neutral-200/50"
@@ -387,7 +406,8 @@ export default function App() {
               </motion.div>
             ))}
           </div>
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
@@ -398,26 +418,99 @@ export default function App() {
                 Agenda Move • Junho e novidades
               </span>
             </div>
+
             <p className="text-white/40 text-[10px] font-medium leading-relaxed">
               Toque nos cards para salvar os eventos no seu calendário ou compartilhar com seu GC no WhatsApp.
             </p>
           </motion.div>
+
+          <AnimatePresence>
+            {selectedMonth && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedMonth(null)}
+                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.92, y: 20 }}
+                  className="fixed left-5 right-5 top-1/2 z-50 -translate-y-1/2 rounded-[2rem] bg-white p-6 shadow-2xl"
+                >
+                  <button
+                    onClick={() => setSelectedMonth(null)}
+                    className="absolute right-5 top-5 rounded-full bg-neutral-100 p-2 text-neutral-500"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary">
+                    Informações gerais
+                  </p>
+
+                  <h2 className="mt-2 text-3xl font-display font-bold text-neutral-900">
+                    {selectedMonth.label}
+                  </h2>
+
+                  <p className="mt-1 text-sm font-semibold text-neutral-500">
+                    {selectedMonth.subtitle}
+                  </p>
+
+                  <div className="mt-5 space-y-3">
+                    {selectedMonth.label === 'Junho' ? (
+                      EVENTS.map((event) => (
+                        <div
+                          key={event.id}
+                          className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4"
+                        >
+                          <p className="text-sm font-black text-neutral-900">
+                            {event.date} - {event.title}
+                          </p>
+                          <p className="mt-1 text-xs font-semibold text-neutral-500">
+                            {event.time}
+                          </p>
+                        </div>
+                      ))
+                    ) : selectedMonth.label === 'Maio' ? (
+                      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
+                        <p className="text-sm font-bold text-neutral-700">
+                          Eventos anteriores da Move.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
+                        <p className="text-sm font-bold text-neutral-700">
+                          Novas datas chegando em breve.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </main>
 
         <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2.5rem)] max-w-sm h-16 bg-neutral-900/90 backdrop-blur-3xl rounded-2xl shadow-2xl flex items-center justify-around px-2 z-40 border border-white/10 overflow-hidden">
-          <button 
+          <button
             onClick={() => setShowFullCalendar(true)}
             className="flex-1 flex flex-col items-center justify-center gap-1 group"
           >
             <div className="p-2 rounded-lg bg-brand-primary text-white shadow-lg shadow-brand-primary/40 transition-transform group-active:scale-90">
               <Calendar className="w-5 h-5" />
             </div>
-            <span className="text-[8px] font-black text-white uppercase tracking-tighter">Calendário</span>
+            <span className="text-[8px] font-black text-white uppercase tracking-tighter">
+              Calendário
+            </span>
           </button>
-          
+
           <div className="w-[1px] h-6 bg-white/10" />
-          
-          <button 
+
+          <button
             onClick={() => {
               setShowNotification(true);
             }}
@@ -425,28 +518,30 @@ export default function App() {
           >
             <div className="relative">
               <Bell className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <motion.span 
+              <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-primary rounded-full border-2 border-neutral-900"
               />
             </div>
-            <span className="text-[8px] font-black uppercase tracking-tighter">Alertas</span>
+            <span className="text-[8px] font-black uppercase tracking-tighter">
+              Alertas
+            </span>
           </button>
         </nav>
 
-        {/* Next Event Notification Modal */}
         <AnimatePresence>
           {showNotification && (
             <>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setShowNotification(false)}
                 className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm px-6 flex items-center justify-center"
               />
-              <motion.div 
+
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -456,26 +551,39 @@ export default function App() {
                   <div className="bg-brand-primary p-3 rounded-2xl text-white shadow-lg shadow-brand-primary/20">
                     <Bell className="w-6 h-6 animate-bounce" />
                   </div>
+
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Lembrete</span>
-                      <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">{nextEvent.date}</span>
+                      <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">
+                        Lembrete
+                      </span>
+                      <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">
+                        {nextEvent.date}
+                      </span>
                     </div>
-                    <h2 className="text-xl font-display font-bold text-neutral-900 mt-1">Próximo Evento</h2>
+
+                    <h2 className="text-xl font-display font-bold text-neutral-900 mt-1">
+                      Próximo Evento
+                    </h2>
                   </div>
                 </div>
 
                 <div className="bg-neutral-50 rounded-2xl p-5 border border-neutral-100 mb-6">
-                  <h3 className="text-lg font-bold text-neutral-900 leading-tight mb-2">{nextEvent.title}</h3>
+                  <h3 className="text-lg font-bold text-neutral-900 leading-tight mb-2">
+                    {nextEvent.title}
+                  </h3>
+
                   <div className="space-y-2">
                     <div className="flex items-center text-sm font-semibold text-neutral-600">
                       <Calendar className="w-4 h-4 mr-2 text-brand-primary/60" />
                       {nextEvent.date} ({nextEvent.weekday})
                     </div>
+
                     <div className="flex items-center text-sm font-semibold text-neutral-600">
                       <Clock className="w-4 h-4 mr-2 text-brand-primary/60" />
                       {nextEvent.time}
                     </div>
+
                     {nextEvent.location && (
                       <div className="flex items-center text-sm font-semibold text-neutral-600">
                         <MapPin className="w-4 h-4 mr-2 text-brand-primary/60" />
@@ -487,7 +595,7 @@ export default function App() {
 
                 <div className="flex gap-3">
                   {nextEvent.mapsUrl && (
-                    <a 
+                    <a
                       href={nextEvent.mapsUrl}
                       target="_blank"
                       rel="noreferrer"
@@ -496,7 +604,8 @@ export default function App() {
                       Como Chegar
                     </a>
                   )}
-                  <button 
+
+                  <button
                     onClick={() => setShowNotification(false)}
                     className="flex-1 bg-neutral-900 text-white font-black text-[10px] uppercase tracking-widest py-4 rounded-xl"
                   >
@@ -508,18 +617,18 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Full Calendar Modal */}
         <AnimatePresence>
           {showFullCalendar && (
             <>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setShowFullCalendar(false)}
                 className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
               />
-              <motion.div 
+
+              <motion.div
                 initial={{ y: '100%' }}
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
@@ -527,13 +636,18 @@ export default function App() {
                 className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[2.5rem] pb-12 pt-8 px-6 shadow-2xl max-h-[85vh] overflow-y-auto"
               >
                 <div className="w-12 h-1.5 bg-neutral-200 rounded-full mx-auto mb-8" />
-                
+
                 <div className="flex items-center justify-between mb-8">
                   <div>
-                    <h2 className="text-2xl font-display font-bold text-neutral-900">Calendário Geral</h2>
-                    <p className="text-neutral-500 text-sm font-medium">Dinamus Alphaville</p>
+                    <h2 className="text-2xl font-display font-bold text-neutral-900">
+                      Calendário Geral
+                    </h2>
+                    <p className="text-neutral-500 text-sm font-medium">
+                      Dinamus Alphaville
+                    </p>
                   </div>
-                  <button 
+
+                  <button
                     onClick={() => setShowFullCalendar(false)}
                     className="p-2 bg-neutral-100 rounded-xl text-neutral-400"
                   >
@@ -543,7 +657,7 @@ export default function App() {
 
                 <div className="space-y-4">
                   {GENERAL_EVENTS.map((event, idx) => (
-                    <motion.div 
+                    <motion.div
                       key={idx}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -551,19 +665,28 @@ export default function App() {
                       className="flex items-center gap-4 p-4 rounded-2xl bg-neutral-50 border border-neutral-100"
                     >
                       <div className="w-16 flex flex-col items-center">
-                        <span className="text-[10px] font-black text-brand-primary uppercase">{event.type === 'weekly' ? 'Semanal' : 'Evento'}</span>
-                        <span className="text-sm font-bold text-neutral-900">{event.day}</span>
+                        <span className="text-[10px] font-black text-brand-primary uppercase">
+                          {event.type === 'weekly' ? 'Semanal' : 'Evento'}
+                        </span>
+                        <span className="text-sm font-bold text-neutral-900">
+                          {event.day}
+                        </span>
                       </div>
+
                       <div className="flex-1">
-                        <h3 className="text-[15px] font-bold text-neutral-900">{event.title}</h3>
+                        <h3 className="text-[15px] font-bold text-neutral-900">
+                          {event.title}
+                        </h3>
+
                         <div className="flex items-center gap-3 mt-1">
                           <span className="flex items-center text-[11px] font-semibold text-neutral-500">
                             <Clock className="w-3 h-3 mr-1 text-brand-primary" />
                             {event.time}
                           </span>
-                          <a 
-                            href={event.mapsUrl} 
-                            target="_blank" 
+
+                          <a
+                            href={event.mapsUrl}
+                            target="_blank"
                             rel="noreferrer"
                             className="flex items-center text-[11px] font-semibold text-brand-secondary underline underline-offset-2"
                           >
@@ -574,8 +697,8 @@ export default function App() {
                     </motion.div>
                   ))}
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => setShowFullCalendar(false)}
                   className="w-full mt-8 bg-neutral-900 text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl"
                 >
