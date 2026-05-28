@@ -315,7 +315,7 @@ export default function App() {
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/80 border border-white/10">
                 <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
-                Move Lobby
+                MOVE
               </div>
 
               <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
