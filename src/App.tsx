@@ -190,7 +190,7 @@ export default function App() {
       'VERSION:2.0',
       'PRODID:-//MOVE//Agenda//PT',
       'BEGIN:VEVENT',
-      `UID:${event.id}-2026-move-lobby`,
+      `UID:${event.id}-2026-move`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
       `DTSTART:${startDate}`,
       `DTEND:${endDate}`,
