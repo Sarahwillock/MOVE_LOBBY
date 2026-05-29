@@ -1,10 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import {
-  Sparkles,
-  X,
-  MapPin
-} from 'lucide-react';
+import { Sparkles, X, MapPin, Calendar, Bell } from 'lucide-react';
 
 interface AgendaEvent {
   id: string;
@@ -28,14 +24,12 @@ const ENCONTRO_LINK =
 const GC_LOCATION_URL =
   'https://www.google.com/maps/place/R.+Augusto+dos+Anjos,+139+-+Melville+Empresarial+II,+Barueri+-+SP,+06485-370/@-23.4835537,-46.8479933,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf024161977ca9:0x4c79892493db5477!8m2!3d-23.4835537!4d-46.8479933!16s%2Fg%2F11c1ckvdhj?entry=ttu';
 
-const GC_ADDRESS =
-  'Casa da Keth - R. Augusto dos Anjos, 139';
+const GC_ADDRESS = 'Casa da Keth - R. Augusto dos Anjos, 139';
 
 const DINAMUS_MAPS_URL =
   'https://www.google.com/maps/place/Igreja+Dinamus+Alphaville/@-23.4535947,-46.8986446,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf038c37463f3b:0x49e17d54b4abbcc5!8m2!3d-23.4535947!4d-46.8960697!16s%2Fg%2F11p76kdcpq?entry=ttu';
 
-const DINAMUS_ADDRESS =
-  'Igreja Dinamus Alphaville';
+const DINAMUS_ADDRESS = 'Igreja Dinamus Alphaville';
 
 const EVENTS: AgendaEvent[] = [
   {
@@ -45,8 +39,7 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Quinta-feira',
     title: 'Resenha com a Move',
     time: '17:00',
-    description:
-      'Um tempo especial de comunhão, resenha e conexão com a Move.',
+    description: 'Um tempo especial de comunhão, resenha e conexão com a Move.',
     location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL
   },
@@ -57,8 +50,7 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Encontro com Deus',
     time: '08:00 - 19:00',
-    description:
-      'Encontro com Deus das 08h às 19h.',
+    description: 'Encontro com Deus das 08h às 19h.',
     link: ENCONTRO_LINK,
     location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL
@@ -70,8 +62,7 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Jogo do Brasil',
     time: 'EM BREVE MAIS INFORMAÇÕES',
-    description:
-      'Dia de torcer juntos pelo Brasil.'
+    description: 'Dia de torcer juntos pelo Brasil.'
   },
   {
     id: 'junho-4',
@@ -80,8 +71,7 @@ const EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Culto na DNMS Santo André',
     time: 'EM BREVE MAIS INFORMAÇÕES',
-    description:
-      'Culto especial na DNMS Santo André.'
+    description: 'Culto especial na DNMS Santo André.'
   }
 ];
 
@@ -93,8 +83,7 @@ const MAY_EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'Origem',
     time: '09:00',
-    description:
-      'Apenas para novos membros.',
+    description: 'Apenas para novos membros.',
     link: ORIGEM_LINK,
     location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL
@@ -106,8 +95,7 @@ const MAY_EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'GC LOBBY na Casa da Keth',
     time: '15:00',
-    description:
-      'Encontro do GC Lobby na Casa da Keth.',
+    description: 'Encontro do GC Lobby na Casa da Keth.',
     location: GC_ADDRESS,
     mapsUrl: GC_LOCATION_URL
   },
@@ -118,11 +106,52 @@ const MAY_EVENTS: AgendaEvent[] = [
     weekday: 'Sábado',
     title: 'MOVENITE',
     time: '19:00',
-    description:
-      'Culto dos jovens.',
+    description: 'Culto dos jovens.',
     location: DINAMUS_ADDRESS,
     mapsUrl: DINAMUS_MAPS_URL
   }
+];
+
+const CHURCH_EVENTS: AgendaEvent[] = [
+  {
+    id: 'geral-1',
+    date: 'Todos os domingos',
+    day: 0,
+    weekday: 'Domingo',
+    title: 'Culto',
+    time: '10:00',
+    description: 'Culto no prédio da igreja.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
+  },
+  {
+    id: 'geral-2',
+    date: 'Todas as quartas',
+    day: 0,
+    weekday: 'Quarta-feira',
+    title: 'Oração dos homens',
+    time: '06:00',
+    description: 'Oração dos homens no prédio da igreja.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
+  },
+  {
+    id: 'geral-3',
+    date: 'Todas as quartas',
+    day: 0,
+    weekday: 'Quarta-feira',
+    title: 'Oração das mulheres',
+    time: '07:00',
+    description: 'Oração das mulheres no prédio da igreja.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
+  }
+];
+
+const WEEK_ACTIONS: AgendaEvent[] = [
+  MAY_EVENTS[0],
+  MAY_EVENTS[1],
+  MAY_EVENTS[2]
 ];
 
 const BACKGROUND_IMAGES = [
@@ -143,6 +172,11 @@ const MONTH_COVER = [
     image: '/images/junho.manu.jpg'
   },
   {
+    label: 'Agenda completa',
+    subtitle: 'Eventos + agenda da igreja',
+    image: '/images/abril.jpg'
+  },
+  {
     label: 'Aguarde novidades',
     subtitle: 'Novas datas chegando',
     image: '/images/abril.jpg'
@@ -150,46 +184,33 @@ const MONTH_COVER = [
 ];
 
 export default function App() {
-  const [bgIndex, setBgIndex] =
-    React.useState(0);
-
+  const [bgIndex, setBgIndex] = React.useState(0);
   const [selectedMonth, setSelectedMonth] =
-    React.useState<
-      typeof MONTH_COVER[number] | null
-    >(null);
+    React.useState<typeof MONTH_COVER[number] | null>(null);
+  const [showNotifications, setShowNotifications] = React.useState(false);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setBgIndex(
-        (prev) =>
-          (prev + 1) %
-          BACKGROUND_IMAGES.length
-      );
+      setBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
     }, 8000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const addToCalendar = (
-    event: AgendaEvent
-  ) => {
-    const [day, month] =
-      event.date.split('/');
-
+  const addToCalendar = (event: AgendaEvent) => {
+    const [day, month] = event.date.split('/');
     const year = 2026;
 
-    const startTimeStr =
-      event.time.includes(':')
-        ? event.time
-            .split(' ')[0]
-            .replace(':', '')
-        : '1900';
+    if (!day || !month || event.date.includes('Todas') || event.date.includes('Todos')) {
+      return;
+    }
+
+    const startTimeStr = event.time.includes(':')
+      ? event.time.split(' ')[0].replace(':', '')
+      : '1900';
 
     const startDate = `${year}${month}${day}T${startTimeStr}00`;
-
-    const endDate = `${year}${month}${day}T${(
-      parseInt(startTimeStr) + 100
-    )
+    const endDate = `${year}${month}${day}T${(parseInt(startTimeStr) + 100)
       .toString()
       .padStart(4, '0')}00`;
 
@@ -199,10 +220,7 @@ export default function App() {
       'PRODID:-//MOVE//Agenda//PT',
       'BEGIN:VEVENT',
       `UID:${event.id}-2026-move`,
-      `DTSTAMP:${new Date()
-        .toISOString()
-        .replace(/[-:]/g, '')
-        .split('.')[0]}Z`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
       `DTSTART:${startDate}`,
       `DTEND:${endDate}`,
       `SUMMARY:${event.title}`,
@@ -212,26 +230,17 @@ export default function App() {
       'END:VCALENDAR'
     ].join('\r\n');
 
-    const blob = new Blob(
-      [icsContent],
-      {
-        type: 'text/calendar;charset=utf-8'
-      }
-    );
+    const blob = new Blob([icsContent], {
+      type: 'text/calendar;charset=utf-8'
+    });
 
-    const url =
-      window.URL.createObjectURL(blob);
-
-    const link =
-      document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
 
     link.href = url;
-
     link.setAttribute(
       'download',
-      `${event.title
-        .toLowerCase()
-        .replace(/\s+/g, '-')}.ics`
+      `${event.title.toLowerCase().replace(/\s+/g, '-')}.ics`
     );
 
     document.body.appendChild(link);
@@ -244,22 +253,35 @@ export default function App() {
 
     if (selectedMonth.label === 'Junho') {
       return EVENTS.map((event) => (
-        <EventCard
-          key={event.id}
-          event={event}
-          onSave={addToCalendar}
-        />
+        <EventCard key={event.id} event={event} onSave={addToCalendar} />
       ));
     }
 
     if (selectedMonth.label === 'Maio') {
       return MAY_EVENTS.map((event) => (
-        <EventCard
-          key={event.id}
-          event={event}
-          onSave={addToCalendar}
-        />
+        <EventCard key={event.id} event={event} onSave={addToCalendar} />
       ));
+    }
+
+    if (selectedMonth.label === 'Agenda completa') {
+      return (
+        <>
+          <SectionTitle>Eventos de Maio</SectionTitle>
+          {MAY_EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} onSave={addToCalendar} />
+          ))}
+
+          <SectionTitle>Eventos de Junho</SectionTitle>
+          {EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} onSave={addToCalendar} />
+          ))}
+
+          <SectionTitle>Agenda geral da igreja</SectionTitle>
+          {CHURCH_EVENTS.map((event) => (
+            <EventCard key={event.id} event={event} onSave={addToCalendar} />
+          ))}
+        </>
+      );
     }
 
     return (
@@ -277,22 +299,10 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={bgIndex}
-            initial={{
-              opacity: 0,
-              scale: 1.05
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.95
-            }}
-            transition={{
-              duration: 1.5,
-              ease: 'easeInOut'
-            }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `url(${BACKGROUND_IMAGES[bgIndex]})`
@@ -306,22 +316,26 @@ export default function App() {
       <div className="relative z-10 pb-20">
         <main className="max-w-md mx-auto px-4 pt-4">
           <motion.section
-            initial={{
-              opacity: 0,
-              y: 24
-            }}
-            animate={{
-              opacity: 1,
-              y: 0
-            }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
             className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-neutral-950/35 p-6 shadow-2xl backdrop-blur-xl mb-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-white/10" />
 
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/80 border border-white/10">
-                <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
-                MOVE
+              <div className="flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/80 border border-white/10">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
+                  MOVE
+                </div>
+
+                <button
+                  onClick={() => setShowNotifications(true)}
+                  className="relative rounded-full bg-white/10 p-3 text-white border border-white/10"
+                >
+                  <Bell className="h-4 w-4" />
+                  <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-brand-primary" />
+                </button>
               </div>
 
               <h2 className="mt-5 text-4xl font-display font-bold leading-none text-white">
@@ -331,66 +345,53 @@ export default function App() {
               </h2>
 
               <p className="mt-3 text-sm font-semibold leading-relaxed text-white/65">
-                Toque em um mês para ver as
-                informações e eventos.
+                Toque em um mês para ver as informações e eventos.
               </p>
 
               <div className="mt-6 grid gap-3">
-                {MONTH_COVER.map(
-                  (item, index) => (
-                    <motion.button
-                      type="button"
-                      key={item.label}
-                      onClick={() =>
-                        setSelectedMonth(item)
-                      }
-                      initial={{
-                        opacity: 0,
-                        x: -18
+                {MONTH_COVER.map((item, index) => (
+                  <motion.button
+                    type="button"
+                    key={item.label}
+                    onClick={() => setSelectedMonth(item)}
+                    initial={{ opacity: 0, x: -18 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.08 }}
+                    className="group relative min-h-[92px] w-full overflow-hidden rounded-3xl border border-white/15 bg-white/10 text-left"
+                  >
+                    <div
+                      className="absolute inset-0 bg-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{
+                        backgroundImage: `url(${item.image})`,
+                        backgroundPosition: 'center 28%'
                       }}
-                      animate={{
-                        opacity: 1,
-                        x: 0
-                      }}
-                      transition={{
-                        delay:
-                          0.1 + index * 0.08
-                      }}
-                      className="group relative min-h-[92px] w-full overflow-hidden rounded-3xl border border-white/15 bg-white/10 text-left"
-                    >
-                      <div
-                        className="absolute inset-0 bg-cover transition-transform duration-500 group-hover:scale-105"
-                        style={{
-                          backgroundImage: `url(${item.image})`,
-                          backgroundPosition:
-                            'center 28%'
-                        }}
-                      />
+                    />
 
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
 
-                      <div className="relative z-10 flex h-full min-h-[92px] items-center justify-between p-4">
-                        <div>
-                          <p className="text-2xl font-display font-bold text-white leading-tight">
-                            {item.label}
-                          </p>
+                    <div className="relative z-10 flex h-full min-h-[92px] items-center justify-between p-4">
+                      <div>
+                        <p className="text-2xl font-display font-bold text-white leading-tight">
+                          {item.label}
+                        </p>
 
-                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/55">
-                            {item.subtitle}
-                          </p>
-                        </div>
-
-                        <div className="rounded-2xl bg-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/15">
-                          {index === 1
-                            ? 'Ver agenda'
-                            : index === 2
-                            ? 'Em breve'
-                            : 'Ver maio'}
-                        </div>
+                        <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/55">
+                          {item.subtitle}
+                        </p>
                       </div>
-                    </motion.button>
-                  )
-                )}
+
+                      <div className="rounded-2xl bg-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/15">
+                        {item.label === 'Junho'
+                          ? 'Ver agenda'
+                          : item.label === 'Agenda completa'
+                          ? 'Ver tudo'
+                          : item.label === 'Aguarde novidades'
+                          ? 'Em breve'
+                          : 'Ver maio'}
+                      </div>
+                    </div>
+                  </motion.button>
+                ))}
               </div>
             </div>
           </motion.section>
@@ -399,43 +400,21 @@ export default function App() {
             {selectedMonth && (
               <>
                 <motion.div
-                  initial={{
-                    opacity: 0
-                  }}
-                  animate={{
-                    opacity: 1
-                  }}
-                  exit={{
-                    opacity: 0
-                  }}
-                  onClick={() =>
-                    setSelectedMonth(null)
-                  }
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedMonth(null)}
                   className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
                 />
 
                 <motion.div
-                  initial={{
-                    opacity: 0,
-                    scale: 0.92,
-                    y: 20
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    y: 0
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.92,
-                    y: 20
-                  }}
+                  initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.92, y: 20 }}
                   className="fixed left-5 right-5 top-1/2 z-50 max-h-[82vh] -translate-y-1/2 overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl"
                 >
                   <button
-                    onClick={() =>
-                      setSelectedMonth(null)
-                    }
+                    onClick={() => setSelectedMonth(null)}
                     className="absolute right-5 top-5 rounded-full bg-neutral-100 p-2 text-neutral-500"
                   >
                     <X className="h-4 w-4" />
@@ -445,7 +424,7 @@ export default function App() {
                     Informações gerais
                   </p>
 
-                  <h2 className="mt-2 text-3xl font-display font-bold text-neutral-900">
+                  <h2 className="mt-2 pr-10 text-3xl font-display font-bold text-neutral-900">
                     {selectedMonth.label}
                   </h2>
 
@@ -453,8 +432,52 @@ export default function App() {
                     {selectedMonth.subtitle}
                   </p>
 
+                  <div className="mt-5 space-y-3">{renderMonthEvents()}</div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {showNotifications && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowNotifications(false)}
+                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.92, y: 20 }}
+                  className="fixed left-5 right-5 top-1/2 z-50 max-h-[82vh] -translate-y-1/2 overflow-y-auto rounded-[2rem] bg-white p-6 shadow-2xl"
+                >
+                  <button
+                    onClick={() => setShowNotifications(false)}
+                    className="absolute right-5 top-5 rounded-full bg-neutral-100 p-2 text-neutral-500"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary">
+                    Notificações
+                  </p>
+
+                  <h2 className="mt-2 pr-10 text-3xl font-display font-bold text-neutral-900">
+                    Ações da semana
+                  </h2>
+
+                  <p className="mt-1 text-sm font-semibold text-neutral-500">
+                    Fique por dentro dos próximos encontros.
+                  </p>
+
                   <div className="mt-5 space-y-3">
-                    {renderMonthEvents()}
+                    {WEEK_ACTIONS.map((event) => (
+                      <EventCard key={event.id} event={event} onSave={addToCalendar} />
+                    ))}
                   </div>
                 </motion.div>
               </>
@@ -466,15 +489,26 @@ export default function App() {
   );
 }
 
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="pt-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
+      {children}
+    </p>
+  );
+}
+
 function EventCard({
   event,
   onSave
 }: {
   event: AgendaEvent;
-  onSave: (
-    event: AgendaEvent
-  ) => void;
+  onSave: (event: AgendaEvent) => void;
 }) {
+  const canSave =
+    !event.date.includes('Todas') &&
+    !event.date.includes('Todos') &&
+    event.time.includes(':');
+
   return (
     <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
       <p className="text-sm font-black text-neutral-900">
@@ -513,25 +547,22 @@ function EventCard({
           >
             Inscrever-se
           </a>
-        ) : (
+        ) : canSave ? (
           <button
-            onClick={() =>
-              onSave(event)
-            }
+            onClick={() => onSave(event)}
             className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-[10px] font-black uppercase tracking-widest text-white"
           >
             Salvar
           </button>
+        ) : (
+          <div className="flex-1 rounded-xl bg-neutral-200 px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest text-neutral-500">
+            Recorrente
+          </div>
         )}
 
         {event.mapsUrl && (
           <button
-            onClick={() =>
-              window.open(
-                event.mapsUrl,
-                '_blank'
-              )
-            }
+            onClick={() => window.open(event.mapsUrl, '_blank')}
             className="rounded-xl bg-neutral-200 px-4 py-3 text-neutral-600"
           >
             <MapPin className="h-4 w-4" />
