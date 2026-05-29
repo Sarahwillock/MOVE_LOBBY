@@ -718,23 +718,21 @@ function EventCard({
   onSave
 }: {
   event: AgendaEvent;
-  onSave: (
-    event: AgendaEvent
-  ) => void;
+  onSave: (event: AgendaEvent) => void;
 }) {
+  const isNotification =
+    event.id.startsWith('semana-');
+
   const isRecurring =
     event.date.includes('Todas') ||
     event.date.includes('Todos');
 
   const isPendingInfo =
-    event.time.includes(
-      'EM BREVE'
-    );
+    event.time.includes('EM BREVE');
 
   const canSave =
     !isRecurring &&
-    !isPendingInfo &&
-    event.time.includes(':');
+    !isPendingInfo;
 
   return (
     <div className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4">
@@ -776,12 +774,12 @@ function EventCard({
           </a>
         ) : canSave ? (
           <button
-            onClick={() =>
-              onSave(event)
-            }
+            onClick={() => onSave(event)}
             className="flex-1 rounded-xl bg-brand-primary px-3 py-3 text-[10px] font-black uppercase tracking-widest text-white"
           >
-            Salvar
+            {isNotification
+              ? 'Pode contar comigo'
+              : 'Salvar'}
           </button>
         ) : isPendingInfo ? (
           <div className="flex-1 rounded-xl bg-neutral-200 px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest text-neutral-500">
