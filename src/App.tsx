@@ -126,9 +126,9 @@ const MAY_EVENTS: AgendaEvent[] = [
 ];
 
 const BACKGROUND_IMAGES = [
-  '/images/WhatsApp Image 2026-05-28 at 16.44.45 (1).jpeg',
-  '/images/WhatsApp Image 2026-05-28 at 16.44.46 (1).jpeg',
-  '/images/WhatsApp Image 2026-05-28 at 16.44.44.jpeg'
+  '/images/fundo1.jpeg',
+  '/images/fundo2.jpeg',
+  '/images/fundo3.jpeg'
 ];
 
 const MONTH_COVER = [
