@@ -167,9 +167,26 @@ const CHURCH_EVENTS: AgendaEvent[] = [
 ];
 
 const WEEK_ACTIONS: AgendaEvent[] = [
-  MAY_EVENTS[0],
-  MAY_EVENTS[1],
-  MAY_EVENTS[2]
+  {
+    id: 'semana-1',
+    date: '01 e 02/06',
+    day: 1,
+    weekday: 'Segunda e terça-feira',
+    title: 'Jejum',
+    time: 'Durante o dia',
+    description:
+      'Vamos fazer jejum nesses dois dias.'
+  },
+  {
+    id: 'semana-2',
+    date: '03/06',
+    day: 3,
+    weekday: 'Quarta-feira',
+    title: 'Torre de oração',
+    time: '12 horas',
+    description:
+      'Cada um terá um horário para orar.'
+  }
 ];
 
 const BACKGROUND_IMAGES = [
