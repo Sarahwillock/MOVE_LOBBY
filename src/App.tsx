@@ -75,8 +75,20 @@ const EVENTS: AgendaEvent[] = [
     description:
       'Dia de torcer juntos pelo Brasil.'
   },
-  {
+   {
     id: 'junho-4',
+    date: '20/06',
+    day: 13,
+    weekday: 'Sábado',
+    title: 'MOVE NITE',
+    time: '19:00',
+    description:
+      'Culto dos jovens.',
+    location: DINAMUS_ADDRESS,
+    mapsUrl: DINAMUS_MAPS_URL
+  },
+  {
+    id: 'junho-5',
     date: '27/06',
     day: 27,
     weekday: 'Sábado',
@@ -196,11 +208,6 @@ const BACKGROUND_IMAGES = [
 ];
 
 const MONTH_COVER = [
-  {
-    label: 'Maio',
-    subtitle: 'Eventos confirmados',
-    image: '/images/maio.jpg'
-  },
   {
     label: 'Junho',
     subtitle: 'Agenda confirmada',
