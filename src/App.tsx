@@ -92,8 +92,8 @@ const EVENTS: AgendaEvent[] = [
     date: '27/06',
     day: 27,
     weekday: 'Sábado',
-    title: 'Culto na DNMS Santo André',
-    time: 'EM BREVE MAIS INFORMAÇÕES',
+    title: 'Seminario de Relacionamento',
+    time: '08:30 ás 21:30',
     description:
       'Culto especial na DNMS Santo André.'
   }
@@ -181,24 +181,14 @@ const CHURCH_EVENTS: AgendaEvent[] = [
 const WEEK_ACTIONS: AgendaEvent[] = [
   {
     id: 'semana-1',
-    date: '01 e 02/06',
+    date: '21/06',
     day: 1,
-    weekday: 'Segunda e terça-feira',
-    title: 'Jejum',
-    time: 'Durante o dia',
+    weekday: 'Culto e batismo',
+    title: 'Vai ser especial',
+    time: '10:00',
     description:
-      'Vamos fazer jejum nesses dois dias.'
+      'Um culto muito especial'
   },
-  {
-    id: 'semana-2',
-    date: '03/06',
-    day: 3,
-    weekday: 'Quarta-feira',
-    title: 'Torre de oração',
-    time: '12 horas',
-    description:
-      'Cada um terá um horário para orar.'
-  }
 ];
 
 const BACKGROUND_IMAGES = [
