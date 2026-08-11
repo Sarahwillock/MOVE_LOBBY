@@ -1,101 +1,95 @@
 import { Link } from 'react-router-dom';
-import { CalendarPlus } from 'lucide-react';
+import { CalendarDays, Clock, MapPin } from 'lucide-react';
 
 const months = [
   {
-    name: 'ABRIL',
-    path: '/move/abril',
-    image: '/images/abril.jpg',
+    name: 'AGOSTO',
+    path: '/move/agosto',
+    image: '/images/agosto.jpg',
     border: 'border-blue-600'
   },
   {
-    name: 'MAIO',
-    path: '/move/maio',
-    image: '/images/maio.jpg',
+    name: 'SETEMBRO',
+    path: '/move/setembro',
+    image: '/images/setembro.jpg',
     border: 'border-pink-600'
   },
   {
-    name: 'JUNHO',
-    path: '/move/junho',
-    image: '/images/junho.manu.jpg',
+    name: 'OUTUBRO',
+    path: '/move/outubro',
+    image: '/images/outubro.jpg',
     border: 'border-orange-600'
+  },
+  {
+    name: 'NOVEMBRO',
+    path: '/move/novembro',
+    image: '/images/novembro.jpg',
+    border: 'border-violet-600'
+  },
+  {
+    name: 'DEZEMBRO',
+    path: '/move/dezembro',
+    image: '/images/dezembro.jpg',
+    border: 'border-emerald-600'
   }
 ];
 
 export default function MoveHome() {
-  const addNextEventToCalendar = () => {
-    const content = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//MOVE Alphaville//Agenda//PT-BR',
-      'BEGIN:VEVENT',
-      'DTSTART:20260411T150000',
-      'DTEND:20260411T180000',
-      'SUMMARY:Seminário de Evangelismo',
-      'DESCRIPTION:Seminário de Evangelismo - MOVE Alphaville',
-      'LOCATION:Igreja Dinamus Alphaville',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
-
-    const blob = new Blob([content], {
-      type: 'text/calendar;charset=utf-8'
-    });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.download = 'seminario-evangelismo-move.ics';
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-7">
 
       {/* PRÓXIMO EVENTO */}
-      <section className="mb-8 border-l-4 border-white bg-blue-600 p-5 sm:p-7 lg:p-8">
+      <section className="mb-8 overflow-hidden border-l-4 border-white bg-blue-600 p-5 sm:p-7 lg:p-8">
         <p className="text-lg font-black italic uppercase sm:text-xl">
           PRÓXIMO EVENTO
         </p>
 
-        <div className="mt-2 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-
-          <div>
+        <div className="mt-3 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div className="min-w-0">
             <h1 className="max-w-4xl text-3xl font-black uppercase leading-none sm:text-4xl lg:text-5xl">
-              SEMINÁRIO DE EVANGELISMO
+              CAPACITAÇÃO E TREINAMENTO PARA NOVOS LÍDERES
             </h1>
 
-            <p className="mt-3 text-sm font-black uppercase tracking-wider sm:text-base">
-              11 DE ABRIL · SÁBADO · 15:00
+            <div className="mt-4 flex flex-col gap-2 text-sm font-black uppercase sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              <span className="flex items-center gap-2">
+                <CalendarDays className="h-4 w-4 shrink-0" />
+                11 DE AGOSTO · TERÇA-FEIRA
+              </span>
+
+              <span className="flex items-center gap-2">
+                <Clock className="h-4 w-4 shrink-0" />
+                20H
+              </span>
+
+              <span className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 shrink-0" />
+                ONLINE
+              </span>
+            </div>
+
+            <p className="mt-3 text-sm font-bold text-white/80">
+              1ª aula
             </p>
           </div>
 
           <div className="grid w-full gap-3 sm:grid-cols-2 xl:w-auto">
-
-            <button
-              type="button"
-              onClick={addNextEventToCalendar}
+            <Link
+              to="/move/agenda"
               className="
                 flex min-h-[52px]
-                items-center justify-center gap-2
+                items-center justify-center
                 bg-white px-6 py-3
-                font-black uppercase
+                text-center font-black uppercase
                 text-blue-600
-                transition active:scale-[0.98]
+                transition
+                active:scale-[0.98]
               "
             >
-              <CalendarPlus className="h-5 w-5" />
-              TE VEJO LÁ
-            </button>
+              VER AGENDA
+            </Link>
 
             <Link
-              to="/move/abril"
+              to="/move/agosto"
               className="
                 flex min-h-[52px]
                 items-center justify-center
@@ -107,20 +101,25 @@ export default function MoveHome() {
                 active:scale-[0.98]
               "
             >
-              VER DETALHES
+              VER AGOSTO
             </Link>
-
           </div>
         </div>
       </section>
 
-      {/* EVENTOS */}
+      {/* EVENTOS MOVE */}
       <section>
-        <h2 className="mb-5 text-4xl font-black italic uppercase text-blue-600 sm:text-5xl">
-          EVENTOS MOVE
-        </h2>
+        <div className="mb-5">
+          <p className="text-xs font-black uppercase tracking-[0.25em] text-neutral-500">
+            Agosto a dezembro
+          </p>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <h2 className="mt-1 text-4xl font-black italic uppercase text-blue-600 sm:text-5xl">
+            EVENTOS MOVE
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {months.map((month) => (
             <Link
               key={month.name}
@@ -130,7 +129,9 @@ export default function MoveHome() {
                 aspect-[4/3]
                 min-h-[230px]
                 overflow-hidden
+                rounded-2xl
                 border
+                bg-neutral-900
                 ${month.border}
               `}
             >
@@ -147,16 +148,30 @@ export default function MoveHome() {
                 "
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
 
-              <span className="absolute bottom-5 left-5 text-4xl font-black italic uppercase text-white sm:text-5xl">
-                {month.name}
-              </span>
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
+                  Agenda
+                </p>
+
+                <span className="mt-1 block text-4xl font-black italic uppercase text-white sm:text-5xl">
+                  {month.name}
+                </span>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
+      {/* AVISO */}
+      <section className="mt-8 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5">
+        <p className="text-sm font-semibold leading-relaxed text-neutral-300">
+          ❤️ <strong>Importante:</strong> fique atento às comunicações dos
+          líderes e dos GCs para informações adicionais, orientações e
+          possíveis alterações na programação.
+        </p>
+      </section>
     </div>
   );
 }
