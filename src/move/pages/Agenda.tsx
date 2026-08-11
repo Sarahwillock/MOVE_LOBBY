@@ -63,7 +63,7 @@ const AGENDA: MonthAgenda[] = [
         title: 'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
-        description: '2ª aula'
+        description: '3ª aula'
       },
       {
         date: '26/08',
