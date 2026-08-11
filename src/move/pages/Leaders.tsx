@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import {
   Instagram,
-  Mail,
   MapPin
 } from 'lucide-react';
 
@@ -288,26 +287,6 @@ export default function Leaders() {
                       "
                     >
                       <Instagram className="h-5 w-5" />
-                    </a>
-
-                    <a
-                      href="mailto:"
-                      aria-label={`Enviar e-mail para ${leader.name}`}
-                      className="
-                        flex h-11 w-11
-                        items-center justify-center
-                        rounded-full
-                        border border-white/20
-                        bg-black/20
-                        text-white
-                        backdrop-blur
-                        transition
-                        hover:border-pink-500
-                        hover:bg-pink-600
-                        active:scale-95
-                      "
-                    >
-                      <Mail className="h-5 w-5" />
                     </a>
                   </div>
                 </div>
