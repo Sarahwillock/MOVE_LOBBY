@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 
 const leaders = [
-  const leaders = [
   {
     name: 'Hugo',
     role: 'Líder da Casa',
