@@ -22,7 +22,7 @@ const items = [
   },
   {
     label: 'Eventos',
-    path: '/move/junho',
+    path: '/move/agenda',
     icon: LayoutGrid
   },
   {
