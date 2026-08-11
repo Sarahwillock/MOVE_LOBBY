@@ -27,16 +27,16 @@ const gcs = [
     name: 'Rock 12 a 14',
     leader: 'Robinho e Bea',
     schedule: 'Toda sexta-feira',
-    time: '',
-    location: '',
+    time: '20:00',
+    location: 'Alphaville',
     color: 'orange'
   },
   {
     name: 'Rock 15 a 18',
     leader: 'Gab',
     schedule: 'Toda sexta-feira',
-    time: '',
-    location: '',
+    time: '20:00',
+    location: 'Alphaville',
     color: 'violet'
   }
 ];
