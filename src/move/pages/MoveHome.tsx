@@ -1,9 +1,13 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   CalendarDays,
   Clock,
   MapPin
 } from 'lucide-react';
+
+import { moveImages } from '../moveImages';
 
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
@@ -13,35 +17,35 @@ const months = [
     name: 'AGOSTO',
     monthNumber: 8,
     path: '/move/agosto',
-    image: '/images/agosto.jpg',
+    fallbackImage: '/images/agosto.jpg',
     border: 'border-blue-600'
   },
   {
     name: 'SETEMBRO',
     monthNumber: 9,
     path: '/move/setembro',
-    image: '/images/setembro.jpg',
+    fallbackImage: '/images/setembro.jpg',
     border: 'border-pink-600'
   },
   {
     name: 'OUTUBRO',
     monthNumber: 10,
     path: '/move/outubro',
-    image: '/images/outubro.jpg',
+    fallbackImage: '/images/outubro.jpg',
     border: 'border-orange-600'
   },
   {
     name: 'NOVEMBRO',
     monthNumber: 11,
     path: '/move/novembro',
-    image: '/images/novembro.jpg',
+    fallbackImage: '/images/novembro.jpg',
     border: 'border-violet-600'
   },
   {
     name: 'DEZEMBRO',
     monthNumber: 12,
     path: '/move/dezembro',
-    image: '/images/dezembro.jpg',
+    fallbackImage: '/images/dezembro.jpg',
     border: 'border-emerald-600'
   }
 ];
@@ -54,6 +58,98 @@ const nextMoveEvent = {
   location: 'Prédio da igreja',
   monthPath: '/move/agosto'
 };
+
+type MonthSlideshowProps = {
+  images: readonly string[];
+  fallbackImage: string;
+  alt: string;
+  delay?: number;
+  startOffset?: number;
+};
+
+function MonthSlideshow({
+  images,
+  fallbackImage,
+  alt,
+  delay = 5500,
+  startOffset = 0
+}: MonthSlideshowProps) {
+  const availableImages =
+    images.length > 0
+      ? images
+      : [fallbackImage];
+
+  const initialIndex =
+    startOffset % availableImages.length;
+
+  const [currentImage, setCurrentImage] =
+    React.useState(initialIndex);
+
+  React.useEffect(() => {
+    setCurrentImage(
+      startOffset % availableImages.length
+    );
+  }, [
+    startOffset,
+    availableImages.length
+  ]);
+
+  React.useEffect(() => {
+    if (availableImages.length <= 1) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setCurrentImage((current) =>
+        (current + 1) %
+        availableImages.length
+      );
+    }, delay);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [
+    availableImages.length,
+    delay
+  ]);
+
+  return (
+    <div className="absolute inset-0 bg-neutral-900">
+
+      {availableImages.map(
+        (image, index) => (
+          <img
+            key={`${image}-${index}`}
+            src={image}
+            alt={
+              index === currentImage
+                ? alt
+                : ''
+            }
+            aria-hidden={
+              index !== currentImage
+            }
+            className={`
+              absolute inset-0
+              h-full w-full
+              object-cover
+              transition-all
+              duration-[1600ms]
+              ease-in-out
+              ${
+                index === currentImage
+                  ? 'scale-100 opacity-100'
+                  : 'scale-105 opacity-0'
+              }
+            `}
+          />
+        )
+      )}
+
+    </div>
+  );
+}
 
 export default function MoveHome() {
   const currentMonth =
@@ -102,6 +198,7 @@ export default function MoveHome() {
         <div className="mt-3 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
 
           <div className="min-w-0">
+
             <h1 className="max-w-4xl text-3xl font-black uppercase leading-none sm:text-4xl lg:text-5xl">
               {nextMoveEvent.title}
             </h1>
@@ -110,11 +207,13 @@ export default function MoveHome() {
 
               <span className="flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 shrink-0" />
+
                 {nextMoveEvent.date} · {nextMoveEvent.weekday}
               </span>
 
               <span className="flex items-center gap-2">
                 <Clock className="h-4 w-4 shrink-0" />
+
                 {nextMoveEvent.time}
               </span>
 
@@ -186,7 +285,7 @@ export default function MoveHome() {
 
         <div className="mb-5">
 
-          <p className="text-xs font-black uppercase tracking-[0.25em] text-neutral-500">
+          <p className="text-xs font-black uppercase tracking-[0.25em] text-neutral-400">
             {visibleMonthsLabel}
           </p>
 
@@ -198,59 +297,92 @@ export default function MoveHome() {
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
-          {visibleMonths.map((month) => (
-            <Link
-              key={month.name}
-              to={month.path}
-              className={`
-                group relative block
-                aspect-[4/3]
-                min-h-[230px]
-                overflow-hidden
-                rounded-2xl
-                border
-                bg-neutral-900
-                ${month.border}
-              `}
-            >
-              <img
-                src={month.image}
-                alt={`Eventos MOVE - ${month.name}`}
-                loading="lazy"
-                className="
-                  h-full w-full
-                  object-cover grayscale
-                  transition-transform
-                  duration-500
-                  group-hover:scale-105
-                "
-              />
+          {visibleMonths.map(
+            (month, index) => (
+              <Link
+                key={month.name}
+                to={month.path}
+                className={`
+                  group relative block
+                  aspect-[4/3]
+                  min-h-[230px]
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  bg-neutral-900
+                  shadow-xl
+                  ${month.border}
+                `}
+              >
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
+                {/* SLIDESHOW DAS FOTOS */}
+                <MonthSlideshow
+                  images={moveImages}
+                  fallbackImage={
+                    month.fallbackImage
+                  }
+                  alt={`Eventos MOVE - ${month.name}`}
+                  delay={
+                    index % 2 === 0
+                      ? 5200
+                      : 6400
+                  }
+                  startOffset={
+                    index * 3
+                  }
+                />
 
-              <div className="absolute bottom-0 left-0 right-0 p-5">
+                {/* OVERLAY */}
+                <div
+                  className="
+                    absolute inset-0
+                    bg-gradient-to-t
+                    from-black/90
+                    via-black/20
+                    to-black/10
+                  "
+                />
 
-                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
-                  Eventos MOVE
-                </p>
+                {/* LEVE ESCURECIMENTO */}
+                <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/0" />
 
-                <span className="mt-1 block text-4xl font-black italic uppercase text-white sm:text-5xl">
-                  {month.name}
-                </span>
+                {/* TEXTO */}
+                <div className="absolute bottom-0 left-0 right-0 z-10 p-5 sm:p-6">
 
-              </div>
-            </Link>
-          ))}
+                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                    Eventos MOVE
+                  </p>
+
+                  <span className="mt-1 block text-4xl font-black italic uppercase text-white sm:text-5xl">
+                    {month.name}
+                  </span>
+
+                </div>
+
+              </Link>
+            )
+          )}
 
         </div>
       </section>
 
       {/* AVISO */}
-      <section className="mt-8 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5">
+      <section
+        className="
+          mt-8
+          rounded-2xl
+          border border-blue-600/30
+          bg-black/60
+          p-5
+          backdrop-blur-md
+        "
+      >
         <p className="text-sm font-semibold leading-relaxed text-neutral-300">
-          <strong>Importante:</strong> fique atento às comunicações dos
-          líderes e dos GCs para informações adicionais, orientações e
-          possíveis alterações na programação.
+          <strong>Importante:</strong>{' '}
+          fique atento às comunicações dos
+          líderes e dos GCs para informações
+          adicionais, orientações e possíveis
+          alterações na programação.
         </p>
       </section>
 
