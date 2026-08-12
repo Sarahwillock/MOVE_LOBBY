@@ -48,7 +48,18 @@ const AGENDA: MonthAgenda[] = [
         weekday: 'QUINTA A DOMINGO',
         title: 'Jejum de 40 Horas',
         description:
-          '13/08: compartilhar nos GCs na quinta-feira. 14/08: início no prédio da igreja às 20h. 15/08: programação de oração por GCs, online ou presencial — cada GC definirá o formato. 16/08: encerramento durante o Culto de Celebração às 10h.',
+          'REVIVA O DOM QUE HÁ EM TI',
+        highlight: true,
+        type: 'igreja'
+      },
+       {
+        date: '1/08',
+        weekday: 'SEXTA-FEIRA',
+        title: 'Jejum de 40 Horas',
+        time: '20h',
+        location: 'igreja',
+        description:
+          'REVIVA O DOM QUE HÁ EM TI',
         highlight: true,
         type: 'igreja'
       },
