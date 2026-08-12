@@ -9,39 +9,34 @@ import {
 
 import { NavLink } from 'react-router-dom';
 
-const items = [
+const navItems = [
   {
-    label: 'PORTAL',
-    path: '/',
-    icon: Home
-  },
-  {
-    label: 'INÍCIO MOVE',
+    name: 'Início MOVE',
     path: '/move',
     icon: Home
   },
   {
-    label: 'AGENDA',
+    name: 'Agenda',
     path: '/move/agenda',
     icon: Calendar
   },
   {
-    label: 'EVENTOS MOVE',
-    path: '/move/agenda',
+    name: 'EVENTOS MOVE',
+    path: '/move/eventos',
     icon: LayoutGrid
   },
   {
-    label: 'LÍDERES DA CASA',
+    name: 'Líderes da Casa',
     path: '/move/leaders',
     icon: Mic2
   },
   {
-    label: 'GCS',
+    name: 'GCs',
     path: '/move/gcs',
-    icon: Users
+    icon: Ticket
   },
   {
-    label: 'LOCAL',
+    name: 'Local',
     path: '/move/local',
     icon: MapPin
   }
