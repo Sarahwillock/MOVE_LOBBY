@@ -4,6 +4,8 @@ import {
   MapPin
 } from 'lucide-react';
 
+import EventActions from '../components/EventActions';
+
 type MoveEventType =
   | 'gc'
   | 'move'
@@ -18,6 +20,9 @@ type MoveEvent = {
   description?: string;
   type: MoveEventType;
 };
+
+const CHURCH_MAP_URL =
+  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
 const EVENTS: MoveEvent[] = [
   {
@@ -121,10 +126,10 @@ const EVENTS: MoveEvent[] = [
 function getEventStyles(type: MoveEventType) {
   if (type === 'gc') {
     return {
-      card: 'border-blue-600/50 bg-blue-600/10',
-      date: 'bg-blue-600',
-      badge: 'bg-blue-600',
-      icon: 'text-blue-500',
+      card: 'border-emerald-600/50 bg-emerald-600/10',
+      date: 'bg-emerald-600',
+      badge: 'bg-emerald-600',
+      icon: 'text-emerald-500',
       label: 'GC MOVE'
     };
   }
@@ -226,36 +231,37 @@ export default function Agosto() {
                           <Clock
                             className={`h-4 w-4 shrink-0 ${styles.icon}`}
                           />
+
                           {event.time}
                         </div>
                       )}
 
                       {event.location && (
-  event.location === 'Prédio da igreja' ? (
-    <a
-      href="https://maps.app.goo.gl/Un9HZ4mLqykChKxSA"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
-    >
-      <MapPin
-        className={`h-4 w-4 shrink-0 ${styles.icon}`}
-      />
+                        event.location === 'Prédio da igreja' ? (
+                          <a
+                            href={CHURCH_MAP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
+                          >
+                            <MapPin
+                              className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                            />
 
-      <span className="underline underline-offset-4">
-        {event.location}
-      </span>
-    </a>
-  ) : (
-    <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-      <MapPin
-        className={`h-4 w-4 shrink-0 ${styles.icon}`}
-      />
+                            <span className="underline underline-offset-4">
+                              {event.location}
+                            </span>
+                          </a>
+                        ) : (
+                          <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                            <MapPin
+                              className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                            />
 
-      {event.location}
-    </div>
-  )
-)}
+                            {event.location}
+                          </div>
+                        )
+                      )}
 
                     </div>
                   )}
@@ -265,6 +271,14 @@ export default function Agosto() {
                       {event.description}
                     </p>
                   )}
+
+                  <EventActions
+                    title={event.title}
+                    date={event.date}
+                    time={event.time}
+                    location={event.location}
+                    isGC={event.type === 'gc'}
+                  />
                 </div>
 
               </div>
