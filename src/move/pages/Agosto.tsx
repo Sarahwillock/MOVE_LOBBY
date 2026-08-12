@@ -16,6 +16,87 @@ type MoveEvent = {
 
 const EVENTS: MoveEvent[] = [
   {
+    date: '07/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC LOBBY',
+    description: 'GC de jovens 19 aos 30 anos',
+    time: '19h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '07/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de adolecentes 15 aos 18 anos',
+    time: '20h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '07/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    time: '20h',
+    location: 'Prédio da igreja'
+    shared: true
+  },
+  {
+    date: '13/08',
+    weekday: 'QUINTA-FEIRA',
+    title: 'GC CONECTA',
+    description: 'GC de Jovens 30+',
+    time: '20h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '14/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de adolecentes 15 aos 18 anos',
+    time: '20h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '14/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    time: '20h',
+    location: 'Prédio da igreja'
+    shared: true
+  },
+  {
+    date: '21/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC LOBBY',
+    description: 'GC de jovens 19 aos 30 anos',
+    time: '19h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '21/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de adolecentes 15 aos 18 anos',
+    time: '20h',
+    location: 'Alphaville'
+    shared: true
+  },
+   {
+    date: '21/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'GC Rock',
+    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    time: '20h',
+    location: 'Prédio da igreja'
+    shared: true
+  },
+  {
     date: '28/08',
     weekday: 'SEXTA-FEIRA',
     title: 'Chá das Sisters',
@@ -30,6 +111,7 @@ const EVENTS: MoveEvent[] = [
     location: 'Prédio da igreja'
   }
 ];
+
 
 export default function Agosto() {
   return (
