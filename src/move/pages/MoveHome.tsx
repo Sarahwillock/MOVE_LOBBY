@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   CalendarDays,
   Clock,
@@ -8,6 +9,11 @@ import {
 } from 'lucide-react';
 
 import { moveImages } from '../moveImages';
+
+import {
+  getNextMoveEvent,
+  MONTHS_2026
+} from '../data/events2026';
 
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
@@ -28,19 +34,6 @@ const backgroundImages = moveImages.filter(
 );
 
 /* =========================================================
-   PRÓXIMO EVENTO
-========================================================= */
-
-const nextMoveEvent = {
-  title: 'MOVENITE',
-  date: '29 DE AGOSTO',
-  weekday: 'SÁBADO',
-  time: '19H',
-  location: 'Prédio da igreja',
-  path: '/move/agosto'
-};
-
-/* =========================================================
    SLIDESHOW
 ========================================================= */
 
@@ -57,7 +50,9 @@ function Slideshow({
     React.useState(0);
 
   React.useEffect(() => {
-    if (images.length <= 1) return;
+    if (images.length <= 1) {
+      return;
+    }
 
     const timer = window.setInterval(() => {
       setCurrentImage(
@@ -94,6 +89,7 @@ function Slideshow({
               blur-2xl
               transition-opacity
               duration-[1800ms]
+
               ${
                 index === currentImage
                   ? 'opacity-50'
@@ -113,6 +109,7 @@ function Slideshow({
               object-center
               transition-all
               duration-[1800ms]
+
               ${
                 index === currentImage
                   ? 'scale-100 opacity-100'
@@ -131,6 +128,22 @@ function Slideshow({
 ========================================================= */
 
 export default function MoveHome() {
+  /* =======================================================
+     PRÓXIMO EVENTO AUTOMÁTICO
+  ======================================================= */
+
+  const nextMoveEvent =
+    getNextMoveEvent();
+
+  const nextEventMonth =
+    nextMoveEvent
+      ? MONTHS_2026.find(
+          (month) =>
+            month.number ===
+            nextMoveEvent.month
+        )
+      : undefined;
+
   return (
     <div className="relative min-h-screen overflow-hidden">
 
@@ -141,7 +154,7 @@ export default function MoveHome() {
       <div className="fixed inset-0 -z-20 bg-black">
         <Slideshow
           images={
-            backgroundImages.length
+            backgroundImages.length > 0
               ? backgroundImages
               : moveImages
           }
@@ -190,7 +203,7 @@ export default function MoveHome() {
 
           <Slideshow
             images={
-              heroImages.length
+              heroImages.length > 0
                 ? heroImages
                 : moveImages
             }
@@ -321,7 +334,7 @@ export default function MoveHome() {
                   NOSSO INSTAGRAM
                 </a>
 
-                {/* AONDE NOS VEMOS? */}
+                {/* EVENTOS MOVE */}
                 <Link
                   to="/move/eventos"
                   className="
@@ -350,17 +363,19 @@ export default function MoveHome() {
                 </Link>
 
               </div>
+
             </div>
           </div>
         </section>
 
         {/* =================================================
-            PRÓXIMO EVENTO
+            PRÓXIMO EVENTO AUTOMÁTICO
         ================================================= */}
 
         <section className="mt-8">
 
           <div className="mb-3">
+
             <p
               className="
                 text-[9px]
@@ -385,129 +400,326 @@ export default function MoveHome() {
             >
               PRÓXIMO EVENTO
             </h2>
+
           </div>
 
-          <div
-            className="
-              rounded-2xl
-              border
-              border-blue-500/40
-              bg-blue-600
-              p-5
-              shadow-xl
-              sm:p-6
-            "
-          >
-
+          {nextMoveEvent ? (
             <div
               className="
-                flex
-                flex-col
-                gap-5
-                sm:flex-row
-                sm:items-center
-                sm:justify-between
+                rounded-2xl
+                border
+                border-blue-500/40
+                bg-blue-600
+                p-5
+                shadow-xl
+                sm:p-6
               "
             >
 
-              <div>
-
-                <p
-                  className="
-                    text-[9px]
-                    font-black
-                    uppercase
-                    tracking-[0.25em]
-                    text-white/70
-                  "
-                >
-                  PRÓXIMO EVENTO MOVE
-                </p>
-
-                <h3
-                  className="
-                    mt-2
-                    text-2xl
-                    font-black
-                    uppercase
-                    text-white
-                    sm:text-3xl
-                  "
-                >
-                  {nextMoveEvent.title}
-                </h3>
-
-                <div
-                  className="
-                    mt-3
-                    flex
-                    flex-wrap
-                    gap-3
-                    text-[11px]
-                    font-black
-                    uppercase
-                    text-white
-                  "
-                >
-
-                  <span className="flex items-center gap-1.5">
-                    <CalendarDays className="h-4 w-4" />
-
-                    {nextMoveEvent.date} ·{' '}
-                    {nextMoveEvent.weekday}
-                  </span>
-
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4" />
-
-                    {nextMoveEvent.time}
-                  </span>
-
-                  <a
-                    href={CHURCH_MAP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      flex
-                      items-center
-                      gap-1.5
-                      underline
-                      underline-offset-4
-                    "
-                  >
-                    <MapPin className="h-4 w-4" />
-
-                    {nextMoveEvent.location}
-                  </a>
-
-                </div>
-              </div>
-
-              <Link
-                to={nextMoveEvent.path}
+              <div
                 className="
-                  inline-flex
-                  min-h-[48px]
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-white
-                  px-6
-                  py-3
-                  text-xs
-                  font-black
-                  uppercase
-                  text-blue-600
-                  transition
-                  hover:bg-neutral-100
-                  active:scale-[0.98]
+                  flex
+                  flex-col
+                  gap-5
+                  sm:flex-row
+                  sm:items-center
+                  sm:justify-between
                 "
               >
-                VER EVENTO
-              </Link>
+
+                <div className="min-w-0">
+
+                  {/* TIPO */}
+                  <p
+                    className="
+                      text-[9px]
+                      font-black
+                      uppercase
+                      tracking-[0.25em]
+                      text-white/70
+                    "
+                  >
+                    {nextMoveEvent.type === 'gc'
+                      ? 'PRÓXIMO GC'
+                      : nextMoveEvent.type ===
+                        'igreja-move'
+                      ? 'IGREJA + MOVE'
+                      : 'PRÓXIMO EVENTO MOVE'}
+                  </p>
+
+                  {/* TÍTULO */}
+                  <h3
+                    className="
+                      mt-2
+                      text-2xl
+                      font-black
+                      uppercase
+                      text-white
+                      sm:text-3xl
+                    "
+                  >
+                    {nextMoveEvent.title}
+                  </h3>
+
+                  {/* INFORMAÇÕES */}
+                  <div
+                    className="
+                      mt-3
+                      flex
+                      flex-wrap
+                      gap-3
+                      text-[11px]
+                      font-black
+                      uppercase
+                      text-white
+                    "
+                  >
+
+                    {/* DATA */}
+                    <span className="flex items-center gap-1.5">
+
+                      <CalendarDays className="h-4 w-4" />
+
+                      {nextMoveEvent.date}
+
+                      {nextMoveEvent.weekday && (
+                        <>
+                          {' · '}
+                          {nextMoveEvent.weekday}
+                        </>
+                      )}
+
+                    </span>
+
+                    {/* HORÁRIO */}
+                    {nextMoveEvent.time && (
+                      <span className="flex items-center gap-1.5">
+
+                        <Clock className="h-4 w-4" />
+
+                        {nextMoveEvent.endTime
+                          ? `${nextMoveEvent.time} às ${nextMoveEvent.endTime}`
+                          : nextMoveEvent.time}
+
+                      </span>
+                    )}
+
+                    {/* LOCAL */}
+                    {nextMoveEvent.location &&
+                      (
+                        nextMoveEvent.location ===
+                        'Prédio da igreja'
+                          ? (
+                            <a
+                              href={CHURCH_MAP_URL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="
+                                flex
+                                items-center
+                                gap-1.5
+                                underline
+                                underline-offset-4
+                              "
+                            >
+                              <MapPin className="h-4 w-4" />
+
+                              {nextMoveEvent.location}
+                            </a>
+                          )
+                          : (
+                            <span className="flex items-center gap-1.5">
+
+                              <MapPin className="h-4 w-4" />
+
+                              {nextMoveEvent.location}
+
+                            </span>
+                          )
+                      )}
+
+                  </div>
+
+                  {/* DESCRIÇÃO */}
+                  {nextMoveEvent.description && (
+                    <p
+                      className="
+                        mt-3
+                        max-w-xl
+                        text-sm
+                        font-semibold
+                        leading-relaxed
+                        text-white/75
+                      "
+                    >
+                      {nextMoveEvent.description}
+                    </p>
+                  )}
+
+                </div>
+
+                {/* VER EVENTO */}
+                {nextEventMonth && (
+                  <Link
+                    to={nextEventMonth.path}
+                    className="
+                      inline-flex
+                      min-h-[48px]
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-white
+                      px-6
+                      py-3
+                      text-xs
+                      font-black
+                      uppercase
+                      text-blue-600
+                      transition
+                      hover:bg-neutral-100
+                      active:scale-[0.98]
+                    "
+                  >
+                    VER EVENTO
+                  </Link>
+                )}
+
+              </div>
 
             </div>
-          </div>
+          ) : (
+            /* NENHUM PRÓXIMO EVENTO */
+            <div
+              className="
+                rounded-2xl
+                border
+                border-white/10
+                bg-black/60
+                p-6
+                text-center
+                backdrop-blur-xl
+              "
+            >
+
+              <CalendarDays
+                className="
+                  mx-auto
+                  h-6 w-6
+                  text-neutral-500
+                "
+              />
+
+              <p
+                className="
+                  mt-3
+                  text-sm
+                  font-bold
+                  text-neutral-400
+                "
+              >
+                Não há próximos eventos cadastrados.
+              </p>
+
+            </div>
+          )}
+
+        </section>
+
+        {/* =================================================
+            ACESSO EVENTOS MOVE
+        ================================================= */}
+
+        <section className="mt-6">
+
+          <Link
+            to="/move/eventos"
+            className="
+              group
+              flex
+              w-full
+              flex-col
+              gap-4
+              rounded-2xl
+              border
+              border-pink-500/30
+              bg-black/60
+              p-5
+              backdrop-blur-xl
+              transition
+              hover:border-pink-500
+              hover:bg-black/80
+              active:scale-[0.99]
+              sm:flex-row
+              sm:items-center
+              sm:justify-between
+            "
+          >
+
+            <div>
+
+              <p
+                className="
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-[0.25em]
+                  text-pink-500
+                "
+              >
+                PROGRAMAÇÃO
+              </p>
+
+              <h2
+                className="
+                  mt-1
+                  text-xl
+                  font-black
+                  italic
+                  uppercase
+                  text-white
+                "
+              >
+                EVENTOS MOVE
+              </h2>
+
+              <p
+                className="
+                  mt-2
+                  text-xs
+                  font-semibold
+                  text-neutral-400
+                "
+              >
+                Confira os próximos eventos,
+                GCs e encontros da MOVE.
+              </p>
+
+            </div>
+
+            <span
+              className="
+                inline-flex
+                min-h-[44px]
+                items-center
+                justify-center
+                rounded-xl
+                bg-pink-600
+                px-5
+                py-3
+                text-xs
+                font-black
+                uppercase
+                text-white
+                transition
+                group-hover:bg-pink-500
+              "
+            >
+              VER EVENTOS
+            </span>
+
+          </Link>
+
         </section>
 
         {/* =================================================
@@ -526,6 +738,7 @@ export default function MoveHome() {
             backdrop-blur-xl
           "
         >
+
           <p
             className="
               text-xs
@@ -539,6 +752,7 @@ export default function MoveHome() {
             e dos GCs para não perder nenhuma
             novidade.
           </p>
+
         </section>
 
       </div>
