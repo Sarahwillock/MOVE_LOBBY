@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   CalendarDays,
   ChevronLeft,
@@ -6,7 +7,12 @@ import {
   X
 } from 'lucide-react';
 
-type EventType = 'igreja' | 'move' | 'gc';
+import EventActions from './EventActions';
+
+type EventType =
+  | 'igreja'
+  | 'move'
+  | 'gc';
 
 type CalendarEvent = {
   day: number;
@@ -290,7 +296,8 @@ const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
 export default function MoveCalendar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] =
+    React.useState(false);
 
   const [monthPosition, setMonthPosition] =
     React.useState(0);
@@ -320,14 +327,19 @@ export default function MoveCalendar() {
     (_, index) => index + 1
   );
 
-  const getEventsForDay = (day: number) =>
+  const getEventsForDay = (
+    day: number
+  ) =>
     currentMonth.events.filter(
-      (event) => event.day === day
+      (event) =>
+        event.day === day
     );
 
   const selectedEvents =
     selectedDay !== null
-      ? getEventsForDay(selectedDay)
+      ? getEventsForDay(
+          selectedDay
+        )
       : [];
 
   const goPrevious = () => {
@@ -335,16 +347,25 @@ export default function MoveCalendar() {
       return;
     }
 
-    setMonthPosition(monthPosition - 1);
+    setMonthPosition(
+      monthPosition - 1
+    );
+
     setSelectedDay(null);
   };
 
   const goNext = () => {
-    if (monthPosition === MONTHS.length - 1) {
+    if (
+      monthPosition ===
+      MONTHS.length - 1
+    ) {
       return;
     }
 
-    setMonthPosition(monthPosition + 1);
+    setMonthPosition(
+      monthPosition + 1
+    );
+
     setSelectedDay(null);
   };
 
@@ -395,7 +416,8 @@ export default function MoveCalendar() {
       {open && (
         <div
           className="
-            fixed inset-0 z-[9999]
+            fixed inset-0
+            z-[9999]
             h-screen w-screen
             overflow-y-auto
             bg-black
@@ -417,20 +439,25 @@ export default function MoveCalendar() {
                 className="
                   mx-auto flex
                   w-full max-w-6xl
-                  items-center justify-between
+                  items-center
+                  justify-between
                   gap-3
                   px-4 py-4
                   sm:px-6
                 "
               >
+                {/* VOLTAR */}
                 <button
                   type="button"
                   onClick={goPrevious}
-                  disabled={monthPosition === 0}
+                  disabled={
+                    monthPosition === 0
+                  }
                   aria-label="Mês anterior"
                   className="
                     flex h-11 w-11
-                    shrink-0 items-center
+                    shrink-0
+                    items-center
                     justify-center
                     rounded-full
                     bg-white/10
@@ -444,6 +471,7 @@ export default function MoveCalendar() {
                   <ChevronLeft className="h-5 w-5" />
                 </button>
 
+                {/* MÊS */}
                 <div className="min-w-0 flex-1 text-center">
                   <p className="text-[9px] font-black uppercase tracking-[0.25em] text-blue-500">
                     Calendário 2026
@@ -454,6 +482,7 @@ export default function MoveCalendar() {
                   </h2>
                 </div>
 
+                {/* PRÓXIMO */}
                 <button
                   type="button"
                   onClick={goNext}
@@ -464,7 +493,8 @@ export default function MoveCalendar() {
                   aria-label="Próximo mês"
                   className="
                     flex h-11 w-11
-                    shrink-0 items-center
+                    shrink-0
+                    items-center
                     justify-center
                     rounded-full
                     bg-white/10
@@ -492,6 +522,7 @@ export default function MoveCalendar() {
             >
               {/* LEGENDA */}
               <div className="mb-6 flex flex-wrap justify-center gap-4">
+
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
                   <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
                   Igreja
@@ -506,6 +537,7 @@ export default function MoveCalendar() {
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
                   GCs
                 </div>
+
               </div>
 
               {/* CALENDÁRIO */}
@@ -520,33 +552,43 @@ export default function MoveCalendar() {
                 "
               >
                 <div className="grid grid-cols-7 gap-1 sm:gap-2">
-                  {WEEK_DAYS.map((day) => (
-                    <div
-                      key={day}
-                      className="
-                        py-2
-                        text-center
-                        text-[8px]
-                        font-black
-                        text-neutral-500
-                        sm:text-[10px]
-                      "
-                    >
-                      {day}
-                    </div>
-                  ))}
 
+                  {/* DIAS DA SEMANA */}
+                  {WEEK_DAYS.map(
+                    (day) => (
+                      <div
+                        key={day}
+                        className="
+                          py-2
+                          text-center
+                          text-[8px]
+                          font-black
+                          text-neutral-500
+                          sm:text-[10px]
+                        "
+                      >
+                        {day}
+                      </div>
+                    )
+                  )}
+
+                  {/* ESPAÇOS ANTES DO DIA 1 */}
                   {Array.from({
                     length: firstDay
-                  }).map((_, index) => (
-                    <div
-                      key={`empty-${index}`}
-                    />
-                  ))}
+                  }).map(
+                    (_, index) => (
+                      <div
+                        key={`empty-${index}`}
+                      />
+                    )
+                  )}
 
+                  {/* DIAS */}
                   {days.map((day) => {
                     const events =
-                      getEventsForDay(day);
+                      getEventsForDay(
+                        day
+                      );
 
                     const types =
                       Array.from(
@@ -559,17 +601,21 @@ export default function MoveCalendar() {
                       );
 
                     const selected =
-                      selectedDay === day;
+                      selectedDay ===
+                      day;
 
                     return (
                       <button
                         key={day}
                         type="button"
                         disabled={
-                          events.length === 0
+                          events.length ===
+                          0
                         }
                         onClick={() =>
-                          setSelectedDay(day)
+                          setSelectedDay(
+                            day
+                          )
                         }
                         className={`
                           relative
@@ -595,12 +641,14 @@ export default function MoveCalendar() {
                       >
                         <span
                           className={`
-                            text-xs font-black
+                            text-xs
+                            font-black
                             sm:text-base
                             lg:text-lg
 
                             ${
-                              events.length > 0
+                              events.length >
+                              0
                                 ? 'text-white'
                                 : 'text-neutral-600'
                             }
@@ -609,7 +657,9 @@ export default function MoveCalendar() {
                           {day}
                         </span>
 
-                        {types.length > 0 && (
+                        {/* PONTOS */}
+                        {types.length >
+                          0 && (
                           <div
                             className="
                               absolute
@@ -641,7 +691,8 @@ export default function MoveCalendar() {
               </section>
 
               {/* DETALHES DO DIA */}
-              {selectedEvents.length > 0 && (
+              {selectedEvents.length >
+                0 && (
                 <section
                   className="
                     mt-6
@@ -657,22 +708,46 @@ export default function MoveCalendar() {
                   </p>
 
                   <h3 className="mt-1 text-xl font-black text-white">
-                    {String(selectedDay).padStart(
+                    {String(
+                      selectedDay
+                    ).padStart(
                       2,
                       '0'
                     )}
                     /
                     {String(
-                      currentMonth.monthIndex + 1
-                    ).padStart(2, '0')}
+                      currentMonth.monthIndex +
+                        1
+                    ).padStart(
+                      2,
+                      '0'
+                    )}
                   </h3>
 
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
+
                     {selectedEvents.map(
-                      (event, index) => {
+                      (
+                        event,
+                        index
+                      ) => {
                         const isChurch =
                           event.location ===
                           'Prédio da igreja';
+
+                        const eventDate =
+                          `${String(
+                            selectedDay
+                          ).padStart(
+                            2,
+                            '0'
+                          )}/${String(
+                            currentMonth.monthIndex +
+                              1
+                          ).padStart(
+                            2,
+                            '0'
+                          )}`;
 
                         return (
                           <div
@@ -686,6 +761,8 @@ export default function MoveCalendar() {
                             `}
                           >
                             <div className="flex items-start gap-3">
+
+                              {/* COR */}
                               <span
                                 className={`
                                   mt-1.5
@@ -697,24 +774,34 @@ export default function MoveCalendar() {
                               />
 
                               <div className="min-w-0 flex-1">
+
+                                {/* TIPO */}
                                 <p className="text-[9px] font-black uppercase tracking-wider text-neutral-500">
                                   {
                                     labelByType[
-                                      event.type
+                                      event
+                                        .type
                                     ]
                                   }
                                 </p>
 
+                                {/* TÍTULO */}
                                 <p className="mt-1 text-sm font-bold text-white sm:text-base">
-                                  {event.title}
+                                  {
+                                    event.title
+                                  }
                                 </p>
 
+                                {/* HORÁRIO */}
                                 {event.time && (
                                   <p className="mt-2 text-xs font-semibold text-neutral-400">
-                                    {event.time}
+                                    {
+                                      event.time
+                                    }
                                   </p>
                                 )}
 
+                                {/* LOCAL */}
                                 {event.location &&
                                   (isChurch ? (
                                     <a
@@ -742,12 +829,34 @@ export default function MoveCalendar() {
                                       }
                                     </p>
                                   ))}
+
+                                {/* AÇÕES */}
+                                <EventActions
+                                  title={
+                                    event.title
+                                  }
+                                  date={
+                                    eventDate
+                                  }
+                                  time={
+                                    event.time
+                                  }
+                                  location={
+                                    event.location
+                                  }
+                                  isGC={
+                                    event.type ===
+                                    'gc'
+                                  }
+                                />
+
                               </div>
                             </div>
                           </div>
                         );
                       }
                     )}
+
                   </div>
                 </section>
               )}
@@ -757,16 +866,22 @@ export default function MoveCalendar() {
                 type="button"
                 onClick={() => {
                   setOpen(false);
-                  setSelectedDay(null);
+                  setSelectedDay(
+                    null
+                  );
                 }}
                 className="
-                  mt-6 flex min-h-12
-                  w-full items-center
-                  justify-center gap-2
+                  mt-6
+                  flex min-h-12
+                  w-full
+                  items-center
+                  justify-center
+                  gap-2
                   rounded-xl
                   bg-white
                   px-4 py-3
-                  font-black uppercase
+                  font-black
+                  uppercase
                   text-black
                   transition
                   hover:bg-blue-600
@@ -775,8 +890,10 @@ export default function MoveCalendar() {
                 "
               >
                 <X className="h-4 w-4" />
+
                 Fechar calendário
               </button>
+
             </main>
           </div>
         </div>
