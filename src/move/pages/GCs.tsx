@@ -1,3 +1,4 @@
+import EventActions from '../components/EventActions';
 import { motion } from 'motion/react';
 import {
   Users,
@@ -15,6 +16,13 @@ const gcs = [
     location: 'Alphaville',
     color: 'blue'
   },
+  <EventActions
+  title={gc.name}
+  date={gc.date}
+  time={gc.time}
+  location={gc.location}
+  isGC
+/>
   {
     name: 'GC Conecta',
     leader: 'Guilherme e Bia',
@@ -23,6 +31,13 @@ const gcs = [
     location: 'Alphaville',
     color: 'pink'
   },
+<EventActions
+  title={gc.name}
+  date={gc.date}
+  time={gc.time}
+  location={gc.location}
+  isGC
+/>
   {
     name: 'Rock 12 a 14',
     leader: 'Robinho e Bea',
@@ -31,6 +46,13 @@ const gcs = [
     location: 'Alphaville',
     color: 'orange'
   },
+<EventActions
+  title={gc.name}
+  date={gc.date}
+  time={gc.time}
+  location={gc.location}
+  isGC
+/>
   {
     name: 'Rock 15 a 18',
     leader: 'Gab',
@@ -39,6 +61,13 @@ const gcs = [
     location: 'Alphaville',
     color: 'violet'
   }
+<EventActions
+  title={gc.name}
+  date={gc.date}
+  time={gc.time}
+  location={gc.location}
+  isGC
+/>
 ];
 
 export default function GCs() {
