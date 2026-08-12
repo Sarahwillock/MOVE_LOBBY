@@ -11,8 +11,8 @@ import {
 import EventActions from '../components/EventActions';
 
 import {
-  EVENTS_2026,
   MONTHS_2026,
+  getUpcomingEvents,
   sortEvents,
   type EventType,
   type MoveEvent
@@ -122,7 +122,7 @@ function getEventStyles(
 }
 
 /* =========================================================
-   CARD
+   CARD DO EVENTO
 ========================================================= */
 
 function EventCard({
@@ -137,6 +137,11 @@ function EventCard({
     event.location ===
     'Prédio da igreja';
 
+  /*
+   * Eventos que duram vários dias
+   * não são adicionados pelo EventActions
+   * nesta versão.
+   */
   const canAddToCalendar =
     !event.endDay;
 
@@ -224,46 +229,44 @@ function EventCard({
 
               {/* LOCAL */}
               {event.location &&
-                (isChurchLocation ? (
-                  <a
-                    href={
-                      CHURCH_MAP_URL
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      flex items-center
-                      gap-2
-                      text-sm
-                      font-bold
-                      text-neutral-300
-                      transition
-                      hover:text-white
-                    "
-                  >
-                    <MapPin
-                      className={`h-4 w-4 shrink-0 ${styles.icon}`}
-                    />
+                (
+                  isChurchLocation
+                    ? (
+                      <a
+                        href={CHURCH_MAP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="
+                          flex items-center
+                          gap-2
+                          text-sm
+                          font-bold
+                          text-neutral-300
+                          transition
+                          hover:text-white
+                        "
+                      >
+                        <MapPin
+                          className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                        />
 
-                    <span className="underline underline-offset-4">
-                      {
-                        event.location
-                      }
-                    </span>
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                        <span className="underline underline-offset-4">
+                          {event.location}
+                        </span>
+                      </a>
+                    )
+                    : (
+                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
 
-                    <MapPin
-                      className={`h-4 w-4 shrink-0 ${styles.icon}`}
-                    />
+                        <MapPin
+                          className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                        />
 
-                    {
-                      event.location
-                    }
+                        {event.location}
 
-                  </div>
-                ))}
+                      </div>
+                    )
+                )}
 
             </div>
           )}
@@ -271,13 +274,11 @@ function EventCard({
           {/* DESCRIÇÃO */}
           {event.description && (
             <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
-              {
-                event.description
-              }
+              {event.description}
             </p>
           )}
 
-          {/* CALENDÁRIO */}
+          {/* ADICIONAR AO CALENDÁRIO */}
           {canAddToCalendar && (
             <EventActions
               title={
@@ -341,12 +342,19 @@ export default function Agenda() {
   ];
 
   /* =======================================================
-     FILTRO
+     SOMENTE EVENTOS QUE AINDA NÃO PASSARAM
+  ======================================================= */
+
+  const upcomingEvents =
+    getUpcomingEvents();
+
+  /* =======================================================
+     FILTROS
   ======================================================= */
 
   const filteredEvents =
     sortEvents(
-      EVENTS_2026.filter(
+      upcomingEvents.filter(
         (event) => {
           if (
             filter ===
@@ -395,7 +403,10 @@ export default function Agenda() {
     );
 
   /* =======================================================
-     AGRUPA POR MÊS
+     AGRUPAR POR MÊS
+
+     Mantém Agosto até Dezembro,
+     mas cada mês recebe apenas eventos futuros.
   ======================================================= */
 
   const agendaByMonth =
@@ -415,10 +426,27 @@ export default function Agenda() {
       }
     );
 
+  /*
+   * Para não mostrar meses totalmente antigos
+   * sem nenhum evento futuro.
+   *
+   * Exemplo:
+   * quando agosto terminar,
+   * agosto desaparece automaticamente.
+   */
+  const visibleAgenda =
+    agendaByMonth.filter(
+      (month) =>
+        month.events.length > 0
+    );
+
   return (
     <div className="mx-auto w-full max-w-5xl p-4 sm:p-6 lg:p-8">
 
-      {/* CABEÇALHO */}
+      {/* ===================================================
+          CABEÇALHO
+      =================================================== */}
+
       <header className="mb-8">
 
         <div className="mb-3 flex items-center gap-2 text-blue-500">
@@ -438,15 +466,17 @@ export default function Agenda() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400 sm:text-base">
-          Confira toda a programação
-          da Igreja Dinamus Alphaville,
-          da MOVE e dos GCs entre agosto
-          e dezembro.
+          Confira os próximos eventos da
+          Igreja Dinamus Alphaville, da MOVE
+          e dos GCs.
         </p>
 
       </header>
 
-      {/* LEGENDA */}
+      {/* ===================================================
+          LEGENDA
+      =================================================== */}
+
       <section className="mb-6 rounded-2xl border border-white/10 bg-neutral-900/90 p-4 backdrop-blur-md">
 
         <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
@@ -475,7 +505,10 @@ export default function Agenda() {
 
       </section>
 
-      {/* FILTROS */}
+      {/* ===================================================
+          FILTROS
+      =================================================== */}
+
       <div
         className="
           sticky top-16 z-20
@@ -542,9 +575,7 @@ export default function Agenda() {
                     }
                   `}
                 >
-                  {
-                    item.label
-                  }
+                  {item.label}
                 </button>
               );
             }
@@ -552,85 +583,90 @@ export default function Agenda() {
         </div>
       </div>
 
-      {/* NAVEGAÇÃO DOS MESES */}
-      <div
-        className="
-          mb-8 flex gap-2
-          overflow-x-auto
-          pb-2
-          [scrollbar-width:none]
-          [&::-webkit-scrollbar]:hidden
-        "
-      >
-        {MONTHS_2026.map(
-          (month) => (
-            <a
-              key={
-                month.number
-              }
-              href={`#mes-${month.number}`}
-              className="
-                flex min-h-11
-                shrink-0
-                items-center
-                justify-center
-                rounded-full
-                border border-white/10
-                bg-neutral-900/90
-                px-5
-                text-xs
-                font-black uppercase
-                tracking-wider
-                text-neutral-300
-                transition
-                hover:border-blue-500
-                hover:text-white
-                active:scale-95
-              "
-            >
-              {
-                month.name
-              }
-            </a>
-          )
-        )}
-      </div>
+      {/* ===================================================
+          NAVEGAÇÃO DOS MESES
+      =================================================== */}
 
-      {/* EVENTOS */}
-      <div className="space-y-12">
+      {visibleAgenda.length > 0 && (
+        <div
+          className="
+            mb-8 flex gap-2
+            overflow-x-auto
+            pb-2
+            [scrollbar-width:none]
+            [&::-webkit-scrollbar]:hidden
+          "
+        >
+          {visibleAgenda.map(
+            (month) => (
+              <a
+                key={
+                  month.number
+                }
+                href={`#mes-${month.number}`}
+                className="
+                  flex min-h-11
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-full
+                  border border-white/10
+                  bg-neutral-900/90
+                  px-5
+                  text-xs
+                  font-black uppercase
+                  tracking-wider
+                  text-neutral-300
+                  transition
+                  hover:border-blue-500
+                  hover:text-white
+                  active:scale-95
+                "
+              >
+                {month.name}
+              </a>
+            )
+          )}
+        </div>
+      )}
 
-        {agendaByMonth.map(
-          (month) => (
-            <section
-              key={
-                month.number
-              }
-              id={`mes-${month.number}`}
-              className="scroll-mt-40"
-            >
+      {/* ===================================================
+          EVENTOS
+      =================================================== */}
 
-              {/* CABEÇALHO DO MÊS */}
-              <div className="mb-5 flex items-center gap-3">
+      {visibleAgenda.length > 0 ? (
+        <div className="space-y-12">
 
-                <div className="h-9 w-1 rounded-full bg-blue-600" />
+          {visibleAgenda.map(
+            (month) => (
+              <section
+                key={
+                  month.number
+                }
+                id={`mes-${month.number}`}
+                className="scroll-mt-40"
+              >
 
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
-                    Agenda 2026
-                  </p>
+                {/* CABEÇALHO DO MÊS */}
+                <div className="mb-5 flex items-center gap-3">
 
-                  <h2 className="text-3xl font-black italic uppercase text-blue-500 sm:text-4xl">
-                    {
-                      month.name
-                    }
-                  </h2>
+                  <div className="h-9 w-1 rounded-full bg-blue-600" />
+
+                  <div>
+
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
+                      Agenda 2026
+                    </p>
+
+                    <h2 className="text-3xl font-black italic uppercase text-blue-500 sm:text-4xl">
+                      {month.name}
+                    </h2>
+
+                  </div>
+
                 </div>
 
-              </div>
-
-              {/* EVENTOS DO MÊS */}
-              {month.events.length >
-              0 ? (
+                {/* EVENTOS */}
                 <div className="space-y-3">
 
                   {month.events.map(
@@ -647,34 +683,42 @@ export default function Agenda() {
                   )}
 
                 </div>
-              ) : (
-                <div
-                  className="
-                    rounded-2xl
-                    border
-                    border-dashed
-                    border-white/10
-                    bg-black/40
-                    p-6
-                    text-center
-                    backdrop-blur-md
-                  "
-                >
-                  <p className="text-sm font-bold text-neutral-500">
-                    Nenhum evento
-                    nesta categoria
-                    neste mês.
-                  </p>
-                </div>
-              )}
 
-            </section>
-          )
-        )}
+              </section>
+            )
+          )}
 
-      </div>
+        </div>
+      ) : (
+        <section
+          className="
+            rounded-2xl
+            border
+            border-dashed
+            border-white/10
+            bg-black/50
+            p-8
+            text-center
+            backdrop-blur-md
+          "
+        >
+          <CalendarDays className="mx-auto h-7 w-7 text-neutral-500" />
 
-      {/* AVISO */}
+          <h2 className="mt-4 text-lg font-black uppercase text-white">
+            Nenhum próximo evento
+          </h2>
+
+          <p className="mt-2 text-sm font-medium text-neutral-400">
+            Não há eventos futuros nesta
+            categoria no momento.
+          </p>
+        </section>
+      )}
+
+      {/* ===================================================
+          AVISO
+      =================================================== */}
+
       <section className="mt-12 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5 sm:p-6">
 
         <div className="flex items-start gap-3">
@@ -688,12 +732,11 @@ export default function Agenda() {
             </h3>
 
             <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-300">
-              Fique atento às
-              comunicações dos líderes
-              e dos GCs para informações
-              adicionais, orientações e
-              possíveis alterações na
-              programação.
+              Fique atento às comunicações
+              dos líderes e dos GCs para
+              informações adicionais,
+              orientações e possíveis
+              alterações na programação.
             </p>
 
           </div>
@@ -701,7 +744,10 @@ export default function Agenda() {
 
       </section>
 
-      {/* RODAPÉ */}
+      {/* ===================================================
+          RODAPÉ
+      =================================================== */}
+
       <div className="mt-6 flex items-center justify-center gap-2 pb-4 text-center text-neutral-500">
 
         <Heart className="h-4 w-4 shrink-0" />
