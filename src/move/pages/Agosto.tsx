@@ -4,76 +4,30 @@ import {
   MapPin
 } from 'lucide-react';
 
-type Event = {
+type MoveEvent = {
   date: string;
   weekday: string;
   title: string;
   time?: string;
   location?: string;
   description?: string;
-  highlight?: boolean;
+  shared?: boolean;
 };
 
-const EVENTS: Event[] = [
-  {
-    date: '11/08',
-    weekday: 'TERÇA-FEIRA',
-    title: 'Capacitação e Treinamento para Novos Líderes',
-    time: '20h',
-    location: 'Online',
-    description: '1ª aula'
-  },
-  {
-    date: '13 a 16/08',
-    weekday: 'QUINTA A DOMINGO',
-    title: 'Jejum de 40 Horas',
-    highlight: true,
-    description:
-      '13/08: compartilhar nos GCs na quinta-feira. 14/08: início no prédio da igreja às 20h. 15/08: programação de oração por GCs, online ou presencial — cada GC definirá o formato. 16/08: encerramento durante o Culto de Celebração às 10h.'
-  },
-  {
-    date: '18/08',
-    weekday: 'TERÇA-FEIRA',
-    title: 'Capacitação e Treinamento para Novos Líderes',
-    time: '20h',
-    location: 'Online',
-    description: '2ª aula'
-  },
-  {
-    date: '19/08',
-    weekday: 'QUARTA-FEIRA',
-    title: 'Aula Inaugural | Escola Huios',
-    time: '20h',
-    location: 'Campus Alphaville'
-  },
-  {
-    date: '25/08',
-    weekday: 'TERÇA-FEIRA',
-    title: 'Capacitação e Treinamento para Novos Líderes',
-    time: '20h',
-    location: 'Online',
-    description: '3ª aula'
-  },
-  {
-    date: '26/08',
-    weekday: 'QUARTA-FEIRA',
-    title: 'Discipulado de Líderes',
-    location: 'Prédio da igreja',
-    description:
-      '19h — Pastor + Líderes • 20h — Líderes + GCD'
-  },
+const EVENTS: MoveEvent[] = [
   {
     date: '28/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'Chá das Sisters'
+    title: 'Chá das Sisters',
+    description: 'Evento da Igreja + MOVE.',
+    shared: true
   },
   {
     date: '29/08',
     weekday: 'SÁBADO',
     title: 'Movenite',
     time: '19h',
-    location: 'Prédio da igreja',
-    highlight: true
+    location: 'Prédio da igreja'
   }
 ];
 
@@ -82,11 +36,11 @@ export default function Agosto() {
     <div className="mx-auto w-full max-w-5xl p-4 sm:p-6 lg:p-8">
 
       <header className="mb-8">
-        <div className="flex items-center gap-2 text-blue-500">
+        <div className="flex items-center gap-2 text-pink-500">
           <CalendarDays className="h-5 w-5" />
 
           <span className="text-xs font-black uppercase tracking-[0.25em]">
-            Agenda 2026
+            Eventos MOVE 2026
           </span>
         </div>
 
@@ -95,7 +49,7 @@ export default function Agosto() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400">
-          Programação da igreja e da MOVE para agosto.
+          Eventos da MOVE Alphaville em agosto.
         </p>
       </header>
 
@@ -106,9 +60,9 @@ export default function Agosto() {
             className={`
               rounded-2xl border p-4 sm:p-5
               ${
-                event.highlight
-                  ? 'border-blue-600/50 bg-blue-600/10'
-                  : 'border-white/10 bg-neutral-900'
+                event.shared
+                  ? 'border-violet-600/50 bg-violet-600/10'
+                  : 'border-pink-600/50 bg-pink-600/10'
               }
             `}
           >
@@ -119,11 +73,11 @@ export default function Agosto() {
                   flex min-w-[80px] shrink-0
                   items-center justify-center
                   rounded-xl px-3 py-3
-                  text-center font-black
+                  text-center font-black text-white
                   ${
-                    event.highlight
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white/10 text-white'
+                    event.shared
+                      ? 'bg-violet-600'
+                      : 'bg-pink-600'
                   }
                 `}
               >
@@ -131,11 +85,29 @@ export default function Agosto() {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">
-                  {event.weekday}
-                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
+                    {event.weekday}
+                  </p>
 
-                <h2 className="mt-1 text-lg font-black leading-tight text-white sm:text-xl">
+                  <span
+                    className={`
+                      rounded-full px-2.5 py-1
+                      text-[9px] font-black uppercase tracking-wider text-white
+                      ${
+                        event.shared
+                          ? 'bg-violet-600'
+                          : 'bg-pink-600'
+                      }
+                    `}
+                  >
+                    {event.shared
+                      ? 'Igreja + MOVE'
+                      : 'Agenda MOVE'}
+                  </span>
+                </div>
+
+                <h2 className="mt-2 text-lg font-black leading-tight text-white sm:text-xl">
                   {event.title}
                 </h2>
 
@@ -144,17 +116,18 @@ export default function Agosto() {
 
                     {event.time && (
                       <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <Clock className="h-4 w-4 shrink-0 text-blue-500" />
+                        <Clock className="h-4 w-4 shrink-0 text-pink-500" />
                         {event.time}
                       </div>
                     )}
 
                     {event.location && (
                       <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <MapPin className="h-4 w-4 shrink-0 text-blue-500" />
+                        <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
                         {event.location}
                       </div>
                     )}
+
                   </div>
                 )}
 
