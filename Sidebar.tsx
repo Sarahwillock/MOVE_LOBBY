@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+
 import {
   Calendar,
   Mic2,
@@ -7,6 +8,7 @@ import {
   LayoutGrid,
   Home
 } from 'lucide-react';
+
 import { cn } from '../lib/utils';
 
 const navItems = [
@@ -27,7 +29,7 @@ const navItems = [
   },
   {
     name: 'EVENTOS MOVE',
-    path: '/move/agenda',
+    path: '/move/eventos',
     icon: LayoutGrid
   },
   {
@@ -51,13 +53,30 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <aside className="fixed left-0 z-40 hidden h-screen w-64 flex-col border-r-2 border-move-blue bg-neutral-900 font-bold uppercase lg:flex">
-
+    <aside
+      className="
+        fixed left-0 top-0 z-40
+        hidden h-screen w-[215px]
+        flex-col
+        border-r border-move-blue/70
+        bg-black/75
+        font-bold uppercase
+        backdrop-blur-xl
+        lg:flex
+      "
+    >
       {/* LOGO / INSTAGRAM */}
-      <div className="border-b-2 border-move-blue/20 p-6">
+      <div className="border-b border-move-blue/30 px-5 py-5">
+
         <Link
           to="/move"
-          className="text-3xl font-black text-white transition hover:text-move-blue"
+          className="
+            text-2xl
+            font-black
+            text-white
+            transition
+            hover:text-move-blue
+          "
         >
           MOVE 2026
         </Link>
@@ -70,7 +89,7 @@ export default function Sidebar() {
           className="
             mt-1 block
             w-fit
-            text-[10px]
+            text-[9px]
             font-black
             tracking-widest
             text-move-blue
@@ -80,10 +99,12 @@ export default function Sidebar() {
         >
           @MOVE.ALPHAVILLE
         </a>
+
       </div>
 
       {/* MENU */}
-      <nav className="mt-4 flex-1">
+      <nav className="flex-1 px-3 py-4">
+
         {navItems.map((item) => {
           const Icon = item.icon;
 
@@ -97,17 +118,42 @@ export default function Sidebar() {
               key={item.name}
               to={item.path}
               className={cn(
-                'flex items-center gap-4 p-4 transition-colors',
+                `
+                  mb-1
+                  flex min-h-12
+                  items-center
+                  gap-3
+                  rounded-lg
+                  px-3 py-3
+                  text-sm
+                  transition
+                `,
                 isActive
-                  ? 'bg-move-blue text-white brightness-125'
-                  : 'text-neutral-400 hover:bg-move-pink hover:text-white'
+                  ? `
+                      bg-move-blue
+                      text-white
+                      shadow-lg
+                      shadow-blue-600/20
+                    `
+                  : `
+                      text-neutral-400
+                      hover:bg-move-pink/20
+                      hover:text-white
+                    `
               )}
             >
-              <Icon size={20} />
-              <span>{item.name}</span>
+              <Icon
+                size={18}
+                className="shrink-0"
+              />
+
+              <span>
+                {item.name}
+              </span>
             </Link>
           );
         })}
+
       </nav>
     </aside>
   );
