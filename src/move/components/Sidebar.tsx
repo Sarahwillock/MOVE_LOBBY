@@ -2,8 +2,8 @@ import {
   Home,
   Calendar,
   LayoutGrid,
+  Ticket,
   Mic2,
-  Users,
   MapPin
 } from 'lucide-react';
 
@@ -53,53 +53,59 @@ export default function Sidebar() {
         lg:flex lg:flex-col
       "
     >
+      {/* TOPO */}
       <div className="border-b border-blue-600/40 px-5 py-5">
-        <h1 className="text-2xl font-black text-white">
+        <NavLink
+          to="/move"
+          className="text-2xl font-black text-white transition hover:text-blue-500"
+        >
           MOVE 2026
-        </h1>
+        </NavLink>
 
         <a
-  href="https://www.instagram.com/move.alphaville/"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="Instagram MOVE Alphaville"
-  className="
-    mt-1 inline-block
-    text-[9px]
-    font-black uppercase
-    tracking-widest
-    text-blue-500
-    transition-colors
-    hover:text-pink-500
-    hover:underline
-  "
->
-  @MOVE.ALPHAVILLE
-</a>
+          href="https://www.instagram.com/move.alphaville/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram MOVE Alphaville"
+          className="
+            mt-1 inline-block
+            text-[9px]
+            font-black uppercase
+            tracking-widest
+            text-blue-500
+            transition-colors
+            hover:text-pink-500
+            hover:underline
+          "
+        >
+          @MOVE.ALPHAVILLE
+        </a>
       </div>
 
+      {/* MENU */}
       <nav className="flex-1 px-3 py-4">
-        {items.map(({ label, path, icon: Icon }) => (
+        {navItems.map(({ name, path, icon: Icon }) => (
           <NavLink
             key={path}
             to={path}
             end={path === '/move'}
-            className={({ isActive }) =>
-              `
-                mb-1 flex min-h-12 items-center gap-3
-                rounded-lg px-3 py-3
-                text-sm font-bold
-                transition
-                ${
-                  isActive
-                    ? 'bg-blue-600/15 text-blue-500'
-                    : 'text-neutral-400 hover:bg-white/5 hover:text-white'
-                }
-              `
-            }
+            className={({ isActive }) => `
+              mb-1 flex min-h-12 items-center gap-3
+              rounded-lg px-3 py-3
+              text-sm font-bold
+              transition
+              ${
+                isActive
+                  ? 'bg-blue-600/15 text-blue-500'
+                  : 'text-neutral-400 hover:bg-white/5 hover:text-white'
+              }
+            `}
           >
             <Icon className="h-4 w-4 shrink-0" />
-            {label}
+
+            <span>
+              {name}
+            </span>
           </NavLink>
         ))}
       </nav>
