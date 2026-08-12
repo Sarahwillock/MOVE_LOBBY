@@ -4,71 +4,19 @@ import {
   MapPin
 } from 'lucide-react';
 
-type Event = {
+type MoveEvent = {
   date: string;
   weekday: string;
   title: string;
   time?: string;
   location?: string;
-  description?: string;
-  highlight?: boolean;
 };
 
-const EVENTS: Event[] = [
-  {
-    date: '01/09',
-    weekday: 'TERÇA-FEIRA',
-    title: 'Capacitação e Treinamento para Novos Líderes',
-    time: '20h',
-    location: 'Prédio da igreja',
-    description: '4ª e última aula'
-  },
-  {
-    date: '06 a 20/09',
-    weekday: '',
-    title: 'Jejum de 14 Dias',
-    highlight: true
-  },
-  {
-    date: '12/09',
-    weekday: 'SÁBADO',
-    title: 'Conferência Kids',
-    location: 'Santo André',
-    description:
-      'Para todos os envolvidos no Ministério Infantil'
-  },
-  {
-    date: '16/09',
-    weekday: 'QUARTA-FEIRA',
-    title: 'Oração Geral | Período de Jejum',
-    time: '19h',
-    location: 'Prédio da igreja'
-  },
+const EVENTS: MoveEvent[] = [
   {
     date: '19/09',
     weekday: 'SÁBADO',
     title: 'Movenite',
-    time: '19h',
-    location: 'Prédio da igreja',
-    highlight: true
-  },
-  {
-    date: '20/09',
-    weekday: 'DOMINGO',
-    title: 'Culto de Encerramento do Jejum'
-  },
-  {
-    date: '23/09',
-    weekday: 'QUARTA-FEIRA',
-    title: 'Discipulado de Líderes',
-    location: 'Prédio da igreja',
-    description:
-      '19h — Pastor + Líderes • 20h — Líderes + GCD'
-  },
-  {
-    date: '25/09',
-    weekday: 'SEXTA-FEIRA',
-    title: 'Culto das Mulheres',
     time: '19h',
     location: 'Prédio da igreja'
   },
@@ -77,20 +25,21 @@ const EVENTS: Event[] = [
     weekday: 'SÁBADO',
     title: 'Hangout dos Jovens',
     time: '19h',
-    location: 'Prédio da igreja',
-    highlight: true
+    location: 'Prédio da igreja'
   }
 ];
 
 export default function Setembro() {
   return (
     <div className="mx-auto w-full max-w-5xl p-4 sm:p-6 lg:p-8">
+
+      {/* CABEÇALHO */}
       <header className="mb-8">
         <div className="flex items-center gap-2 text-pink-500">
           <CalendarDays className="h-5 w-5" />
 
           <span className="text-xs font-black uppercase tracking-[0.25em]">
-            Agenda 2026
+            Eventos MOVE 2026
           </span>
         </div>
 
@@ -99,79 +48,91 @@ export default function Setembro() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400">
-          Programação da igreja e da MOVE para setembro.
+          Eventos da MOVE Alphaville em setembro.
         </p>
       </header>
 
+      {/* EVENTOS */}
       <div className="space-y-3">
         {EVENTS.map((event, index) => (
           <article
             key={`${event.date}-${index}`}
-            className={`
-              rounded-2xl border p-4 sm:p-5
-              ${
-                event.highlight
-                  ? 'border-pink-600/50 bg-pink-600/10'
-                  : 'border-white/10 bg-neutral-900'
-              }
-            `}
+            className="
+              rounded-2xl
+              border border-pink-600/50
+              bg-pink-600/10
+              p-4 sm:p-5
+            "
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+
+              {/* DATA */}
               <div
-                className={`
-                  flex min-w-[80px] shrink-0
-                  items-center justify-center
-                  rounded-xl px-3 py-3
-                  text-center font-black
-                  ${
-                    event.highlight
-                      ? 'bg-pink-600 text-white'
-                      : 'bg-white/10 text-white'
-                  }
-                `}
+                className="
+                  flex min-w-[80px]
+                  shrink-0 items-center
+                  justify-center
+                  rounded-xl
+                  bg-pink-600
+                  px-3 py-3
+                  text-center
+                  font-black text-white
+                "
               >
                 {event.date}
               </div>
 
+              {/* INFORMAÇÕES */}
               <div className="min-w-0 flex-1">
-                {event.weekday && (
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-500">
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
                     {event.weekday}
                   </p>
-                )}
 
-                <h2 className="mt-1 text-lg font-black leading-tight text-white sm:text-xl">
+                  <span
+                    className="
+                      rounded-full
+                      bg-pink-600
+                      px-2.5 py-1
+                      text-[9px]
+                      font-black uppercase
+                      tracking-wider
+                      text-white
+                    "
+                  >
+                    Agenda MOVE
+                  </span>
+                </div>
+
+                <h2 className="mt-2 text-lg font-black leading-tight text-white sm:text-xl">
                   {event.title}
                 </h2>
 
-                {(event.time || event.location) && (
-                  <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
-                    {event.time && (
-                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <Clock className="h-4 w-4 shrink-0 text-pink-500" />
-                        {event.time}
-                      </div>
-                    )}
+                <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
 
-                    {event.location && (
-                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
-                        {event.location}
-                      </div>
-                    )}
-                  </div>
-                )}
+                  {event.time && (
+                    <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                      <Clock className="h-4 w-4 shrink-0 text-pink-500" />
+                      {event.time}
+                    </div>
+                  )}
 
-                {event.description && (
-                  <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
-                    {event.description}
-                  </p>
-                )}
+                  {event.location && (
+                    <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                      <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
+                      {event.location}
+                    </div>
+                  )}
+
+                </div>
               </div>
+
             </div>
           </article>
         ))}
       </div>
+
     </div>
   );
 }
