@@ -384,3 +384,138 @@ export default function EventosMove() {
     </div>
   );
 }
+/* =========================================================
+   DATA ATUAL / EVENTOS FUTUROS
+========================================================= */
+
+/**
+ * Retorna a data de hoje sem horário.
+ */
+export function getToday() {
+  const now = new Date();
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+}
+
+/**
+ * Data inicial do evento.
+ */
+export function getEventStartDate(
+  event: MoveEvent
+) {
+  return new Date(
+    event.year,
+    event.month - 1,
+    event.day
+  );
+}
+
+/**
+ * Data final do evento.
+ *
+ * Se for evento de vários dias,
+ * usa endDay.
+ */
+export function getEventEndDate(
+  event: MoveEvent
+) {
+  return new Date(
+    event.year,
+    event.month - 1,
+    event.endDay ?? event.day
+  );
+}
+
+/**
+ * Verifica se o evento já passou.
+ *
+ * Eventos que acontecem hoje continuam aparecendo.
+ */
+export function isPastEvent(
+  event: MoveEvent
+) {
+  const today = getToday();
+
+  const eventEnd =
+    getEventEndDate(event);
+
+  return eventEnd < today;
+}
+
+/**
+ * Retorna somente eventos atuais/futuros.
+ */
+export function getUpcomingEvents() {
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        !isPastEvent(event)
+    )
+  );
+}
+
+/**
+ * Próximo evento geral:
+ * Igreja + MOVE + GC.
+ */
+export function getNextEvent() {
+  return (
+    getUpcomingEvents()[0] ??
+    null
+  );
+}
+
+/**
+ * Próximo evento relacionado à MOVE.
+ *
+ * MOVE
+ * GC
+ * Igreja + MOVE
+ */
+export function getNextMoveEvent() {
+  const events =
+    getUpcomingEvents().filter(
+      (event) =>
+        event.type === 'move' ||
+        event.type === 'gc' ||
+        event.type ===
+          'igreja-move'
+    );
+
+  return events[0] ?? null;
+}
+
+/**
+ * Eventos futuros de determinado mês.
+ */
+export function getUpcomingEventsByMonth(
+  month: number
+) {
+  return getUpcomingEvents().filter(
+    (event) =>
+      event.month === month
+  );
+}
+
+/**
+ * Eventos futuros da MOVE
+ * de determinado mês.
+ */
+export function getUpcomingMoveEventsByMonth(
+  month: number
+) {
+  return getUpcomingEvents().filter(
+    (event) =>
+      event.month === month &&
+      (
+        event.type === 'move' ||
+        event.type === 'gc' ||
+        event.type ===
+          'igreja-move'
+      )
+  );
+}
