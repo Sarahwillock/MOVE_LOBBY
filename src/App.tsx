@@ -10,6 +10,7 @@ import LobbyHome from './LobbyHome';
 import MoveLayout from './move/MoveLayout';
 import MoveHome from './move/pages/MoveHome';
 import Agenda from './move/pages/Agenda';
+import EventosMove from './move/pages/EventosMove';
 
 // Vamos criar essas páginas na sequência
 import Agosto from './move/pages/Agosto';
@@ -48,6 +49,11 @@ export default function App() {
           <Route
             path="agenda"
             element={<Agenda />}
+          />
+
+          <Route
+            path="eventos"
+            element={<EventosMove />}
           />
 
           {/* Meses */}
