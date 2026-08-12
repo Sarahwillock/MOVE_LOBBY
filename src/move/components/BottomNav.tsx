@@ -22,7 +22,7 @@ const items = [
   },
   {
     label: 'Eventos',
-    path: '/move/agenda',
+    path: '/move/eventos',
     icon: LayoutGrid
   },
   {
@@ -49,7 +49,7 @@ export default function BottomNav() {
         fixed bottom-0 left-0 right-0 z-50
         flex overflow-x-auto
         border-t border-blue-600/50
-        bg-neutral-950/95
+        bg-black/85
         backdrop-blur-xl
         [padding-bottom:env(safe-area-inset-bottom)]
         lg:hidden
@@ -69,8 +69,8 @@ export default function BottomNav() {
               transition-colors
               ${
                 isActive
-                  ? 'bg-blue-600/10 text-blue-500'
-                  : 'text-neutral-400'
+                  ? 'bg-blue-600/15 text-blue-500'
+                  : 'text-neutral-400 hover:text-white'
               }
             `
           }
