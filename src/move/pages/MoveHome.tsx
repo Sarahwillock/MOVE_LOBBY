@@ -81,7 +81,7 @@ export default function MoveHome() {
     <div className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-7">
 
       {/* PRÓXIMO EVENTO MOVE */}
-      <section className="mb-8 overflow-hidden border-l-4 border-white bg-blue-600 p-5 sm:p-7 lg:p-8">
+      <section className="mb-8 overflow-hidden rounded-3xl border border-blue-500/40 border-l-4 border-l-white bg-blue-600 p-5 shadow-xl sm:p-7 lg:p-8">
         <p className="text-lg font-black italic uppercase sm:text-xl">
           PRÓXIMO EVENTO MOVE
         </p>
