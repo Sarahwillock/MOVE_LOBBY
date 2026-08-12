@@ -168,7 +168,7 @@ export const EVENTS_2026: MoveEvent[] = [
     date: '13/08',
     weekday: 'QUINTA-FEIRA',
     title: 'GC CONECTA',
-    description: 'GC de jovens apartir de 20 anos',
+    description: 'GC de jovens',
     time: '20:00',
     location: 'Alphaville',
     type: 'gc'
@@ -253,7 +253,7 @@ export const EVENTS_2026: MoveEvent[] = [
     date: '21/08',
     weekday: 'SEXTA-FEIRA',
     title: 'GC LOBBY',
-    description: 'GC de jovens apartir de 20 anos',
+    description: 'GC de jovens',
     time: '19:00',
     location: 'Alphaville',
     type: 'gc'
