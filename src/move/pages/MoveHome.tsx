@@ -81,7 +81,20 @@ export default function MoveHome() {
     <div className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-7">
 
       {/* PRÓXIMO EVENTO MOVE */}
-      <section className="mb-8 overflow-hidden rounded-3xl border border-blue-500/40 border-l-4 border-l-white bg-blue-600 p-5 shadow-xl sm:p-7 lg:p-8">
+      <section
+        className="
+          mb-8
+          overflow-hidden
+          rounded-2xl
+          border border-blue-500/40
+          border-l-4 border-l-white
+          bg-blue-600
+          p-5
+          shadow-xl
+          sm:p-7
+          lg:p-8
+        "
+      >
         <p className="text-lg font-black italic uppercase sm:text-xl">
           PRÓXIMO EVENTO MOVE
         </p>
@@ -121,6 +134,7 @@ export default function MoveHome() {
             </div>
           </div>
 
+          {/* BOTÕES */}
           <div className="grid w-full gap-3 sm:grid-cols-2 xl:w-auto">
 
             <Link
@@ -128,10 +142,15 @@ export default function MoveHome() {
               className="
                 flex min-h-[52px]
                 items-center justify-center
-                bg-white px-6 py-3
-                text-center font-black uppercase
+                rounded-xl
+                bg-white
+                px-6 py-3
+                text-center
+                font-black uppercase
                 text-blue-600
                 transition
+                hover:scale-[1.02]
+                hover:bg-neutral-100
                 active:scale-[0.98]
               "
             >
@@ -143,11 +162,15 @@ export default function MoveHome() {
               className="
                 flex min-h-[52px]
                 items-center justify-center
+                rounded-xl
                 border border-white
                 px-6 py-3
-                text-center font-black uppercase
+                text-center
+                font-black uppercase
                 text-white
                 transition
+                hover:bg-white
+                hover:text-blue-600
                 active:scale-[0.98]
               "
             >
@@ -225,7 +248,7 @@ export default function MoveHome() {
       {/* AVISO */}
       <section className="mt-8 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5">
         <p className="text-sm font-semibold leading-relaxed text-neutral-300">
-           <strong>Importante:</strong> fique atento às comunicações dos
+          <strong>Importante:</strong> fique atento às comunicações dos
           líderes e dos GCs para informações adicionais, orientações e
           possíveis alterações na programação.
         </p>
