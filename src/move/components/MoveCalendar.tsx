@@ -320,9 +320,7 @@ export default function MoveCalendar() {
     (_, index) => index + 1
   );
 
-  const getEventsForDay = (
-    day: number
-  ) =>
+  const getEventsForDay = (day: number) =>
     currentMonth.events.filter(
       (event) => event.day === day
     );
@@ -337,25 +335,16 @@ export default function MoveCalendar() {
       return;
     }
 
-    setMonthPosition(
-      monthPosition - 1
-    );
-
+    setMonthPosition(monthPosition - 1);
     setSelectedDay(null);
   };
 
   const goNext = () => {
-    if (
-      monthPosition ===
-      MONTHS.length - 1
-    ) {
+    if (monthPosition === MONTHS.length - 1) {
       return;
     }
 
-    setMonthPosition(
-      monthPosition + 1
-    );
-
+    setMonthPosition(monthPosition + 1);
     setSelectedDay(null);
   };
 
@@ -406,169 +395,158 @@ export default function MoveCalendar() {
       {open && (
         <div
           className="
-            fixed inset-0
-            z-[9999]
+            fixed inset-0 z-[9999]
+            h-screen w-screen
             overflow-y-auto
-            bg-black/85
-            backdrop-blur-sm
+            bg-black
+            text-white
           "
         >
-          <div
-            className="
-              flex min-h-full
-              items-start justify-center
-              p-3
-              sm:p-6
-            "
-          >
-            <div
+          <div className="min-h-screen w-full">
+
+            {/* CABEÇALHO */}
+            <header
               className="
-                my-3
-                w-full max-w-xl
-                overflow-hidden
-                rounded-3xl
-                border border-white/10
-                bg-neutral-950
-                shadow-2xl
-                sm:my-8
+                sticky top-0 z-30
+                border-b border-blue-600/40
+                bg-black/95
+                backdrop-blur
               "
             >
-
-              {/* CABEÇALHO FIXO */}
               <div
                 className="
-                  sticky top-0 z-20
-                  border-b border-white/10
-                  bg-neutral-950/95
-                  p-4
-                  backdrop-blur
-                  sm:p-5
+                  mx-auto flex
+                  w-full max-w-6xl
+                  items-center justify-between
+                  gap-3
+                  px-4 py-4
+                  sm:px-6
                 "
               >
-                <div className="flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={goPrevious}
+                  disabled={monthPosition === 0}
+                  aria-label="Mês anterior"
+                  className="
+                    flex h-11 w-11
+                    shrink-0 items-center
+                    justify-center
+                    rounded-full
+                    bg-white/10
+                    text-white
+                    transition
+                    hover:bg-white/20
+                    disabled:cursor-not-allowed
+                    disabled:opacity-20
+                  "
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
 
-                  {/* VOLTAR MÊS */}
-                  <button
-                    type="button"
-                    onClick={goPrevious}
-                    disabled={
-                      monthPosition === 0
-                    }
-                    aria-label="Mês anterior"
-                    className="
-                      flex h-11 w-11
-                      shrink-0
-                      items-center justify-center
-                      rounded-full
-                      bg-white/10
-                      text-white
-                      transition
-                      hover:bg-white/20
-                      disabled:cursor-not-allowed
-                      disabled:opacity-20
-                    "
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
+                <div className="min-w-0 flex-1 text-center">
+                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-blue-500">
+                    Calendário 2026
+                  </p>
 
-                  {/* MÊS */}
-                  <div className="min-w-0 flex-1 text-center">
-                    <p className="text-[9px] font-black uppercase tracking-[0.25em] text-blue-500">
-                      Calendário 2026
-                    </p>
-
-                    <h2 className="mt-1 text-2xl font-black uppercase text-white sm:text-3xl">
-                      {currentMonth.name}
-                    </h2>
-                  </div>
-
-                  {/* PRÓXIMO MÊS */}
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    disabled={
-                      monthPosition ===
-                      MONTHS.length - 1
-                    }
-                    aria-label="Próximo mês"
-                    className="
-                      flex h-11 w-11
-                      shrink-0
-                      items-center justify-center
-                      rounded-full
-                      bg-white/10
-                      text-white
-                      transition
-                      hover:bg-white/20
-                      disabled:cursor-not-allowed
-                      disabled:opacity-20
-                    "
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
+                  <h2 className="mt-1 text-2xl font-black uppercase text-white sm:text-3xl">
+                    {currentMonth.name}
+                  </h2>
                 </div>
 
-                {/* LEGENDA */}
-                <div className="mt-4 flex flex-wrap justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={goNext}
+                  disabled={
+                    monthPosition ===
+                    MONTHS.length - 1
+                  }
+                  aria-label="Próximo mês"
+                  className="
+                    flex h-11 w-11
+                    shrink-0 items-center
+                    justify-center
+                    rounded-full
+                    bg-white/10
+                    text-white
+                    transition
+                    hover:bg-white/20
+                    disabled:cursor-not-allowed
+                    disabled:opacity-20
+                  "
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            </header>
 
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
-                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-                    Igreja
-                  </div>
+            {/* CONTEÚDO */}
+            <main
+              className="
+                mx-auto
+                w-full max-w-6xl
+                px-4 py-6
+                sm:px-6
+                lg:py-8
+              "
+            >
+              {/* LEGENDA */}
+              <div className="mb-6 flex flex-wrap justify-center gap-4">
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                  <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                  Igreja
+                </div>
 
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
-                    MOVE
-                  </div>
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                  MOVE
+                </div>
 
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-                    GCs
-                  </div>
-
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  GCs
                 </div>
               </div>
 
-              {/* CONTEÚDO */}
-              <div className="p-3 sm:p-5">
+              {/* CALENDÁRIO */}
+              <section
+                className="
+                  rounded-2xl
+                  border border-white/10
+                  bg-neutral-950
+                  p-3
+                  sm:p-5
+                  lg:p-6
+                "
+              >
+                <div className="grid grid-cols-7 gap-1 sm:gap-2">
+                  {WEEK_DAYS.map((day) => (
+                    <div
+                      key={day}
+                      className="
+                        py-2
+                        text-center
+                        text-[8px]
+                        font-black
+                        text-neutral-500
+                        sm:text-[10px]
+                      "
+                    >
+                      {day}
+                    </div>
+                  ))}
 
-                {/* DIAS DA SEMANA */}
-                <div className="grid grid-cols-7 gap-1">
-                  {WEEK_DAYS.map(
-                    (day) => (
-                      <div
-                        key={day}
-                        className="
-                          py-2
-                          text-center
-                          text-[8px]
-                          font-black
-                          text-neutral-500
-                          sm:text-[9px]
-                        "
-                      >
-                        {day}
-                      </div>
-                    )
-                  )}
-
-                  {/* ESPAÇOS */}
                   {Array.from({
                     length: firstDay
-                  }).map(
-                    (_, index) => (
-                      <div
-                        key={`empty-${index}`}
-                      />
-                    )
-                  )}
+                  }).map((_, index) => (
+                    <div
+                      key={`empty-${index}`}
+                    />
+                  ))}
 
-                  {/* DIAS */}
                   {days.map((day) => {
                     const events =
-                      getEventsForDay(
-                        day
-                      );
+                      getEventsForDay(day);
 
                     const types =
                       Array.from(
@@ -581,38 +559,35 @@ export default function MoveCalendar() {
                       );
 
                     const selected =
-                      selectedDay ===
-                      day;
+                      selectedDay === day;
 
                     return (
                       <button
                         key={day}
                         type="button"
                         disabled={
-                          events.length ===
-                          0
+                          events.length === 0
                         }
                         onClick={() =>
-                          setSelectedDay(
-                            day
-                          )
+                          setSelectedDay(day)
                         }
                         className={`
                           relative
                           flex aspect-square
-                          min-h-[42px]
+                          min-h-[44px]
                           flex-col
                           items-center
                           justify-center
                           rounded-xl
                           border
                           transition
+                          sm:min-h-[64px]
+                          lg:min-h-[80px]
 
                           ${
                             selected
                               ? 'border-white bg-white/10'
-                              : events.length >
-                                0
+                              : events.length > 0
                               ? 'border-white/15 bg-white/[0.04] hover:bg-white/[0.08]'
                               : 'border-transparent'
                           }
@@ -621,11 +596,11 @@ export default function MoveCalendar() {
                         <span
                           className={`
                             text-xs font-black
-                            sm:text-sm
+                            sm:text-base
+                            lg:text-lg
 
                             ${
-                              events.length >
-                              0
+                              events.length > 0
                                 ? 'text-white'
                                 : 'text-neutral-600'
                             }
@@ -634,25 +609,20 @@ export default function MoveCalendar() {
                           {day}
                         </span>
 
-                        {types.length >
-                          0 && (
+                        {types.length > 0 && (
                           <div
                             className="
                               absolute
                               bottom-1
                               flex gap-0.5
-                              sm:bottom-1.5
+                              sm:bottom-2
                               sm:gap-1
                             "
                           >
                             {types.map(
-                              (
-                                type
-                              ) => (
+                              (type) => (
                                 <span
-                                  key={
-                                    type
-                                  }
+                                  key={type}
                                   className={`
                                     h-1.5 w-1.5
                                     rounded-full
@@ -668,169 +638,146 @@ export default function MoveCalendar() {
                     );
                   })}
                 </div>
+              </section>
 
-                {/* DETALHES */}
-                {selectedEvents.length >
-                  0 && (
-                  <section
-                    className="
-                      mt-5
-                      rounded-2xl
-                      border border-white/10
-                      bg-white/[0.03]
-                      p-4
-                    "
-                  >
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
-                      Eventos do dia
-                    </p>
-
-                    <h3 className="mt-1 text-xl font-black text-white">
-                      {String(
-                        selectedDay
-                      ).padStart(
-                        2,
-                        '0'
-                      )}
-                      /
-                      {String(
-                        currentMonth.monthIndex +
-                          1
-                      ).padStart(
-                        2,
-                        '0'
-                      )}
-                    </h3>
-
-                    <div className="mt-4 space-y-3">
-                      {selectedEvents.map(
-                        (
-                          event,
-                          index
-                        ) => {
-                          const isChurch =
-                            event.location ===
-                            'Prédio da igreja';
-
-                          return (
-                            <div
-                              key={`${event.title}-${index}`}
-                              className={`
-                                rounded-xl
-                                border
-                                bg-black/30
-                                p-3
-                                ${borderByType[event.type]}
-                              `}
-                            >
-                              <div className="flex items-start gap-3">
-
-                                <span
-                                  className={`
-                                    mt-1.5
-                                    h-2.5 w-2.5
-                                    shrink-0
-                                    rounded-full
-                                    ${colorByType[event.type]}
-                                  `}
-                                />
-
-                                <div className="min-w-0 flex-1">
-
-                                  <p className="text-[9px] font-black uppercase tracking-wider text-neutral-500">
-                                    {
-                                      labelByType[
-                                        event
-                                          .type
-                                      ]
-                                    }
-                                  </p>
-
-                                  <p className="mt-1 text-sm font-bold text-white">
-                                    {
-                                      event.title
-                                    }
-                                  </p>
-
-                                  {event.time && (
-                                    <p className="mt-1 text-xs font-semibold text-neutral-400">
-                                      {
-                                        event.time
-                                      }
-                                    </p>
-                                  )}
-
-                                  {event.location &&
-                                    (isChurch ? (
-                                      <a
-                                        href={
-                                          CHURCH_MAP_URL
-                                        }
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="
-                                          mt-1
-                                          inline-block
-                                          text-xs
-                                          font-semibold
-                                          text-blue-400
-                                          underline
-                                          underline-offset-4
-                                        "
-                                      >
-                                        Prédio da
-                                        igreja
-                                      </a>
-                                    ) : (
-                                      <p className="mt-1 text-xs font-semibold text-neutral-400">
-                                        {
-                                          event.location
-                                        }
-                                      </p>
-                                    ))}
-
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-                  </section>
-                )}
-
-                {/* FECHAR */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    setSelectedDay(
-                      null
-                    );
-                  }}
+              {/* DETALHES DO DIA */}
+              {selectedEvents.length > 0 && (
+                <section
                   className="
-                    mt-5
-                    flex min-h-12
-                    w-full
-                    items-center justify-center
-                    gap-2
-                    rounded-xl
-                    bg-white
-                    px-4 py-3
-                    font-black uppercase
-                    text-black
-                    transition
-                    hover:bg-blue-600
-                    hover:text-white
-                    active:scale-[0.98]
+                    mt-6
+                    rounded-2xl
+                    border border-white/10
+                    bg-white/[0.03]
+                    p-4
+                    sm:p-5
                   "
                 >
-                  <X className="h-4 w-4" />
-                  Fechar
-                </button>
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                    Eventos do dia
+                  </p>
 
-              </div>
-            </div>
+                  <h3 className="mt-1 text-xl font-black text-white">
+                    {String(selectedDay).padStart(
+                      2,
+                      '0'
+                    )}
+                    /
+                    {String(
+                      currentMonth.monthIndex + 1
+                    ).padStart(2, '0')}
+                  </h3>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {selectedEvents.map(
+                      (event, index) => {
+                        const isChurch =
+                          event.location ===
+                          'Prédio da igreja';
+
+                        return (
+                          <div
+                            key={`${event.title}-${index}`}
+                            className={`
+                              rounded-xl
+                              border
+                              bg-black/30
+                              p-4
+                              ${borderByType[event.type]}
+                            `}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span
+                                className={`
+                                  mt-1.5
+                                  h-2.5 w-2.5
+                                  shrink-0
+                                  rounded-full
+                                  ${colorByType[event.type]}
+                                `}
+                              />
+
+                              <div className="min-w-0 flex-1">
+                                <p className="text-[9px] font-black uppercase tracking-wider text-neutral-500">
+                                  {
+                                    labelByType[
+                                      event.type
+                                    ]
+                                  }
+                                </p>
+
+                                <p className="mt-1 text-sm font-bold text-white sm:text-base">
+                                  {event.title}
+                                </p>
+
+                                {event.time && (
+                                  <p className="mt-2 text-xs font-semibold text-neutral-400">
+                                    {event.time}
+                                  </p>
+                                )}
+
+                                {event.location &&
+                                  (isChurch ? (
+                                    <a
+                                      href={
+                                        CHURCH_MAP_URL
+                                      }
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="
+                                        mt-1
+                                        inline-block
+                                        text-xs
+                                        font-semibold
+                                        text-blue-400
+                                        underline
+                                        underline-offset-4
+                                      "
+                                    >
+                                      Prédio da igreja
+                                    </a>
+                                  ) : (
+                                    <p className="mt-1 text-xs font-semibold text-neutral-400">
+                                      {
+                                        event.location
+                                      }
+                                    </p>
+                                  ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {/* FECHAR */}
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  setSelectedDay(null);
+                }}
+                className="
+                  mt-6 flex min-h-12
+                  w-full items-center
+                  justify-center gap-2
+                  rounded-xl
+                  bg-white
+                  px-4 py-3
+                  font-black uppercase
+                  text-black
+                  transition
+                  hover:bg-blue-600
+                  hover:text-white
+                  active:scale-[0.98]
+                "
+              >
+                <X className="h-4 w-4" />
+                Fechar calendário
+              </button>
+            </main>
           </div>
         </div>
       )}
