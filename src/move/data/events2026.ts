@@ -7,26 +7,44 @@ export type EventType =
 export type MoveEvent = {
   id: string;
 
-  // Data
   year: number;
   month: number;
   day: number;
+
+  /**
+   * Para eventos que duram vários dias.
+   * Ex:
+   * 13 a 16 de agosto
+   */
+  endDay?: number;
+
+  /**
+   * Texto mostrado na tela.
+   * Ex:
+   * 13 a 16/08
+   */
   date: string;
+
   weekday: string;
 
-  // Evento
   title: string;
   description?: string;
+
   time?: string;
   endTime?: string;
+
   location?: string;
 
-  // Categoria
   type: EventType;
+
+  /**
+   * Pode ser usado para dar mais destaque visual.
+   */
+  highlight?: boolean;
 };
 
 /* =========================================================
-   MESES DISPONÍVEIS
+   MESES
 ========================================================= */
 
 export const MONTHS_2026 = [
@@ -59,12 +77,6 @@ export const MONTHS_2026 = [
 
 /* =========================================================
    EVENTOS 2026
-
-   Essa será a ÚNICA base de eventos.
-
-   Agenda       -> usa todos
-   Calendário   -> usa todos
-   Eventos MOVE -> filtra MOVE / GC / Igreja + MOVE
 ========================================================= */
 
 export const EVENTS_2026: MoveEvent[] = [
@@ -72,6 +84,8 @@ export const EVENTS_2026: MoveEvent[] = [
   /* =======================================================
      AGOSTO
   ======================================================= */
+
+  /* GCs */
 
   {
     id: '2026-08-07-gc-lobby',
@@ -115,6 +129,37 @@ export const EVENTS_2026: MoveEvent[] = [
     type: 'gc'
   },
 
+  /* IGREJA */
+
+  {
+    id: '2026-08-11-capacitacao-lideres',
+    year: 2026,
+    month: 8,
+    day: 11,
+    date: '11/08',
+    weekday: 'TERÇA-FEIRA',
+    title:
+      'Capacitação e Treinamento para Novos Líderes',
+    time: '20:00',
+    location: 'Online',
+    description: '1ª aula',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-08-13-jejum-40-horas',
+    year: 2026,
+    month: 8,
+    day: 13,
+    endDay: 16,
+    date: '13 a 16/08',
+    weekday: 'QUINTA A DOMINGO',
+    title: 'Jejum de 40 Horas',
+    description: 'REVIVA O DOM QUE HÁ EM TI',
+    highlight: true,
+    type: 'igreja'
+  },
+
   {
     id: '2026-08-13-gc-conecta',
     year: 2026,
@@ -127,6 +172,21 @@ export const EVENTS_2026: MoveEvent[] = [
     time: '20:00',
     location: 'Alphaville',
     type: 'gc'
+  },
+
+  {
+    id: '2026-08-14-jejum-40-horas',
+    year: 2026,
+    month: 8,
+    day: 14,
+    date: '14/08',
+    weekday: 'SEXTA-FEIRA',
+    title: 'Jejum de 40 Horas',
+    time: '20:00',
+    location: 'Prédio da igreja',
+    description: 'Reviva o Dom que Há em Ti',
+    highlight: true,
+    type: 'igreja'
   },
 
   {
@@ -155,6 +215,34 @@ export const EVENTS_2026: MoveEvent[] = [
     time: '20:00',
     location: 'Prédio da igreja',
     type: 'gc'
+  },
+
+  {
+    id: '2026-08-18-capacitacao-lideres',
+    year: 2026,
+    month: 8,
+    day: 18,
+    date: '18/08',
+    weekday: 'TERÇA-FEIRA',
+    title:
+      'Capacitação e Treinamento para Novos Líderes',
+    time: '20:00',
+    location: 'Online',
+    description: '2ª aula',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-08-19-escola-huios',
+    year: 2026,
+    month: 8,
+    day: 19,
+    date: '19/08',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Aula Inaugural | Escola Huios',
+    time: '20:00',
+    location: 'Prédio da igreja',
+    type: 'igreja'
   },
 
   {
@@ -200,6 +288,35 @@ export const EVENTS_2026: MoveEvent[] = [
   },
 
   {
+    id: '2026-08-25-capacitacao-lideres',
+    year: 2026,
+    month: 8,
+    day: 25,
+    date: '25/08',
+    weekday: 'TERÇA-FEIRA',
+    title:
+      'Capacitação e Treinamento para Novos Líderes',
+    time: '20:00',
+    location: 'Online',
+    description: '3ª aula',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-08-26-discipulado-lideres',
+    year: 2026,
+    month: 8,
+    day: 26,
+    date: '26/08',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
     id: '2026-08-28-cha-das-sisters',
     year: 2026,
     month: 8,
@@ -221,12 +338,68 @@ export const EVENTS_2026: MoveEvent[] = [
     title: 'Movenite',
     time: '19:00',
     location: 'Prédio da igreja',
+    highlight: true,
     type: 'move'
   },
 
   /* =======================================================
      SETEMBRO
   ======================================================= */
+
+  {
+    id: '2026-09-01-capacitacao-lideres',
+    year: 2026,
+    month: 9,
+    day: 1,
+    date: '01/09',
+    weekday: 'TERÇA-FEIRA',
+    title:
+      'Capacitação e Treinamento para Novos Líderes',
+    time: '20:00',
+    location: 'Prédio da igreja',
+    description: '4ª e última aula',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-09-06-jejum-14-dias',
+    year: 2026,
+    month: 9,
+    day: 6,
+    endDay: 20,
+    date: '06 a 20/09',
+    weekday: '',
+    title: 'Jejum de 14 Dias',
+    highlight: true,
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-09-12-conferencia-kids',
+    year: 2026,
+    month: 9,
+    day: 12,
+    date: '12/09',
+    weekday: 'SÁBADO',
+    title: 'Conferência Kids',
+    location: 'Santo André',
+    description:
+      'Para todos os envolvidos no Ministério Infantil.',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-09-16-oracao-geral',
+    year: 2026,
+    month: 9,
+    day: 16,
+    date: '16/09',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Oração Geral | Período de Jejum',
+    time: '19:00',
+    location: 'Prédio da igreja',
+    type: 'igreja'
+  },
 
   {
     id: '2026-09-19-movenite',
@@ -238,7 +411,46 @@ export const EVENTS_2026: MoveEvent[] = [
     title: 'Movenite',
     time: '19:00',
     location: 'Prédio da igreja',
+    highlight: true,
     type: 'move'
+  },
+
+  {
+    id: '2026-09-20-encerramento-jejum',
+    year: 2026,
+    month: 9,
+    day: 20,
+    date: '20/09',
+    weekday: 'DOMINGO',
+    title: 'Culto de Encerramento do Jejum',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-09-23-discipulado-lideres',
+    year: 2026,
+    month: 9,
+    day: 23,
+    date: '23/09',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-09-25-culto-mulheres',
+    year: 2026,
+    month: 9,
+    day: 25,
+    date: '25/09',
+    weekday: 'SEXTA-FEIRA',
+    title: 'Culto das Mulheres',
+    time: '19:00',
+    location: 'Prédio da igreja',
+    type: 'igreja'
   },
 
   {
@@ -251,23 +463,296 @@ export const EVENTS_2026: MoveEvent[] = [
     title: 'Hangout dos Jovens',
     time: '19:00',
     location: 'Prédio da igreja',
+    highlight: true,
     type: 'move'
-  }
+  },
 
   /* =======================================================
      OUTUBRO
-     Adicionaremos aqui os eventos confirmados.
   ======================================================= */
+
+  {
+    id: '2026-10-06-encontro-casais',
+    year: 2026,
+    month: 10,
+    day: 6,
+    date: '06/10',
+    weekday: 'TERÇA-FEIRA',
+    title: 'Encontro para Casais',
+    time: '20:00',
+    location: 'Reunião Online',
+    description:
+      'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-07-discipulado-lideres',
+    year: 2026,
+    month: 10,
+    day: 7,
+    date: '07/10',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-10-movenite',
+    year: 2026,
+    month: 10,
+    day: 10,
+    date: '10/10',
+    weekday: 'SÁBADO',
+    title: 'Movenite',
+    time: '19:00',
+    location: 'Prédio da igreja',
+    highlight: true,
+    type: 'move'
+  },
+
+  {
+    id: '2026-10-12-dia-criancas',
+    year: 2026,
+    month: 10,
+    day: 12,
+    date: '12/10',
+    weekday: 'SEGUNDA-FEIRA',
+    title: 'Dia das Crianças',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-13-encontro-casais',
+    year: 2026,
+    month: 10,
+    day: 13,
+    date: '13/10',
+    weekday: 'TERÇA-FEIRA',
+    title: 'Encontro para Casais',
+    time: '20:00',
+    location: 'Reunião Online',
+    description:
+      'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-17-encontro-kids',
+    year: 2026,
+    month: 10,
+    day: 17,
+    date: '17/10',
+    weekday: 'SÁBADO',
+    title: 'Encontro Kids',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-20-encontro-casais',
+    year: 2026,
+    month: 10,
+    day: 20,
+    date: '20/10',
+    weekday: 'TERÇA-FEIRA',
+    title: 'Encontro para Casais',
+    time: '20:00',
+    location: 'Reunião Online',
+    description:
+      'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-21-discipulado-lideres',
+    year: 2026,
+    month: 10,
+    day: 21,
+    date: '21/10',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-27-encontro-casais',
+    year: 2026,
+    month: 10,
+    day: 27,
+    date: '27/10',
+    weekday: 'TERÇA-FEIRA',
+    title: 'Encontro para Casais',
+    time: '20:00',
+    location: 'Reunião Online',
+    description:
+      'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-10-31-cha-sisters',
+    year: 2026,
+    month: 10,
+    day: 31,
+    date: '31/10',
+    weekday: 'SÁBADO',
+    title: 'Chá das Sisters',
+    type: 'igreja'
+  },
 
   /* =======================================================
      NOVEMBRO
-     Adicionaremos aqui os eventos confirmados.
   ======================================================= */
+
+  {
+    id: '2026-11-04-discipulado-lideres',
+    year: 2026,
+    month: 11,
+    day: 4,
+    date: '04/11',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-11-07-movenite',
+    year: 2026,
+    month: 11,
+    day: 7,
+    date: '07/11',
+    weekday: 'SÁBADO',
+    title: 'Movenite',
+    time: '19:00',
+    location: 'Prédio da igreja',
+    highlight: true,
+    type: 'move'
+  },
+
+  {
+    id: '2026-11-13-presbiterio',
+    year: 2026,
+    month: 11,
+    day: 13,
+    date: '13/11',
+    weekday: 'SEXTA-FEIRA',
+    title: 'Reunião do Presbitério Geral',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-11-14-conferencia-lideres',
+    year: 2026,
+    month: 11,
+    day: 14,
+    date: '14/11',
+    weekday: 'SÁBADO',
+    title: 'Conferência de Líderes',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-11-18-discipulado-lideres',
+    year: 2026,
+    month: 11,
+    day: 18,
+    date: '18/11',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-11-27-culto-mulheres',
+    year: 2026,
+    month: 11,
+    day: 27,
+    date: '27/11',
+    weekday: 'SEXTA-FEIRA',
+    title: 'Culto das Mulheres',
+    type: 'igreja'
+  },
 
   /* =======================================================
      DEZEMBRO
-     Adicionaremos aqui os eventos confirmados.
   ======================================================= */
+
+  {
+    id: '2026-12-02-discipulado-lideres',
+    year: 2026,
+    month: 12,
+    day: 2,
+    date: '02/12',
+    weekday: 'QUARTA-FEIRA',
+    title: 'Discipulado de Líderes',
+    location: 'Prédio da igreja',
+    description:
+      '19h — Pastor + Líderes • 20h — Líderes + GCD',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-12-06-batismo-aniversario',
+    year: 2026,
+    month: 12,
+    day: 6,
+    date: '06/12',
+    weekday: 'DOMINGO',
+    title: 'Batismo + Aniversário da Igreja',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-12-12-movenite',
+    year: 2026,
+    month: 12,
+    day: 12,
+    date: '12/12',
+    weekday: 'SÁBADO',
+    title: 'Movenite',
+    time: '19:00',
+    location: 'Prédio da igreja',
+    highlight: true,
+    type: 'move'
+  },
+
+  {
+    id: '2026-12-19-culto-natal',
+    year: 2026,
+    month: 12,
+    day: 19,
+    date: '19/12',
+    weekday: 'SÁBADO',
+    title: 'Culto de Natal',
+    description: 'Teatro especial',
+    type: 'igreja'
+  },
+
+  {
+    id: '2026-12-31-culto-virada',
+    year: 2026,
+    month: 12,
+    day: 31,
+    date: '31/12',
+    weekday: 'QUINTA-FEIRA',
+    title: 'Culto da Virada',
+    time: '18:00',
+    endTime: '21:00',
+    description: '18h às 21h',
+    type: 'igreja'
+  }
 
 ];
 
@@ -276,19 +761,23 @@ export const EVENTS_2026: MoveEvent[] = [
 ========================================================= */
 
 /**
- * Todos os eventos de determinado mês.
- * Usado principalmente pela Agenda e pelo Calendário.
+ * Todos os eventos de um mês.
  */
-export function getEventsByMonth(month: number) {
+export function getEventsByMonth(
+  month: number
+) {
   return EVENTS_2026.filter(
-    (event) => event.month === month
+    (event) =>
+      event.month === month
   );
 }
 
 /**
  * Eventos relacionados à MOVE.
  *
- * Não inclui eventos exclusivamente da Igreja.
+ * MOVE
+ * GC
+ * IGREJA + MOVE
  */
 export function getMoveEvents() {
   return EVENTS_2026.filter(
@@ -321,15 +810,16 @@ export function getMoveEventsByMonth(
  */
 export function getChurchEvents() {
   return EVENTS_2026.filter(
-    (event) => event.type === 'igreja'
+    (event) =>
+      event.type === 'igreja'
   );
 }
 
 /**
- * Retorna eventos de uma data específica.
+ * Retorna os eventos de um dia.
  *
- * Muito útil para o calendário:
- * a pessoa toca no dia e vê todos os eventos.
+ * Também considera eventos que
+ * acontecem durante vários dias.
  */
 export function getEventsByDate(
   year: number,
@@ -337,42 +827,59 @@ export function getEventsByDate(
   day: number
 ) {
   return EVENTS_2026.filter(
-    (event) =>
-      event.year === year &&
-      event.month === month &&
-      event.day === day
+    (event) => {
+      if (
+        event.year !== year ||
+        event.month !== month
+      ) {
+        return false;
+      }
+
+      if (event.endDay) {
+        return (
+          day >= event.day &&
+          day <= event.endDay
+        );
+      }
+
+      return event.day === day;
+    }
   );
 }
 
 /**
- * Ordena eventos por data e horário.
+ * Ordena os eventos.
  */
 export function sortEvents(
   events: MoveEvent[]
 ) {
-  return [...events].sort((a, b) => {
-    const dateA = new Date(
-      a.year,
-      a.month - 1,
-      a.day
-    );
+  return [...events].sort(
+    (a, b) => {
+      const dateA =
+        new Date(
+          a.year,
+          a.month - 1,
+          a.day
+        ).getTime();
 
-    const dateB = new Date(
-      b.year,
-      b.month - 1,
-      b.day
-    );
+      const dateB =
+        new Date(
+          b.year,
+          b.month - 1,
+          b.day
+        ).getTime();
 
-    const dateDifference =
-      dateA.getTime() -
-      dateB.getTime();
+      if (
+        dateA !== dateB
+      ) {
+        return dateA - dateB;
+      }
 
-    if (dateDifference !== 0) {
-      return dateDifference;
+      return (
+        a.time ?? ''
+      ).localeCompare(
+        b.time ?? ''
+      );
     }
-
-    return (a.time ?? '').localeCompare(
-      b.time ?? ''
-    );
-  });
+  );
 }
