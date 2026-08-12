@@ -193,7 +193,6 @@ const MONTHS: MonthData[] = [
     name: 'SETEMBRO',
     monthIndex: 8,
     events: [
-      // IGREJA
       {
         day: 1,
         type: 'igreja',
@@ -223,7 +222,6 @@ const MONTHS: MonthData[] = [
         location: 'Prédio da igreja'
       },
 
-      // MOVE
       {
         day: 19,
         type: 'move',
@@ -342,13 +340,19 @@ export default function MoveCalendar() {
         )
       : [];
 
+  const closeCalendar = () => {
+    setOpen(false);
+    setSelectedDay(null);
+  };
+
   const goPrevious = () => {
     if (monthPosition === 0) {
       return;
     }
 
     setMonthPosition(
-      monthPosition - 1
+      (current) =>
+        current - 1
     );
 
     setSelectedDay(null);
@@ -363,7 +367,8 @@ export default function MoveCalendar() {
     }
 
     setMonthPosition(
-      monthPosition + 1
+      (current) =>
+        current + 1
     );
 
     setSelectedDay(null);
@@ -380,9 +385,29 @@ export default function MoveCalendar() {
     document.body.style.overflow =
       'hidden';
 
+    const handleEscape = (
+      event: KeyboardEvent
+    ) => {
+      if (
+        event.key === 'Escape'
+      ) {
+        closeCalendar();
+      }
+    };
+
+    window.addEventListener(
+      'keydown',
+      handleEscape
+    );
+
     return () => {
       document.body.style.overflow =
         previousOverflow;
+
+      window.removeEventListener(
+        'keydown',
+        handleEscape
+      );
     };
   }, [open]);
 
@@ -413,26 +438,27 @@ export default function MoveCalendar() {
         <CalendarDays className="h-5 w-5" />
       </button>
 
+      {/* FULLSCREEN */}
       {open && (
         <div
           className="
             fixed inset-0
             z-[9999]
-            h-screen w-screen
+            h-[100dvh] w-screen
             overflow-y-auto
             bg-black
             text-white
           "
         >
-          <div className="min-h-screen w-full">
+          <div className="min-h-[100dvh] w-full">
 
-            {/* CABEÇALHO */}
+            {/* CABEÇALHO FIXO */}
             <header
               className="
-                sticky top-0 z-30
+                sticky top-0 z-50
                 border-b border-blue-600/40
                 bg-black/95
-                backdrop-blur
+                backdrop-blur-xl
               "
             >
               <div
@@ -440,13 +466,14 @@ export default function MoveCalendar() {
                   mx-auto flex
                   w-full max-w-6xl
                   items-center
-                  justify-between
-                  gap-3
-                  px-4 py-4
+                  gap-2
+                  px-3 py-3
+                  sm:gap-3
                   sm:px-6
+                  sm:py-4
                 "
               >
-                {/* VOLTAR */}
+                {/* ANTERIOR */}
                 <button
                   type="button"
                   onClick={goPrevious}
@@ -455,7 +482,7 @@ export default function MoveCalendar() {
                   }
                   aria-label="Mês anterior"
                   className="
-                    flex h-11 w-11
+                    flex h-10 w-10
                     shrink-0
                     items-center
                     justify-center
@@ -466,6 +493,7 @@ export default function MoveCalendar() {
                     hover:bg-white/20
                     disabled:cursor-not-allowed
                     disabled:opacity-20
+                    sm:h-11 sm:w-11
                   "
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -473,11 +501,11 @@ export default function MoveCalendar() {
 
                 {/* MÊS */}
                 <div className="min-w-0 flex-1 text-center">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-blue-500">
+                  <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-500 sm:text-[9px]">
                     Calendário 2026
                   </p>
 
-                  <h2 className="mt-1 text-2xl font-black uppercase text-white sm:text-3xl">
+                  <h2 className="mt-0.5 truncate text-xl font-black uppercase text-white sm:mt-1 sm:text-3xl">
                     {currentMonth.name}
                   </h2>
                 </div>
@@ -492,7 +520,7 @@ export default function MoveCalendar() {
                   }
                   aria-label="Próximo mês"
                   className="
-                    flex h-11 w-11
+                    flex h-10 w-10
                     shrink-0
                     items-center
                     justify-center
@@ -503,9 +531,35 @@ export default function MoveCalendar() {
                     hover:bg-white/20
                     disabled:cursor-not-allowed
                     disabled:opacity-20
+                    sm:h-11 sm:w-11
                   "
                 >
                   <ChevronRight className="h-5 w-5" />
+                </button>
+
+                {/* X - SEMPRE VISÍVEL */}
+                <button
+                  type="button"
+                  onClick={closeCalendar}
+                  aria-label="Fechar calendário"
+                  title="Fechar calendário"
+                  className="
+                    flex h-10 w-10
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-full
+                    border border-red-500/30
+                    bg-red-500/10
+                    text-red-400
+                    transition
+                    hover:bg-red-500
+                    hover:text-white
+                    active:scale-95
+                    sm:h-11 sm:w-11
+                  "
+                >
+                  <X className="h-5 w-5" />
                 </button>
               </div>
             </header>
@@ -515,25 +569,26 @@ export default function MoveCalendar() {
               className="
                 mx-auto
                 w-full max-w-6xl
-                px-4 py-6
+                px-3 py-5
                 sm:px-6
+                sm:py-6
                 lg:py-8
               "
             >
               {/* LEGENDA */}
-              <div className="mb-6 flex flex-wrap justify-center gap-4">
+              <div className="mb-5 flex flex-wrap justify-center gap-3 sm:mb-6 sm:gap-4">
 
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
                   <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
                   Igreja
                 </div>
 
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
                   <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
                   MOVE
                 </div>
 
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-neutral-300">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
                   GCs
                 </div>
@@ -545,8 +600,9 @@ export default function MoveCalendar() {
                 className="
                   rounded-2xl
                   border border-white/10
-                  bg-neutral-950
-                  p-3
+                  bg-neutral-950/95
+                  p-2
+                  backdrop-blur-md
                   sm:p-5
                   lg:p-6
                 "
@@ -572,7 +628,7 @@ export default function MoveCalendar() {
                     )
                   )}
 
-                  {/* ESPAÇOS ANTES DO DIA 1 */}
+                  {/* ESPAÇOS */}
                   {Array.from({
                     length: firstDay
                   }).map(
@@ -601,8 +657,7 @@ export default function MoveCalendar() {
                       );
 
                     const selected =
-                      selectedDay ===
-                      day;
+                      selectedDay === day;
 
                     return (
                       <button
@@ -614,25 +669,29 @@ export default function MoveCalendar() {
                         }
                         onClick={() =>
                           setSelectedDay(
-                            day
+                            (current) =>
+                              current === day
+                                ? null
+                                : day
                           )
                         }
                         className={`
                           relative
                           flex aspect-square
-                          min-h-[44px]
+                          min-h-[40px]
                           flex-col
                           items-center
                           justify-center
-                          rounded-xl
+                          rounded-lg
                           border
                           transition
                           sm:min-h-[64px]
+                          sm:rounded-xl
                           lg:min-h-[80px]
 
                           ${
                             selected
-                              ? 'border-white bg-white/10'
+                              ? 'border-white bg-white/15'
                               : events.length > 0
                               ? 'border-white/15 bg-white/[0.04] hover:bg-white/[0.08]'
                               : 'border-transparent'
@@ -647,8 +706,7 @@ export default function MoveCalendar() {
                             lg:text-lg
 
                             ${
-                              events.length >
-                              0
+                              events.length > 0
                                 ? 'text-white'
                                 : 'text-neutral-600'
                             }
@@ -695,34 +753,65 @@ export default function MoveCalendar() {
                 0 && (
                 <section
                   className="
-                    mt-6
+                    mt-5
                     rounded-2xl
                     border border-white/10
-                    bg-white/[0.03]
+                    bg-black/75
                     p-4
+                    backdrop-blur-md
+                    sm:mt-6
                     sm:p-5
                   "
                 >
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
-                    Eventos do dia
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                        Eventos do dia
+                      </p>
 
-                  <h3 className="mt-1 text-xl font-black text-white">
-                    {String(
-                      selectedDay
-                    ).padStart(
-                      2,
-                      '0'
-                    )}
-                    /
-                    {String(
-                      currentMonth.monthIndex +
-                        1
-                    ).padStart(
-                      2,
-                      '0'
-                    )}
-                  </h3>
+                      <h3 className="mt-1 text-xl font-black text-white">
+                        {String(
+                          selectedDay
+                        ).padStart(
+                          2,
+                          '0'
+                        )}
+                        /
+                        {String(
+                          currentMonth.monthIndex +
+                            1
+                        ).padStart(
+                          2,
+                          '0'
+                        )}
+                      </h3>
+                    </div>
+
+                    {/* FECHA SÓ OS DETALHES */}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedDay(
+                          null
+                        )
+                      }
+                      aria-label="Fechar eventos do dia"
+                      className="
+                        flex h-9 w-9
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-white/10
+                        text-neutral-300
+                        transition
+                        hover:bg-white/20
+                        hover:text-white
+                      "
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
 
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
 
@@ -755,8 +844,9 @@ export default function MoveCalendar() {
                             className={`
                               rounded-xl
                               border
-                              bg-black/30
+                              bg-black/70
                               p-4
+                              backdrop-blur-md
                               ${borderByType[event.type]}
                             `}
                           >
@@ -779,8 +869,7 @@ export default function MoveCalendar() {
                                 <p className="text-[9px] font-black uppercase tracking-wider text-neutral-500">
                                   {
                                     labelByType[
-                                      event
-                                        .type
+                                      event.type
                                     ]
                                   }
                                 </p>
@@ -861,38 +950,8 @@ export default function MoveCalendar() {
                 </section>
               )}
 
-              {/* FECHAR */}
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false);
-                  setSelectedDay(
-                    null
-                  );
-                }}
-                className="
-                  mt-6
-                  flex min-h-12
-                  w-full
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  bg-white
-                  px-4 py-3
-                  font-black
-                  uppercase
-                  text-black
-                  transition
-                  hover:bg-blue-600
-                  hover:text-white
-                  active:scale-[0.98]
-                "
-              >
-                <X className="h-4 w-4" />
-
-                Fechar calendário
-              </button>
+              {/* ESPAÇO INFERIOR MOBILE */}
+              <div className="h-6" />
 
             </main>
           </div>
