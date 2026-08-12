@@ -1,4 +1,5 @@
 import MoveCalendar from './MoveCalendar';
+import ThemeToggle from './ThemeToggle';
 
 export default function MoveHeader() {
   return (
@@ -18,7 +19,8 @@ export default function MoveHeader() {
         MOVE
       </h1>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
+
         <a
           href="https://www.instagram.com/move.alphaville/"
           target="_blank"
@@ -38,7 +40,12 @@ export default function MoveHeader() {
           @MOVE.ALPHAVILLE
         </a>
 
+        {/* MODO CLARO / ESCURO */}
+        <ThemeToggle />
+
+        {/* CALENDÁRIO */}
         <MoveCalendar />
+
       </div>
     </header>
   );
