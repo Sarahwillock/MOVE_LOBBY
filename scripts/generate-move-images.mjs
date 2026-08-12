@@ -26,6 +26,10 @@ const allowedExtensions = new Set([
 
 function getImages(directory, baseDirectory = directory) {
   if (!fs.existsSync(directory)) {
+    console.warn(
+      `MOVE: pasta de imagens não encontrada: ${directory}`
+    );
+
     return [];
   }
 
@@ -36,11 +40,18 @@ function getImages(directory, baseDirectory = directory) {
   const images = [];
 
   for (const entry of entries) {
-    const fullPath = path.join(directory, entry.name);
+    const fullPath = path.join(
+      directory,
+      entry.name
+    );
 
+    // Procura também dentro de subpastas
     if (entry.isDirectory()) {
       images.push(
-        ...getImages(fullPath, baseDirectory)
+        ...getImages(
+          fullPath,
+          baseDirectory
+        )
       );
 
       continue;
@@ -50,25 +61,32 @@ function getImages(directory, baseDirectory = directory) {
       .extname(entry.name)
       .toLowerCase();
 
+    // Ignora arquivos que não são imagens
     if (!allowedExtensions.has(extension)) {
       continue;
     }
 
     const relativePath = path
-      .relative(baseDirectory, fullPath)
+      .relative(
+        baseDirectory,
+        fullPath
+      )
       .split(path.sep)
       .join('/');
 
-    images.push(`/images/${relativePath}`);
+    images.push(
+      `/images/${relativePath}`
+    );
   }
 
   return images;
 }
 
-const images = getImages(imagesDirectory).sort();
+const images = getImages(
+  imagesDirectory
+).sort();
 
-const content = `
-// ARQUIVO GERADO AUTOMATICAMENTE.
+const content = `// ARQUIVO GERADO AUTOMATICAMENTE.
 // NÃO EDITE MANUALMENTE.
 
 export const moveImages = ${JSON.stringify(
@@ -78,16 +96,23 @@ export const moveImages = ${JSON.stringify(
 )} as const;
 `;
 
-fs.mkdirSync(path.dirname(outputFile), {
-  recursive: true
-});
+fs.mkdirSync(
+  path.dirname(outputFile),
+  {
+    recursive: true
+  }
+);
 
 fs.writeFileSync(
   outputFile,
-  content.trimStart(),
+  content,
   'utf8'
 );
 
 console.log(
-  \`MOVE: ${images.length} imagens encontradas.\`
+  `MOVE: ${images.length} imagens encontradas.`
 );
+
+images.forEach((image) => {
+  console.log(`  - ${image}`);
+});
