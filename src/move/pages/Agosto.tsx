@@ -231,13 +231,31 @@ export default function Agosto() {
                       )}
 
                       {event.location && (
-                        <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                          <MapPin
-                            className={`h-4 w-4 shrink-0 ${styles.icon}`}
-                          />
-                          {event.location}
-                        </div>
-                      )}
+  event.location === 'Prédio da igreja' ? (
+    <a
+      href="https://maps.app.goo.gl/Un9HZ4mLqykChKxSA"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
+    >
+      <MapPin
+        className={`h-4 w-4 shrink-0 ${styles.icon}`}
+      />
+
+      <span className="underline underline-offset-4">
+        {event.location}
+      </span>
+    </a>
+  ) : (
+    <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+      <MapPin
+        className={`h-4 w-4 shrink-0 ${styles.icon}`}
+      />
+
+      {event.location}
+    </div>
+  )
+)}}
 
                     </div>
                   )}
