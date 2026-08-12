@@ -67,9 +67,9 @@ const AGENDA: MonthAgenda[] = [
         weekday: 'SEXTA-FEIRA',
         title: 'Jejum de 40 Horas',
         time: '20h',
-        location: 'igreja',
+        location: 'Prédio da igreja',
         description:
-          'REVIVA O DOM QUE HÁ EM TI',
+          'Reviva o Dom que Há em Ti',
         highlight: true,
         type: 'igreja'
       },
@@ -88,7 +88,7 @@ const AGENDA: MonthAgenda[] = [
         weekday: 'QUARTA-FEIRA',
         title: 'Aula Inaugural | Escola Huios',
         time: '20h',
-        location: 'Campus Alphaville',
+        location: 'Prédio da igreja',
         type: 'igreja'
       },
       {
