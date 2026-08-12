@@ -761,30 +761,210 @@ export const EVENTS_2026: MoveEvent[] = [
 ========================================================= */
 
 /**
- * Todos os eventos de um mês.
+ * Cria a data inicial do evento.
  */
-export function getEventsByMonth(
-  month: number
+export function getEventStartDate(
+  event: MoveEvent
 ) {
-  return EVENTS_2026.filter(
-    (event) =>
-      event.month === month
+  return new Date(
+    event.year,
+    event.month - 1,
+    event.day,
+    0,
+    0,
+    0,
+    0
   );
 }
 
 /**
- * Eventos relacionados à MOVE.
+ * Cria a data final do evento.
+ *
+ * Se houver endDay, usa o último dia.
+ * Caso contrário, usa o próprio dia.
+ *
+ * O horário é 23:59:59 para que um evento
+ * do dia atual não desapareça durante o dia.
+ */
+export function getEventEndDate(
+  event: MoveEvent
+) {
+  return new Date(
+    event.year,
+    event.month - 1,
+    event.endDay ?? event.day,
+    23,
+    59,
+    59,
+    999
+  );
+}
+
+/**
+ * Retorna a data de hoje sem horário.
+ */
+export function getToday() {
+  const now = new Date();
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    0,
+    0,
+    0,
+    0
+  );
+}
+
+/**
+ * Verifica se o evento já terminou.
+ *
+ * Eventos do dia atual continuam aparecendo.
+ *
+ * Eventos de vários dias continuam aparecendo
+ * até o último dia definido em endDay.
+ */
+export function isEventPast(
+  event: MoveEvent,
+  referenceDate: Date = new Date()
+) {
+  const today = new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+    0,
+    0,
+    0,
+    0
+  );
+
+  const eventEnd = new Date(
+    event.year,
+    event.month - 1,
+    event.endDay ?? event.day,
+    0,
+    0,
+    0,
+    0
+  );
+
+  return eventEnd.getTime() < today.getTime();
+}
+
+/**
+ * Verifica se o evento está acontecendo hoje.
+ *
+ * Também funciona para eventos de vários dias.
+ */
+export function isEventToday(
+  event: MoveEvent,
+  referenceDate: Date = new Date()
+) {
+  const today = new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+    0,
+    0,
+    0,
+    0
+  );
+
+  const start = new Date(
+    event.year,
+    event.month - 1,
+    event.day,
+    0,
+    0,
+    0,
+    0
+  );
+
+  const end = new Date(
+    event.year,
+    event.month - 1,
+    event.endDay ?? event.day,
+    0,
+    0,
+    0,
+    0
+  );
+
+  return (
+    today.getTime() >= start.getTime() &&
+    today.getTime() <= end.getTime()
+  );
+}
+
+/**
+ * Ordena eventos por:
+ *
+ * 1. Data
+ * 2. Horário
+ */
+export function sortEvents(
+  events: MoveEvent[]
+) {
+  return [...events].sort((a, b) => {
+    const dateA = new Date(
+      a.year,
+      a.month - 1,
+      a.day
+    ).getTime();
+
+    const dateB = new Date(
+      b.year,
+      b.month - 1,
+      b.day
+    ).getTime();
+
+    if (dateA !== dateB) {
+      return dateA - dateB;
+    }
+
+    return (a.time ?? '').localeCompare(
+      b.time ?? ''
+    );
+  });
+}
+
+/**
+ * Todos os eventos de determinado mês.
+ *
+ * Inclui eventos passados.
+ *
+ * Útil quando precisamos consultar
+ * o histórico completo.
+ */
+export function getEventsByMonth(
+  month: number
+) {
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        event.month === month
+    )
+  );
+}
+
+/**
+ * Todos os eventos relacionados à MOVE.
+ *
+ * Inclui:
  *
  * MOVE
  * GC
  * IGREJA + MOVE
  */
 export function getMoveEvents() {
-  return EVENTS_2026.filter(
-    (event) =>
-      event.type === 'move' ||
-      event.type === 'gc' ||
-      event.type === 'igreja-move'
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        event.type === 'move' ||
+        event.type === 'gc' ||
+        event.type === 'igreja-move'
+    )
   );
 }
 
@@ -794,14 +974,16 @@ export function getMoveEvents() {
 export function getMoveEventsByMonth(
   month: number
 ) {
-  return EVENTS_2026.filter(
-    (event) =>
-      event.month === month &&
-      (
-        event.type === 'move' ||
-        event.type === 'gc' ||
-        event.type === 'igreja-move'
-      )
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        event.month === month &&
+        (
+          event.type === 'move' ||
+          event.type === 'gc' ||
+          event.type === 'igreja-move'
+        )
+    )
   );
 }
 
@@ -809,77 +991,238 @@ export function getMoveEventsByMonth(
  * Eventos exclusivos da Igreja.
  */
 export function getChurchEvents() {
-  return EVENTS_2026.filter(
-    (event) =>
-      event.type === 'igreja'
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        event.type === 'igreja'
+    )
   );
 }
 
 /**
- * Retorna os eventos de um dia.
+ * Retorna todos os eventos atuais
+ * e futuros.
+ *
+ * EVENTOS PASSADOS DESAPARECEM
+ * AUTOMATICAMENTE.
+ *
+ * Exemplo:
+ *
+ * Se hoje for 12/08:
+ *
+ * 07/08 -> não aparece
+ * 11/08 -> não aparece
+ * 13/08 -> aparece
+ * 14/08 -> aparece
+ */
+export function getUpcomingEvents(
+  referenceDate: Date = new Date()
+) {
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) =>
+        !isEventPast(
+          event,
+          referenceDate
+        )
+    )
+  );
+}
+
+/**
+ * Retorna somente os próximos eventos
+ * relacionados à MOVE.
+ *
+ * Inclui:
+ *
+ * MOVE
+ * GC
+ * IGREJA + MOVE
+ */
+export function getUpcomingMoveEvents(
+  referenceDate: Date = new Date()
+) {
+  return getUpcomingEvents(
+    referenceDate
+  ).filter(
+    (event) =>
+      event.type === 'move' ||
+      event.type === 'gc' ||
+      event.type === 'igreja-move'
+  );
+}
+
+/**
+ * Próximos eventos de determinado mês.
+ *
+ * Essa função é ideal para a Agenda.
+ */
+export function getUpcomingEventsByMonth(
+  month: number,
+  referenceDate: Date = new Date()
+) {
+  return getUpcomingEvents(
+    referenceDate
+  ).filter(
+    (event) =>
+      event.month === month
+  );
+}
+
+/**
+ * Próximos eventos MOVE
+ * de determinado mês.
+ */
+export function getUpcomingMoveEventsByMonth(
+  month: number,
+  referenceDate: Date = new Date()
+) {
+  return getUpcomingMoveEvents(
+    referenceDate
+  ).filter(
+    (event) =>
+      event.month === month
+  );
+}
+
+/**
+ * Retorna o próximo evento geral.
+ *
+ * Igreja + MOVE + GC.
+ */
+export function getNextEvent(
+  referenceDate: Date = new Date()
+) {
+  return (
+    getUpcomingEvents(
+      referenceDate
+    )[0] ?? null
+  );
+}
+
+/**
+ * Retorna automaticamente
+ * o próximo evento da MOVE.
+ *
+ * Inclui:
+ *
+ * MOVE
+ * GC
+ * IGREJA + MOVE
+ *
+ * Essa é a função que a HOME
+ * deve usar no card:
+ *
+ * "PRÓXIMO EVENTO"
+ */
+export function getNextMoveEvent(
+  referenceDate: Date = new Date()
+) {
+  return (
+    getUpcomingMoveEvents(
+      referenceDate
+    )[0] ?? null
+  );
+}
+
+/**
+ * Retorna eventos de uma data específica.
  *
  * Também considera eventos que
  * acontecem durante vários dias.
+ *
+ * Exemplo:
+ *
+ * Jejum:
+ * 13 a 16/08
+ *
+ * aparecerá ao tocar:
+ *
+ * 13
+ * 14
+ * 15
+ * 16
  */
 export function getEventsByDate(
   year: number,
   month: number,
   day: number
 ) {
-  return EVENTS_2026.filter(
-    (event) => {
-      if (
-        event.year !== year ||
-        event.month !== month
-      ) {
-        return false;
-      }
+  return sortEvents(
+    EVENTS_2026.filter(
+      (event) => {
+        if (
+          event.year !== year ||
+          event.month !== month
+        ) {
+          return false;
+        }
 
-      if (event.endDay) {
-        return (
-          day >= event.day &&
-          day <= event.endDay
-        );
-      }
+        if (event.endDay) {
+          return (
+            day >= event.day &&
+            day <= event.endDay
+          );
+        }
 
-      return event.day === day;
-    }
+        return event.day === day;
+      }
+    )
   );
 }
 
 /**
- * Ordena os eventos.
+ * Retorna somente eventos atuais/futuros
+ * de uma data específica.
  */
-export function sortEvents(
-  events: MoveEvent[]
+export function getUpcomingEventsByDate(
+  year: number,
+  month: number,
+  day: number,
+  referenceDate: Date = new Date()
 ) {
-  return [...events].sort(
-    (a, b) => {
-      const dateA =
-        new Date(
-          a.year,
-          a.month - 1,
-          a.day
-        ).getTime();
+  return getEventsByDate(
+    year,
+    month,
+    day
+  ).filter(
+    (event) =>
+      !isEventPast(
+        event,
+        referenceDate
+      )
+  );
+}
 
-      const dateB =
-        new Date(
-          b.year,
-          b.month - 1,
-          b.day
-        ).getTime();
+/**
+ * Agrupa os próximos eventos por mês.
+ *
+ * Pode ser usado na Agenda para criar:
+ *
+ * AGOSTO
+ * eventos...
+ *
+ * SETEMBRO
+ * eventos...
+ *
+ * OUTUBRO
+ * eventos...
+ */
+export function getUpcomingEventsGroupedByMonth(
+  referenceDate: Date = new Date()
+) {
+  return MONTHS_2026.map(
+    (month) => ({
+      ...month,
 
-      if (
-        dateA !== dateB
-      ) {
-        return dateA - dateB;
-      }
-
-      return (
-        a.time ?? ''
-      ).localeCompare(
-        b.time ?? ''
-      );
-    }
+      events:
+        getUpcomingEventsByMonth(
+          month.number,
+          referenceDate
+        )
+    })
+  ).filter(
+    (month) =>
+      month.events.length > 0
   );
 }
