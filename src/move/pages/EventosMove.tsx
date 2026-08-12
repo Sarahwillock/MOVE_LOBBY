@@ -4,7 +4,7 @@ import { CalendarDays } from 'lucide-react';
 
 import {
   MONTHS_2026,
-  getMoveEventsByMonth
+  getUpcomingMoveEventsByMonth
 } from '../data/events2026';
 
 import { moveImages } from '../moveImages';
@@ -49,14 +49,12 @@ function Slideshow({
 
   const [currentImage, setCurrentImage] =
     React.useState(
-      startOffset %
-        availableImages.length
+      startOffset % availableImages.length
     );
 
   React.useEffect(() => {
     setCurrentImage(
-      startOffset %
-        availableImages.length
+      startOffset % availableImages.length
     );
   }, [
     startOffset,
@@ -64,25 +62,20 @@ function Slideshow({
   ]);
 
   React.useEffect(() => {
-    if (
-      availableImages.length <= 1
-    ) {
+    if (availableImages.length <= 1) {
       return;
     }
 
-    const interval =
-      window.setInterval(() => {
-        setCurrentImage(
-          (current) =>
-            (current + 1) %
-            availableImages.length
-        );
-      }, delay);
+    const interval = window.setInterval(() => {
+      setCurrentImage(
+        (current) =>
+          (current + 1) %
+          availableImages.length
+      );
+    }, delay);
 
     return () => {
-      window.clearInterval(
-        interval
-      );
+      window.clearInterval(interval);
     };
   }, [
     availableImages.length,
@@ -91,62 +84,66 @@ function Slideshow({
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-black">
-      {availableImages.map(
-        (image, index) => {
-          const isActive =
-            index === currentImage;
 
-          return (
-            <React.Fragment
-              key={`${image}-${index}`}
-            >
-              {/* FUNDO DESFOCADO */}
-              <img
-                src={image}
-                alt=""
-                aria-hidden="true"
-                className={`
-                  absolute inset-0
-                  h-full w-full
-                  scale-110
-                  object-cover
-                  blur-2xl
-                  transition-opacity
-                  duration-[1800ms]
-                  ease-in-out
-                  ${
-                    isActive
-                      ? 'opacity-60'
-                      : 'opacity-0'
-                  }
-                `}
-              />
+      {availableImages.map((image, index) => {
+        const isActive =
+          index === currentImage;
 
-              {/* FOTO INTEIRA */}
-              <img
-                src={image}
-                alt=""
-                className={`
-                  absolute inset-0
-                  h-full w-full
-                  object-contain
-                  object-center
-                  transition-all
-                  duration-[1800ms]
-                  ease-in-out
-                  ${
-                    isActive
-                      ? 'scale-100 opacity-100'
-                      : 'scale-[1.02] opacity-0'
-                  }
-                `}
-              />
-            </React.Fragment>
-          );
-        }
-      )}
+        return (
+          <React.Fragment
+            key={`${image}-${index}`}
+          >
+
+            {/* FUNDO DESFOCADO */}
+            <img
+              src={image}
+              alt=""
+              aria-hidden="true"
+              className={`
+                absolute inset-0
+                h-full w-full
+                scale-110
+                object-cover
+                blur-2xl
+                transition-opacity
+                duration-[1800ms]
+                ease-in-out
+
+                ${
+                  isActive
+                    ? 'opacity-60'
+                    : 'opacity-0'
+                }
+              `}
+            />
+
+            {/* FOTO INTEIRA */}
+            <img
+              src={image}
+              alt=""
+              className={`
+                absolute inset-0
+                h-full w-full
+                object-contain
+                object-center
+                transition-all
+                duration-[1800ms]
+                ease-in-out
+
+                ${
+                  isActive
+                    ? 'scale-100 opacity-100'
+                    : 'scale-[1.02] opacity-0'
+                }
+              `}
+            />
+
+          </React.Fragment>
+        );
+      })}
 
       <div className="absolute inset-0 bg-black/10" />
+
     </div>
   );
 }
@@ -224,11 +221,15 @@ function getBorder(
 }
 
 export default function EventosMove() {
+  /* =======================================================
+     SOMENTE EVENTOS FUTUROS DA MOVE
+  ======================================================= */
+
   const monthsWithEvents =
     MONTHS_2026.map(
       (month) => {
         const events =
-          getMoveEventsByMonth(
+          getUpcomingMoveEventsByMonth(
             month.number
           );
 
@@ -239,18 +240,33 @@ export default function EventosMove() {
       }
     );
 
+  /*
+   * Remove automaticamente os meses
+   * que não possuem mais nenhum evento futuro.
+   */
+  const visibleMonths =
+    monthsWithEvents.filter(
+      (month) =>
+        month.events.length > 0
+    );
+
   return (
     <div className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-8">
 
-      {/* CABEÇALHO */}
+      {/* ===================================================
+          CABEÇALHO
+      =================================================== */}
+
       <header className="mb-8">
 
         <div className="flex items-center gap-2 text-pink-500">
+
           <CalendarDays className="h-5 w-5" />
 
           <span className="text-xs font-black uppercase tracking-[0.25em]">
             MOVE ALPHAVILLE
           </span>
+
         </div>
 
         <h1 className="mt-2 text-4xl font-black italic uppercase text-white sm:text-5xl lg:text-6xl">
@@ -258,18 +274,21 @@ export default function EventosMove() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400">
-          Confira a programação da MOVE,
-          dos GCs e dos eventos em conjunto
-          com a Igreja entre agosto e dezembro.
+          Confira os próximos eventos da
+          MOVE, dos GCs e das programações
+          realizadas em conjunto com a Igreja.
         </p>
 
       </header>
 
-      {/* MESES */}
+      {/* ===================================================
+          PROGRAMAÇÃO
+      =================================================== */}
+
       <div className="mb-5">
 
         <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
-          Programação disponível
+          Próximos eventos
         </p>
 
         <h2 className="mt-1 text-xl font-black uppercase text-white">
@@ -278,244 +297,179 @@ export default function EventosMove() {
 
       </div>
 
-      {/* CARDS */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      {/* ===================================================
+          CARDS DOS MESES
+      =================================================== */}
 
-        {monthsWithEvents.map(
-          (month, index) => {
-            const images =
-              getImagesForMonth(
-                month.number
+      {visibleMonths.length > 0 ? (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+
+          {visibleMonths.map(
+            (month, index) => {
+              const images =
+                getImagesForMonth(
+                  month.number
+                );
+
+              const fallbackImage =
+                getFallbackImage(
+                  month.number
+                );
+
+              const border =
+                getBorder(
+                  month.number
+                );
+
+              return (
+                <Link
+                  key={month.number}
+                  to={month.path}
+                  aria-label={`Abrir eventos de ${month.name}`}
+                  className={`
+                    group relative
+                    block
+                    aspect-[4/3]
+                    min-h-[230px]
+                    overflow-hidden
+                    rounded-2xl
+                    border
+                    bg-neutral-900
+                    shadow-xl
+                    transition-transform
+                    duration-300
+                    hover:scale-[1.01]
+                    active:scale-[0.99]
+
+                    ${border}
+                  `}
+                >
+
+                  {/* FOTOS */}
+                  <Slideshow
+                    images={images}
+                    fallbackImage={
+                      fallbackImage
+                    }
+                    delay={
+                      5000 +
+                      index * 700
+                    }
+                    startOffset={
+                      index
+                    }
+                  />
+
+                  {/* GRADIENTE */}
+                  <div
+                    className="
+                      absolute inset-0
+                      bg-gradient-to-t
+                      from-black/90
+                      via-black/20
+                      to-transparent
+                    "
+                  />
+
+                  {/* INFORMAÇÕES */}
+                  <div
+                    className="
+                      absolute
+                      bottom-0 left-0 right-0
+                      z-10
+                      p-5
+                    "
+                  >
+
+                    <p
+                      className="
+                        text-[10px]
+                        font-black uppercase
+                        tracking-[0.22em]
+                        text-white/60
+                      "
+                    >
+                      Ver próximos eventos
+                    </p>
+
+                    <span
+                      className="
+                        mt-1 block
+                        text-4xl
+                        font-black italic
+                        uppercase
+                        text-white
+                        sm:text-5xl
+                      "
+                    >
+                      {month.name}
+                    </span>
+
+                    <p
+                      className="
+                        mt-2
+                        text-xs
+                        font-bold uppercase
+                        tracking-wider
+                        text-white/60
+                      "
+                    >
+                      {month.events.length}{' '}
+                      {month.events.length === 1
+                        ? 'evento futuro'
+                        : 'eventos futuros'}
+                    </p>
+
+                  </div>
+
+                </Link>
               );
+            }
+          )}
 
-            const fallbackImage =
-              getFallbackImage(
-                month.number
-              );
+        </div>
+      ) : (
+        <section
+          className="
+            rounded-2xl
+            border
+            border-dashed
+            border-white/10
+            bg-black/50
+            p-8
+            text-center
+            backdrop-blur-md
+          "
+        >
+          <CalendarDays className="mx-auto h-7 w-7 text-neutral-500" />
 
-            const border =
-              getBorder(
-                month.number
-              );
+          <h2 className="mt-4 text-lg font-black uppercase text-white">
+            Nenhum próximo evento
+          </h2>
 
-            return (
-              <Link
-                key={month.number}
-                to={month.path}
-                className={`
-                  group relative block
-                  aspect-[4/3]
-                  min-h-[230px]
-                  overflow-hidden
-                  rounded-2xl
-                  border
-                  bg-neutral-900
-                  shadow-xl
-                  transition-transform
-                  duration-300
-                  hover:scale-[1.01]
-                  active:scale-[0.99]
-                  ${border}
-                `}
-              >
+          <p className="mt-2 text-sm font-medium text-neutral-400">
+            Não há eventos futuros da MOVE
+            cadastrados no momento.
+          </p>
 
-                <Slideshow
-                  images={images}
-                  fallbackImage={
-                    fallbackImage
-                  }
-                  delay={
-                    5000 +
-                    index * 700
-                  }
-                  startOffset={
-                    index
-                  }
-                />
+        </section>
+      )}
 
-                <div
-                  className="
-                    absolute inset-0
-                    bg-gradient-to-t
-                    from-black/90
-                    via-black/20
-                    to-transparent
-                  "
-                />
+      {/* ===================================================
+          INFORMAÇÃO
+      =================================================== */}
 
-                <div className="absolute bottom-0 left-0 right-0 z-10 p-5">
-
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
-                    Ver eventos
-                  </p>
-
-                  <span className="mt-1 block text-4xl font-black italic uppercase text-white sm:text-5xl">
-                    {month.name}
-                  </span>
-
-                  <p className="mt-2 text-xs font-bold uppercase tracking-wider text-white/60">
-                    {month.events.length}{' '}
-                    {month.events.length === 1
-                      ? 'evento'
-                      : 'eventos'}
-                  </p>
-
-                </div>
-
-              </Link>
-            );
-          }
-        )}
-
-      </div>
-
-      {/* INFORMAÇÃO */}
       <section className="mt-8 rounded-2xl border border-pink-600/30 bg-pink-600/10 p-5">
 
         <p className="text-sm font-semibold leading-relaxed text-neutral-300">
-          📅 Aqui aparecem apenas eventos
+          Aqui aparecem apenas eventos futuros
           relacionados à MOVE: Movenites,
-          Hangouts, GCs e eventos em conjunto
-          com a Igreja.
+          Hangouts, GCs e eventos realizados em
+          conjunto com a Igreja.
         </p>
 
       </section>
 
     </div>
-  );
-}
-/* =========================================================
-   DATA ATUAL / EVENTOS FUTUROS
-========================================================= */
-
-/**
- * Retorna a data de hoje sem horário.
- */
-export function getToday() {
-  const now = new Date();
-
-  return new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate()
-  );
-}
-
-/**
- * Data inicial do evento.
- */
-export function getEventStartDate(
-  event: MoveEvent
-) {
-  return new Date(
-    event.year,
-    event.month - 1,
-    event.day
-  );
-}
-
-/**
- * Data final do evento.
- *
- * Se for evento de vários dias,
- * usa endDay.
- */
-export function getEventEndDate(
-  event: MoveEvent
-) {
-  return new Date(
-    event.year,
-    event.month - 1,
-    event.endDay ?? event.day
-  );
-}
-
-/**
- * Verifica se o evento já passou.
- *
- * Eventos que acontecem hoje continuam aparecendo.
- */
-export function isPastEvent(
-  event: MoveEvent
-) {
-  const today = getToday();
-
-  const eventEnd =
-    getEventEndDate(event);
-
-  return eventEnd < today;
-}
-
-/**
- * Retorna somente eventos atuais/futuros.
- */
-export function getUpcomingEvents() {
-  return sortEvents(
-    EVENTS_2026.filter(
-      (event) =>
-        !isPastEvent(event)
-    )
-  );
-}
-
-/**
- * Próximo evento geral:
- * Igreja + MOVE + GC.
- */
-export function getNextEvent() {
-  return (
-    getUpcomingEvents()[0] ??
-    null
-  );
-}
-
-/**
- * Próximo evento relacionado à MOVE.
- *
- * MOVE
- * GC
- * Igreja + MOVE
- */
-export function getNextMoveEvent() {
-  const events =
-    getUpcomingEvents().filter(
-      (event) =>
-        event.type === 'move' ||
-        event.type === 'gc' ||
-        event.type ===
-          'igreja-move'
-    );
-
-  return events[0] ?? null;
-}
-
-/**
- * Eventos futuros de determinado mês.
- */
-export function getUpcomingEventsByMonth(
-  month: number
-) {
-  return getUpcomingEvents().filter(
-    (event) =>
-      event.month === month
-  );
-}
-
-/**
- * Eventos futuros da MOVE
- * de determinado mês.
- */
-export function getUpcomingMoveEventsByMonth(
-  month: number
-) {
-  return getUpcomingEvents().filter(
-    (event) =>
-      event.month === month &&
-      (
-        event.type === 'move' ||
-        event.type === 'gc' ||
-        event.type ===
-          'igreja-move'
-      )
   );
 }
