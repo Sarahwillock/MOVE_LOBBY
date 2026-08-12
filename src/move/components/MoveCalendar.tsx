@@ -9,258 +9,14 @@ import {
 
 import EventActions from './EventActions';
 
-type EventType =
-  | 'igreja'
-  | 'move'
-  | 'gc';
-
-type CalendarEvent = {
-  day: number;
-  type: EventType;
-  title: string;
-  time?: string;
-  location?: string;
-};
-
-type MonthData = {
-  name: string;
-  monthIndex: number;
-  events: CalendarEvent[];
-};
-
-const MONTHS: MonthData[] = [
-  {
-    name: 'AGOSTO',
-    monthIndex: 7,
-    events: [
-      // GCs
-      {
-        day: 7,
-        type: 'gc',
-        title: 'GC Lobby',
-        time: '19h',
-        location: 'Alphaville'
-      },
-      {
-        day: 7,
-        type: 'gc',
-        title: 'GC Rock — 15 a 18 anos',
-        time: '20h',
-        location: 'Alphaville'
-      },
-      {
-        day: 7,
-        type: 'gc',
-        title: 'GC Rock — 12 a 14 anos',
-        time: '20h',
-        location: 'Prédio da igreja'
-      },
-
-      // IGREJA
-      {
-        day: 11,
-        type: 'igreja',
-        title: 'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online'
-      },
-
-      {
-        day: 13,
-        type: 'igreja',
-        title: 'Jejum de 40 Horas'
-      },
-      {
-        day: 13,
-        type: 'gc',
-        title: 'GC Conecta',
-        time: '20h',
-        location: 'Alphaville'
-      },
-
-      {
-        day: 14,
-        type: 'igreja',
-        title: 'Jejum de 40 Horas',
-        time: '20h',
-        location: 'Prédio da igreja'
-      },
-      {
-        day: 14,
-        type: 'gc',
-        title: 'GC Rock — 15 a 18 anos',
-        time: '20h',
-        location: 'Alphaville'
-      },
-      {
-        day: 14,
-        type: 'gc',
-        title: 'GC Rock — 12 a 14 anos',
-        time: '20h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 15,
-        type: 'igreja',
-        title: 'Jejum de 40 Horas — Programação de oração por GCs'
-      },
-
-      {
-        day: 16,
-        type: 'igreja',
-        title: 'Encerramento do Jejum',
-        time: '10h'
-      },
-
-      {
-        day: 18,
-        type: 'igreja',
-        title: 'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online'
-      },
-
-      {
-        day: 19,
-        type: 'igreja',
-        title: 'Aula Inaugural | Escola Huios',
-        time: '20h',
-        location: 'Campus Alphaville'
-      },
-
-      {
-        day: 21,
-        type: 'gc',
-        title: 'GC Lobby',
-        time: '19h',
-        location: 'Alphaville'
-      },
-      {
-        day: 21,
-        type: 'gc',
-        title: 'GC Rock — 15 a 18 anos',
-        time: '20h',
-        location: 'Alphaville'
-      },
-      {
-        day: 21,
-        type: 'gc',
-        title: 'GC Rock — 12 a 14 anos',
-        time: '20h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 25,
-        type: 'igreja',
-        title: 'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online'
-      },
-
-      {
-        day: 26,
-        type: 'igreja',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja'
-      },
-
-      // IGREJA + MOVE
-      {
-        day: 28,
-        type: 'igreja',
-        title: 'Chá das Sisters'
-      },
-      {
-        day: 28,
-        type: 'move',
-        title: 'Chá das Sisters'
-      },
-
-      // MOVE
-      {
-        day: 29,
-        type: 'move',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja'
-      }
-    ]
-  },
-
-  {
-    name: 'SETEMBRO',
-    monthIndex: 8,
-    events: [
-      {
-        day: 1,
-        type: 'igreja',
-        title: 'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 6,
-        type: 'igreja',
-        title: 'Início do Jejum de 14 Dias'
-      },
-
-      {
-        day: 12,
-        type: 'igreja',
-        title: 'Conferência Kids',
-        location: 'Santo André'
-      },
-
-      {
-        day: 16,
-        type: 'igreja',
-        title: 'Oração Geral | Período de Jejum',
-        time: '19h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 19,
-        type: 'move',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 20,
-        type: 'igreja',
-        title: 'Culto de Encerramento do Jejum'
-      },
-
-      {
-        day: 23,
-        type: 'igreja',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 25,
-        type: 'igreja',
-        title: 'Culto das Mulheres',
-        time: '19h',
-        location: 'Prédio da igreja'
-      },
-
-      {
-        day: 26,
-        type: 'move',
-        title: 'Hangout dos Jovens',
-        time: '19h',
-        location: 'Prédio da igreja'
-      }
-    ]
-  }
-];
+import {
+  EVENTS_2026,
+  MONTHS_2026,
+  getEventsByDate,
+  sortEvents,
+  type EventType,
+  type MoveEvent
+} from '../data/events2026';
 
 const WEEK_DAYS = [
   'DOM',
@@ -272,26 +28,37 @@ const WEEK_DAYS = [
   'SÁB'
 ];
 
+const CHURCH_MAP_URL =
+  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
+
+/* =========================================================
+   CORES
+========================================================= */
+
 const colorByType: Record<EventType, string> = {
   igreja: 'bg-blue-500',
-  move: 'bg-red-500',
-  gc: 'bg-emerald-500'
+  move: 'bg-pink-500',
+  gc: 'bg-emerald-500',
+  'igreja-move': 'bg-violet-500'
 };
 
 const borderByType: Record<EventType, string> = {
   igreja: 'border-blue-500/30',
-  move: 'border-red-500/30',
-  gc: 'border-emerald-500/30'
+  move: 'border-pink-500/30',
+  gc: 'border-emerald-500/30',
+  'igreja-move': 'border-violet-500/30'
 };
 
 const labelByType: Record<EventType, string> = {
   igreja: 'Igreja',
   move: 'MOVE',
-  gc: 'GC'
+  gc: 'GC',
+  'igreja-move': 'Igreja + MOVE'
 };
 
-const CHURCH_MAP_URL =
-  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
+/* =========================================================
+   COMPONENTE
+========================================================= */
 
 export default function MoveCalendar() {
   const [open, setOpen] =
@@ -305,18 +72,28 @@ export default function MoveCalendar() {
 
   const year = 2026;
 
+  /* =======================================================
+     MÊS ATUAL
+  ======================================================= */
+
   const currentMonth =
-    MONTHS[monthPosition];
+    MONTHS_2026[monthPosition];
+
+  const monthNumber =
+    currentMonth.number;
+
+  const monthIndex =
+    monthNumber - 1;
 
   const firstDay = new Date(
     year,
-    currentMonth.monthIndex,
+    monthIndex,
     1
   ).getDay();
 
   const totalDays = new Date(
     year,
-    currentMonth.monthIndex + 1,
+    monthIndex + 1,
     0
   ).getDate();
 
@@ -325,25 +102,57 @@ export default function MoveCalendar() {
     (_, index) => index + 1
   );
 
+  /* =======================================================
+     EVENTOS DO MÊS
+  ======================================================= */
+
+  const monthEvents =
+    React.useMemo(() => {
+      return sortEvents(
+        EVENTS_2026.filter(
+          (event) =>
+            event.year === year &&
+            event.month === monthNumber
+        )
+      );
+    }, [monthNumber]);
+
+  /* =======================================================
+     EVENTOS DE UM DIA
+
+     Usa getEventsByDate porque ele também considera
+     eventos que duram vários dias.
+  ======================================================= */
+
   const getEventsForDay = (
     day: number
-  ) =>
-    currentMonth.events.filter(
-      (event) =>
-        event.day === day
+  ): MoveEvent[] => {
+    return sortEvents(
+      getEventsByDate(
+        year,
+        monthNumber,
+        day
+      )
     );
+  };
 
   const selectedEvents =
     selectedDay !== null
-      ? getEventsForDay(
-          selectedDay
-        )
+      ? getEventsForDay(selectedDay)
       : [];
+
+  /* =======================================================
+     FECHAR
+  ======================================================= */
 
   const closeCalendar = () => {
     setOpen(false);
     setSelectedDay(null);
   };
+
+  /* =======================================================
+     NAVEGAÇÃO
+  ======================================================= */
 
   const goPrevious = () => {
     if (monthPosition === 0) {
@@ -361,7 +170,7 @@ export default function MoveCalendar() {
   const goNext = () => {
     if (
       monthPosition ===
-      MONTHS.length - 1
+      MONTHS_2026.length - 1
     ) {
       return;
     }
@@ -373,6 +182,10 @@ export default function MoveCalendar() {
 
     setSelectedDay(null);
   };
+
+  /* =======================================================
+     BLOQUEIA SCROLL + ESC
+  ======================================================= */
 
   React.useEffect(() => {
     if (!open) {
@@ -388,9 +201,7 @@ export default function MoveCalendar() {
     const handleEscape = (
       event: KeyboardEvent
     ) => {
-      if (
-        event.key === 'Escape'
-      ) {
+      if (event.key === 'Escape') {
         closeCalendar();
       }
     };
@@ -411,16 +222,27 @@ export default function MoveCalendar() {
     };
   }, [open]);
 
+  /* =======================================================
+     ABRIR
+
+     Começa em agosto.
+  ======================================================= */
+
+  const openCalendar = () => {
+    setMonthPosition(0);
+    setSelectedDay(null);
+    setOpen(true);
+  };
+
   return (
     <>
-      {/* BOTÃO DO CALENDÁRIO */}
+      {/* ================================================
+          BOTÃO CALENDÁRIO
+      ================================================= */}
+
       <button
         type="button"
-        onClick={() => {
-          setOpen(true);
-          setMonthPosition(0);
-          setSelectedDay(null);
-        }}
+        onClick={openCalendar}
         aria-label="Abrir calendário"
         className="
           flex h-11 w-11
@@ -438,13 +260,17 @@ export default function MoveCalendar() {
         <CalendarDays className="h-5 w-5" />
       </button>
 
-      {/* FULLSCREEN */}
+      {/* ================================================
+          FULLSCREEN
+      ================================================= */}
+
       {open && (
         <div
           className="
             fixed inset-0
             z-[9999]
-            h-[100dvh] w-screen
+            h-[100dvh]
+            w-screen
             overflow-y-auto
             bg-black
             text-white
@@ -452,7 +278,10 @@ export default function MoveCalendar() {
         >
           <div className="min-h-[100dvh] w-full">
 
-            {/* CABEÇALHO FIXO */}
+            {/* ==========================================
+                CABEÇALHO
+            =========================================== */}
+
             <header
               className="
                 sticky top-0 z-50
@@ -463,8 +292,9 @@ export default function MoveCalendar() {
             >
               <div
                 className="
-                  mx-auto flex
-                  w-full max-w-6xl
+                  mx-auto
+                  flex w-full
+                  max-w-6xl
                   items-center
                   gap-2
                   px-3 py-3
@@ -473,7 +303,9 @@ export default function MoveCalendar() {
                   sm:py-4
                 "
               >
+
                 {/* ANTERIOR */}
+
                 <button
                   type="button"
                   onClick={goPrevious}
@@ -500,6 +332,7 @@ export default function MoveCalendar() {
                 </button>
 
                 {/* MÊS */}
+
                 <div className="min-w-0 flex-1 text-center">
                   <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-500 sm:text-[9px]">
                     Calendário 2026
@@ -511,12 +344,13 @@ export default function MoveCalendar() {
                 </div>
 
                 {/* PRÓXIMO */}
+
                 <button
                   type="button"
                   onClick={goNext}
                   disabled={
                     monthPosition ===
-                    MONTHS.length - 1
+                    MONTHS_2026.length - 1
                   }
                   aria-label="Próximo mês"
                   className="
@@ -537,7 +371,8 @@ export default function MoveCalendar() {
                   <ChevronRight className="h-5 w-5" />
                 </button>
 
-                {/* X - SEMPRE VISÍVEL */}
+                {/* FECHAR */}
+
                 <button
                   type="button"
                   onClick={closeCalendar}
@@ -561,10 +396,14 @@ export default function MoveCalendar() {
                 >
                   <X className="h-5 w-5" />
                 </button>
+
               </div>
             </header>
 
-            {/* CONTEÚDO */}
+            {/* ==========================================
+                CONTEÚDO
+            =========================================== */}
+
             <main
               className="
                 mx-auto
@@ -575,7 +414,9 @@ export default function MoveCalendar() {
                 lg:py-8
               "
             >
+
               {/* LEGENDA */}
+
               <div className="mb-5 flex flex-wrap justify-center gap-3 sm:mb-6 sm:gap-4">
 
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
@@ -584,7 +425,7 @@ export default function MoveCalendar() {
                 </div>
 
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-pink-500" />
                   MOVE
                 </div>
 
@@ -593,9 +434,17 @@ export default function MoveCalendar() {
                   GCs
                 </div>
 
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase text-neutral-300 sm:text-[10px]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-violet-500" />
+                  Igreja + MOVE
+                </div>
+
               </div>
 
-              {/* CALENDÁRIO */}
+              {/* ========================================
+                  CALENDÁRIO
+              ========================================= */}
+
               <section
                 className="
                   rounded-2xl
@@ -607,9 +456,11 @@ export default function MoveCalendar() {
                   lg:p-6
                 "
               >
+
                 <div className="grid grid-cols-7 gap-1 sm:gap-2">
 
                   {/* DIAS DA SEMANA */}
+
                   {WEEK_DAYS.map(
                     (day) => (
                       <div
@@ -628,7 +479,8 @@ export default function MoveCalendar() {
                     )
                   )}
 
-                  {/* ESPAÇOS */}
+                  {/* ESPAÇOS ANTES DO DIA 1 */}
+
                   {Array.from({
                     length: firstDay
                   }).map(
@@ -640,11 +492,10 @@ export default function MoveCalendar() {
                   )}
 
                   {/* DIAS */}
+
                   {days.map((day) => {
                     const events =
-                      getEventsForDay(
-                        day
-                      );
+                      getEventsForDay(day);
 
                     const types =
                       Array.from(
@@ -664,8 +515,7 @@ export default function MoveCalendar() {
                         key={day}
                         type="button"
                         disabled={
-                          events.length ===
-                          0
+                          events.length === 0
                         }
                         onClick={() =>
                           setSelectedDay(
@@ -715,9 +565,9 @@ export default function MoveCalendar() {
                           {day}
                         </span>
 
-                        {/* PONTOS */}
-                        {types.length >
-                          0 && (
+                        {/* PONTOS DOS TIPOS */}
+
+                        {types.length > 0 && (
                           <div
                             className="
                               absolute
@@ -742,15 +592,32 @@ export default function MoveCalendar() {
                             )}
                           </div>
                         )}
+
                       </button>
                     );
                   })}
+
                 </div>
               </section>
 
-              {/* DETALHES DO DIA */}
-              {selectedEvents.length >
-                0 && (
+              {/* ========================================
+                  RESUMO DO MÊS
+              ========================================= */}
+
+              <div className="mt-3 text-center">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">
+                  {monthEvents.length}{' '}
+                  {monthEvents.length === 1
+                    ? 'evento cadastrado'
+                    : 'eventos cadastrados'}
+                </p>
+              </div>
+
+              {/* ========================================
+                  DETALHES DO DIA
+              ========================================= */}
+
+              {selectedEvents.length > 0 && (
                 <section
                   className="
                     mt-5
@@ -763,7 +630,11 @@ export default function MoveCalendar() {
                     sm:p-5
                   "
                 >
+
+                  {/* CABEÇALHO DETALHES */}
+
                   <div className="flex items-start justify-between gap-3">
+
                     <div>
                       <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
                         Eventos do dia
@@ -778,8 +649,7 @@ export default function MoveCalendar() {
                         )}
                         /
                         {String(
-                          currentMonth.monthIndex +
-                            1
+                          monthNumber
                         ).padStart(
                           2,
                           '0'
@@ -787,13 +657,12 @@ export default function MoveCalendar() {
                       </h3>
                     </div>
 
-                    {/* FECHA SÓ OS DETALHES */}
+                    {/* FECHA SOMENTE O DIA */}
+
                     <button
                       type="button"
                       onClick={() =>
-                        setSelectedDay(
-                          null
-                        )
+                        setSelectedDay(null)
                       }
                       aria-label="Fechar eventos do dia"
                       className="
@@ -807,19 +676,20 @@ export default function MoveCalendar() {
                         transition
                         hover:bg-white/20
                         hover:text-white
+                        active:scale-95
                       "
                     >
                       <X className="h-4 w-4" />
                     </button>
+
                   </div>
+
+                  {/* EVENTOS */}
 
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
 
                     {selectedEvents.map(
-                      (
-                        event,
-                        index
-                      ) => {
+                      (event) => {
                         const isChurch =
                           event.location ===
                           'Prédio da igreja';
@@ -831,16 +701,23 @@ export default function MoveCalendar() {
                             2,
                             '0'
                           )}/${String(
-                            currentMonth.monthIndex +
-                              1
+                            monthNumber
                           ).padStart(
                             2,
                             '0'
                           )}`;
 
+                        const calendarTime =
+                          event.time
+                            ? event.time.replace(
+                                ':',
+                                'h'
+                              )
+                            : undefined;
+
                         return (
                           <div
-                            key={`${event.title}-${index}`}
+                            key={event.id}
                             className={`
                               rounded-xl
                               border
@@ -850,9 +727,11 @@ export default function MoveCalendar() {
                               ${borderByType[event.type]}
                             `}
                           >
+
                             <div className="flex items-start gap-3">
 
                               {/* COR */}
+
                               <span
                                 className={`
                                   mt-1.5
@@ -866,6 +745,7 @@ export default function MoveCalendar() {
                               <div className="min-w-0 flex-1">
 
                                 {/* TIPO */}
+
                                 <p className="text-[9px] font-black uppercase tracking-wider text-neutral-500">
                                   {
                                     labelByType[
@@ -875,22 +755,33 @@ export default function MoveCalendar() {
                                 </p>
 
                                 {/* TÍTULO */}
+
                                 <p className="mt-1 text-sm font-bold text-white sm:text-base">
-                                  {
-                                    event.title
-                                  }
+                                  {event.title}
                                 </p>
 
-                                {/* HORÁRIO */}
-                                {event.time && (
-                                  <p className="mt-2 text-xs font-semibold text-neutral-400">
+                                {/* DESCRIÇÃO */}
+
+                                {event.description && (
+                                  <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-400">
                                     {
-                                      event.time
+                                      event.description
                                     }
                                   </p>
                                 )}
 
+                                {/* HORÁRIO */}
+
+                                {event.time && (
+                                  <p className="mt-2 text-xs font-semibold text-neutral-400">
+                                    {event.endTime
+                                      ? `${event.time} às ${event.endTime}`
+                                      : event.time}
+                                  </p>
+                                )}
+
                                 {/* LOCAL */}
+
                                 {event.location &&
                                   (isChurch ? (
                                     <a
@@ -920,24 +811,27 @@ export default function MoveCalendar() {
                                   ))}
 
                                 {/* AÇÕES */}
-                                <EventActions
-                                  title={
-                                    event.title
-                                  }
-                                  date={
-                                    eventDate
-                                  }
-                                  time={
-                                    event.time
-                                  }
-                                  location={
-                                    event.location
-                                  }
-                                  isGC={
-                                    event.type ===
-                                    'gc'
-                                  }
-                                />
+
+                                {!event.endDay && (
+                                  <EventActions
+                                    title={
+                                      event.title
+                                    }
+                                    date={
+                                      eventDate
+                                    }
+                                    time={
+                                      calendarTime
+                                    }
+                                    location={
+                                      event.location
+                                    }
+                                    isGC={
+                                      event.type ===
+                                      'gc'
+                                    }
+                                  />
+                                )}
 
                               </div>
                             </div>
@@ -950,8 +844,9 @@ export default function MoveCalendar() {
                 </section>
               )}
 
-              {/* ESPAÇO INFERIOR MOBILE */}
-              <div className="h-6" />
+              {/* MOBILE */}
+
+              <div className="h-8" />
 
             </main>
           </div>
