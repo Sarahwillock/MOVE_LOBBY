@@ -5,8 +5,7 @@ import {
   CalendarDays,
   Clock,
   Instagram,
-  MapPin,
-  ArrowRight
+  MapPin
 } from 'lucide-react';
 
 import { moveImages } from '../moveImages';
@@ -129,6 +128,7 @@ function Slideshow({
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-black">
+
       {availableImages.map((image, index) => {
         const isActive =
           index === currentImage;
@@ -137,6 +137,7 @@ function Slideshow({
           <React.Fragment
             key={`${image}-${index}`}
           >
+
             {/* FUNDO DESFOCADO */}
             <img
               src={image}
@@ -178,6 +179,7 @@ function Slideshow({
                 }
               `}
             />
+
           </React.Fragment>
         );
       })}
@@ -208,7 +210,9 @@ export default function MoveHome() {
   return (
     <div className="mx-auto w-full max-w-[1500px] px-4 pb-12 pt-4 sm:px-6 lg:px-7">
 
-      {/* HERO / SOBRE A MOVE */}
+      {/* =========================================
+          HERO / SOBRE A MOVE
+      ========================================= */}
       <section
         className="
           relative
@@ -227,8 +231,10 @@ export default function MoveHome() {
           startOffset={2}
         />
 
+        {/* ESCURECIMENTO */}
         <div className="absolute inset-0 bg-black/35" />
 
+        {/* GRADIENTE LATERAL */}
         <div
           className="
             absolute inset-0
@@ -239,6 +245,7 @@ export default function MoveHome() {
           "
         />
 
+        {/* GRADIENTE INFERIOR */}
         <div
           className="
             absolute inset-0
@@ -249,6 +256,7 @@ export default function MoveHome() {
           "
         />
 
+        {/* CONTEÚDO HERO */}
         <div
           className="
             relative z-10
@@ -310,8 +318,10 @@ export default function MoveHome() {
               o mesmo propósito.
             </p>
 
+            {/* BOTÕES HERO */}
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
 
+              {/* INSTAGRAM */}
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
@@ -334,12 +344,12 @@ export default function MoveHome() {
                 NOSSO INSTAGRAM
               </a>
 
+              {/* LOCAL */}
               <Link
-                to="/move/eventos"
+                to="/move/local"
                 className="
                   inline-flex min-h-[52px]
                   items-center justify-center
-                  gap-2
                   rounded-xl
                   border border-white/30
                   bg-black/20
@@ -353,8 +363,7 @@ export default function MoveHome() {
                   active:scale-[0.98]
                 "
               >
-                CONHECER A MOVE
-                <ArrowRight className="h-4 w-4" />
+                AONDE NOS VEMOS?
               </Link>
 
             </div>
@@ -362,7 +371,9 @@ export default function MoveHome() {
         </div>
       </section>
 
-      {/* PRÓXIMO EVENTO */}
+      {/* =========================================
+          PRÓXIMO EVENTO
+      ========================================= */}
       <section className="mt-8">
 
         <div className="mb-4">
@@ -411,6 +422,7 @@ export default function MoveHome() {
             "
           >
             <div>
+
               <p
                 className="
                   text-[10px]
@@ -448,18 +460,24 @@ export default function MoveHome() {
                   sm:gap-4
                 "
               >
+
+                {/* DATA */}
                 <span className="flex items-center gap-2">
                   <CalendarDays className="h-4 w-4" />
+
                   {nextMoveEvent.date}
                   {' · '}
                   {nextMoveEvent.weekday}
                 </span>
 
+                {/* HORÁRIO */}
                 <span className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
+
                   {nextMoveEvent.time}
                 </span>
 
+                {/* LOCALIZAÇÃO */}
                 <a
                   href={CHURCH_MAP_URL}
                   target="_blank"
@@ -472,11 +490,14 @@ export default function MoveHome() {
                   "
                 >
                   <MapPin className="h-4 w-4" />
+
                   {nextMoveEvent.location}
                 </a>
+
               </div>
             </div>
 
+            {/* BOTÃO VER EVENTO */}
             <Link
               to={nextMoveEvent.monthPath}
               className="
@@ -496,14 +517,18 @@ export default function MoveHome() {
             >
               VER EVENTO
             </Link>
+
           </div>
         </div>
       </section>
 
-      {/* EVENTOS MOVE */}
+      {/* =========================================
+          EVENTOS MOVE
+      ========================================= */}
       <section className="mt-10">
 
         <div className="mb-4">
+
           <p
             className="
               text-[10px]
@@ -527,8 +552,10 @@ export default function MoveHome() {
           >
             EVENTOS MOVE
           </h2>
+
         </div>
 
+        {/* CARDS DOS MESES */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
           {visibleMonths.map(
@@ -536,6 +563,7 @@ export default function MoveHome() {
               <Link
                 key={month.name}
                 to={month.path}
+                aria-label={`Abrir eventos de ${month.name}`}
                 className={`
                   group relative
                   block
@@ -545,11 +573,16 @@ export default function MoveHome() {
                   rounded-2xl
                   border
                   shadow-xl
+                  transition-transform
+                  duration-300
+                  hover:scale-[1.01]
+                  active:scale-[0.99]
                   sm:min-h-[220px]
                   ${month.border}
                 `}
               >
 
+                {/* SLIDESHOW DO MÊS */}
                 <Slideshow
                   images={
                     month.name === 'AGOSTO'
@@ -577,6 +610,7 @@ export default function MoveHome() {
                   }
                 />
 
+                {/* GRADIENTE */}
                 <div
                   className="
                     absolute inset-0
@@ -587,6 +621,7 @@ export default function MoveHome() {
                   "
                 />
 
+                {/* NOME DO MÊS */}
                 <div
                   className="
                     absolute
@@ -595,6 +630,7 @@ export default function MoveHome() {
                     p-5
                   "
                 >
+
                   <p
                     className="
                       text-[9px]
@@ -618,6 +654,7 @@ export default function MoveHome() {
                   >
                     {month.name}
                   </h3>
+
                 </div>
 
               </Link>
@@ -627,7 +664,9 @@ export default function MoveHome() {
         </div>
       </section>
 
-      {/* FINAL */}
+      {/* =========================================
+          AVISO FINAL
+      ========================================= */}
       <section
         className="
           mt-8
