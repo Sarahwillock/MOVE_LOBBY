@@ -4,6 +4,11 @@ import {
   MapPin
 } from 'lucide-react';
 
+type MoveEventType =
+  | 'gc'
+  | 'move'
+  | 'igreja-move';
+
 type MoveEvent = {
   date: string;
   weekday: string;
@@ -11,7 +16,7 @@ type MoveEvent = {
   time?: string;
   location?: string;
   description?: string;
-  shared?: boolean;
+  type: MoveEventType;
 };
 
 const EVENTS: MoveEvent[] = [
@@ -19,99 +24,129 @@ const EVENTS: MoveEvent[] = [
     date: '07/08',
     weekday: 'SEXTA-FEIRA',
     title: 'GC LOBBY',
-    description: 'GC de jovens 19 aos 30 anos',
+    description: 'GC de jovens de 19 a 30 anos',
     time: '19h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '07/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de adolecentes 15 aos 18 anos',
+    title: 'GC ROCK',
+    description: 'GC de adolescentes de 15 a 18 anos',
     time: '20h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '07/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    title: 'GC ROCK',
+    description: 'GC de pré-adolescentes de 12 a 14 anos',
     time: '20h',
-    location: 'Prédio da igreja'
-    shared: true
+    location: 'Prédio da igreja',
+    type: 'gc'
   },
   {
     date: '13/08',
     weekday: 'QUINTA-FEIRA',
     title: 'GC CONECTA',
-    description: 'GC de Jovens 30+',
+    description: 'GC de jovens 30+',
     time: '20h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '14/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de adolecentes 15 aos 18 anos',
+    title: 'GC ROCK',
+    description: 'GC de adolescentes de 15 a 18 anos',
     time: '20h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '14/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    title: 'GC ROCK',
+    description: 'GC de pré-adolescentes de 12 a 14 anos',
     time: '20h',
-    location: 'Prédio da igreja'
-    shared: true
+    location: 'Prédio da igreja',
+    type: 'gc'
   },
   {
     date: '21/08',
     weekday: 'SEXTA-FEIRA',
     title: 'GC LOBBY',
-    description: 'GC de jovens 19 aos 30 anos',
+    description: 'GC de jovens de 19 a 30 anos',
     time: '19h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '21/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de adolecentes 15 aos 18 anos',
+    title: 'GC ROCK',
+    description: 'GC de adolescentes de 15 a 18 anos',
     time: '20h',
-    location: 'Alphaville'
-    shared: true
+    location: 'Alphaville',
+    type: 'gc'
   },
-   {
+  {
     date: '21/08',
     weekday: 'SEXTA-FEIRA',
-    title: 'GC Rock',
-    description: 'GC de Pré-Adolecentes 12 aos 14 anos',
+    title: 'GC ROCK',
+    description: 'GC de pré-adolescentes de 12 a 14 anos',
     time: '20h',
-    location: 'Prédio da igreja'
-    shared: true
+    location: 'Prédio da igreja',
+    type: 'gc'
   },
   {
     date: '28/08',
     weekday: 'SEXTA-FEIRA',
     title: 'Chá das Sisters',
     description: 'Evento da Igreja + MOVE.',
-    shared: true
+    type: 'igreja-move'
   },
   {
     date: '29/08',
     weekday: 'SÁBADO',
     title: 'Movenite',
     time: '19h',
-    location: 'Prédio da igreja'
+    location: 'Prédio da igreja',
+    type: 'move'
   }
 ];
 
+function getEventStyles(type: MoveEventType) {
+  if (type === 'gc') {
+    return {
+      card: 'border-blue-600/50 bg-blue-600/10',
+      date: 'bg-blue-600',
+      badge: 'bg-blue-600',
+      icon: 'text-blue-500',
+      label: 'GC MOVE'
+    };
+  }
+
+  if (type === 'igreja-move') {
+    return {
+      card: 'border-violet-600/50 bg-violet-600/10',
+      date: 'bg-violet-600',
+      badge: 'bg-violet-600',
+      icon: 'text-violet-500',
+      label: 'Igreja + MOVE'
+    };
+  }
+
+  return {
+    card: 'border-pink-600/50 bg-pink-600/10',
+    date: 'bg-pink-600',
+    badge: 'bg-pink-600',
+    icon: 'text-pink-500',
+    label: 'Agenda MOVE'
+  };
+}
 
 export default function Agosto() {
   return (
@@ -131,98 +166,93 @@ export default function Agosto() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400">
-          Eventos da MOVE Alphaville em agosto.
+          Eventos e GCs da MOVE Alphaville em agosto.
         </p>
       </header>
 
       <div className="space-y-3">
-        {EVENTS.map((event, index) => (
-          <article
-            key={`${event.date}-${index}`}
-            className={`
-              rounded-2xl border p-4 sm:p-5
-              ${
-                event.shared
-                  ? 'border-violet-600/50 bg-violet-600/10'
-                  : 'border-pink-600/50 bg-pink-600/10'
-              }
-            `}
-          >
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        {EVENTS.map((event, index) => {
+          const styles = getEventStyles(event.type);
 
-              <div
-                className={`
-                  flex min-w-[80px] shrink-0
-                  items-center justify-center
-                  rounded-xl px-3 py-3
-                  text-center font-black text-white
-                  ${
-                    event.shared
-                      ? 'bg-violet-600'
-                      : 'bg-pink-600'
-                  }
-                `}
-              >
-                {event.date}
-              </div>
+          return (
+            <article
+              key={`${event.date}-${event.title}-${index}`}
+              className={`
+                rounded-2xl border p-4 sm:p-5
+                ${styles.card}
+              `}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
 
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
-                    {event.weekday}
-                  </p>
-
-                  <span
-                    className={`
-                      rounded-full px-2.5 py-1
-                      text-[9px] font-black uppercase tracking-wider text-white
-                      ${
-                        event.shared
-                          ? 'bg-violet-600'
-                          : 'bg-pink-600'
-                      }
-                    `}
-                  >
-                    {event.shared
-                      ? 'Igreja + MOVE'
-                      : 'Agenda MOVE'}
-                  </span>
+                <div
+                  className={`
+                    flex min-w-[80px] shrink-0
+                    items-center justify-center
+                    rounded-xl px-3 py-3
+                    text-center font-black text-white
+                    ${styles.date}
+                  `}
+                >
+                  {event.date}
                 </div>
 
-                <h2 className="mt-2 text-lg font-black leading-tight text-white sm:text-xl">
-                  {event.title}
-                </h2>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
+                      {event.weekday}
+                    </p>
 
-                {(event.time || event.location) && (
-                  <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
-
-                    {event.time && (
-                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <Clock className="h-4 w-4 shrink-0 text-pink-500" />
-                        {event.time}
-                      </div>
-                    )}
-
-                    {event.location && (
-                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                        <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
-                        {event.location}
-                      </div>
-                    )}
-
+                    <span
+                      className={`
+                        rounded-full px-2.5 py-1
+                        text-[9px] font-black uppercase
+                        tracking-wider text-white
+                        ${styles.badge}
+                      `}
+                    >
+                      {styles.label}
+                    </span>
                   </div>
-                )}
 
-                {event.description && (
-                  <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
-                    {event.description}
-                  </p>
-                )}
+                  <h2 className="mt-2 text-lg font-black leading-tight text-white sm:text-xl">
+                    {event.title}
+                  </h2>
+
+                  {(event.time || event.location) && (
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
+
+                      {event.time && (
+                        <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                          <Clock
+                            className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                          />
+                          {event.time}
+                        </div>
+                      )}
+
+                      {event.location && (
+                        <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                          <MapPin
+                            className={`h-4 w-4 shrink-0 ${styles.icon}`}
+                          />
+                          {event.location}
+                        </div>
+                      )}
+
+                    </div>
+                  )}
+
+                  {event.description && (
+                    <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
+                      {event.description}
+                    </p>
+                  )}
+                </div>
+
               </div>
-
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
 
     </div>
