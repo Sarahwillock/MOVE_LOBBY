@@ -1,11 +1,13 @@
+import React from 'react';
 import {
   CalendarDays,
   Clock,
   MapPin,
-  Users,
-  Heart,
-  Info
+  Info,
+  Heart
 } from 'lucide-react';
+
+type AgendaType = 'igreja' | 'move' | 'igreja-move';
 
 type AgendaEvent = {
   date: string;
@@ -15,12 +17,15 @@ type AgendaEvent = {
   location?: string;
   description?: string;
   highlight?: boolean;
+  type: AgendaType;
 };
 
 type MonthAgenda = {
   month: string;
   events: AgendaEvent[];
 };
+
+type FilterType = 'todos' | 'igreja' | 'move';
 
 const AGENDA: MonthAgenda[] = [
   {
@@ -32,15 +37,17 @@ const AGENDA: MonthAgenda[] = [
         title: 'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
-        description: '1ª aula'
+        description: '1ª aula',
+        type: 'igreja'
       },
       {
         date: '13 a 16/08',
         weekday: 'QUINTA A DOMINGO',
         title: 'Jejum de 40 Horas',
-        highlight: true,
         description:
-          '13/08: compartilhar nos GCs na quinta-feira. 14/08: início no prédio da igreja às 20h. 15/08: programação de oração por GCs, online ou presencial — cada GC definirá o formato. 16/08: encerramento durante o Culto de Celebração às 10h.'
+          '13/08: compartilhar nos GCs na quinta-feira. 14/08: início no prédio da igreja às 20h. 15/08: programação de oração por GCs, online ou presencial — cada GC definirá o formato. 16/08: encerramento durante o Culto de Celebração às 10h.',
+        highlight: true,
+        type: 'igreja'
       },
       {
         date: '18/08',
@@ -48,14 +55,16 @@ const AGENDA: MonthAgenda[] = [
         title: 'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
-        description: '2ª aula'
+        description: '2ª aula',
+        type: 'igreja'
       },
       {
         date: '19/08',
         weekday: 'QUARTA-FEIRA',
         title: 'Aula Inaugural | Escola Huios',
         time: '20h',
-        location: 'Campus Alphaville'
+        location: 'Campus Alphaville',
+        type: 'igreja'
       },
       {
         date: '25/08',
@@ -63,7 +72,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
-        description: '3ª aula'
+        description: '3ª aula',
+        type: 'igreja'
       },
       {
         date: '26/08',
@@ -71,12 +81,14 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '28/08',
         weekday: 'SEXTA-FEIRA',
-        title: 'Chá das Sisters'
+        title: 'Chá das Sisters',
+        type: 'igreja-move'
       },
       {
         date: '29/08',
@@ -84,7 +96,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Movenite',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       }
     ]
   },
@@ -98,13 +111,15 @@ const AGENDA: MonthAgenda[] = [
         title: 'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Prédio da igreja',
-        description: '4ª e última aula'
+        description: '4ª e última aula',
+        type: 'igreja'
       },
       {
         date: '06 a 20/09',
         weekday: '',
         title: 'Jejum de 14 Dias',
-        highlight: true
+        highlight: true,
+        type: 'igreja'
       },
       {
         date: '12/09',
@@ -112,14 +127,16 @@ const AGENDA: MonthAgenda[] = [
         title: 'Conferência Kids',
         location: 'Santo André',
         description:
-          'Para todos os envolvidos no Ministério Infantil'
+          'Para todos os envolvidos no Ministério Infantil.',
+        type: 'igreja'
       },
       {
         date: '16/09',
         weekday: 'QUARTA-FEIRA',
         title: 'Oração Geral | Período de Jejum',
         time: '19h',
-        location: 'Prédio da igreja'
+        location: 'Prédio da igreja',
+        type: 'igreja'
       },
       {
         date: '19/09',
@@ -127,12 +144,14 @@ const AGENDA: MonthAgenda[] = [
         title: 'Movenite',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       },
       {
         date: '20/09',
         weekday: 'DOMINGO',
-        title: 'Culto de Encerramento do Jejum'
+        title: 'Culto de Encerramento do Jejum',
+        type: 'igreja'
       },
       {
         date: '23/09',
@@ -140,14 +159,16 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '25/09',
         weekday: 'SEXTA-FEIRA',
         title: 'Culto das Mulheres',
         time: '19h',
-        location: 'Prédio da igreja'
+        location: 'Prédio da igreja',
+        type: 'igreja'
       },
       {
         date: '26/09',
@@ -155,7 +176,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Hangout dos Jovens',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       }
     ]
   },
@@ -170,7 +192,8 @@ const AGENDA: MonthAgenda[] = [
         time: '20h',
         location: 'Reunião Online',
         description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.'
+          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+        type: 'igreja'
       },
       {
         date: '07/10',
@@ -178,7 +201,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '10/10',
@@ -186,12 +210,14 @@ const AGENDA: MonthAgenda[] = [
         title: 'Movenite',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       },
       {
         date: '12/10',
         weekday: 'SEGUNDA-FEIRA',
-        title: 'Dia das Crianças'
+        title: 'Dia das Crianças',
+        type: 'igreja'
       },
       {
         date: '13/10',
@@ -200,12 +226,14 @@ const AGENDA: MonthAgenda[] = [
         time: '20h',
         location: 'Reunião Online',
         description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.'
+          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+        type: 'igreja'
       },
       {
         date: '17/10',
         weekday: 'SÁBADO',
-        title: 'Encontro Kids'
+        title: 'Encontro Kids',
+        type: 'igreja'
       },
       {
         date: '20/10',
@@ -214,7 +242,8 @@ const AGENDA: MonthAgenda[] = [
         time: '20h',
         location: 'Reunião Online',
         description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.'
+          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+        type: 'igreja'
       },
       {
         date: '21/10',
@@ -222,7 +251,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '27/10',
@@ -231,12 +261,14 @@ const AGENDA: MonthAgenda[] = [
         time: '20h',
         location: 'Reunião Online',
         description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.'
+          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
+        type: 'igreja'
       },
       {
         date: '31/10',
         weekday: 'SÁBADO',
-        title: 'Chá das Sisters'
+        title: 'Chá das Sisters',
+        type: 'igreja'
       }
     ]
   },
@@ -250,7 +282,8 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '07/11',
@@ -258,18 +291,20 @@ const AGENDA: MonthAgenda[] = [
         title: 'Movenite',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       },
       {
         date: '13/11',
         weekday: 'SEXTA-FEIRA',
-        title: 'Reunião do Presbitério Geral'
+        title: 'Reunião do Presbitério Geral',
+        type: 'igreja'
       },
       {
         date: '14/11',
         weekday: 'SÁBADO',
         title: 'Conferência de Líderes',
-        highlight: true
+        type: 'igreja'
       },
       {
         date: '18/11',
@@ -277,12 +312,14 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '27/11',
         weekday: 'SEXTA-FEIRA',
-        title: 'Culto das Mulheres'
+        title: 'Culto das Mulheres',
+        type: 'igreja'
       }
     ]
   },
@@ -296,13 +333,14 @@ const AGENDA: MonthAgenda[] = [
         title: 'Discipulado de Líderes',
         location: 'Prédio da igreja',
         description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD'
+          '19h — Pastor + Líderes • 20h — Líderes + GCD',
+        type: 'igreja'
       },
       {
         date: '06/12',
         weekday: 'DOMINGO',
         title: 'Batismo + Aniversário da Igreja',
-        highlight: true
+        type: 'igreja'
       },
       {
         date: '12/12',
@@ -310,90 +348,136 @@ const AGENDA: MonthAgenda[] = [
         title: 'Movenite',
         time: '19h',
         location: 'Prédio da igreja',
-        highlight: true
+        highlight: true,
+        type: 'move'
       },
       {
         date: '19/12',
         weekday: 'SÁBADO',
         title: 'Culto de Natal',
         description: 'Teatro especial',
-        highlight: true
+        type: 'igreja'
       },
       {
         date: '31/12',
         weekday: 'QUINTA-FEIRA',
         title: 'Culto da Virada',
         time: '18h às 21h',
-        highlight: true
+        type: 'igreja'
       }
     ]
   }
 ];
 
+function TypeBadge({ type }: { type: AgendaType }) {
+  if (type === 'move') {
+    return (
+      <span className="rounded-full bg-pink-600 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+        Agenda MOVE
+      </span>
+    );
+  }
+
+  if (type === 'igreja-move') {
+    return (
+      <span className="rounded-full bg-violet-600 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+        Igreja + MOVE
+      </span>
+    );
+  }
+
+  return (
+    <span className="rounded-full bg-blue-600/20 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-blue-400">
+      Agenda Igreja
+    </span>
+  );
+}
+
 function EventCard({ event }: { event: AgendaEvent }) {
   return (
     <article
       className={`
-        overflow-hidden rounded-2xl border p-4
-        sm:p-5
+        overflow-hidden rounded-2xl border p-4 sm:p-5
         ${
-          event.highlight
-            ? 'border-blue-600/50 bg-blue-600/10'
+          event.type === 'move'
+            ? 'border-pink-600/40 bg-pink-600/10'
+            : event.type === 'igreja-move'
+            ? 'border-violet-600/40 bg-violet-600/10'
+            : event.highlight
+            ? 'border-blue-600/40 bg-blue-600/10'
             : 'border-white/10 bg-neutral-900'
         }
       `}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-
-        {/* DATA */}
         <div className="shrink-0">
           <div
             className={`
-              inline-flex min-w-[74px]
-              flex-col items-center justify-center
-              rounded-xl px-3 py-2
+              inline-flex min-w-[80px]
+              items-center justify-center
+              rounded-xl px-3 py-3
+              text-center font-black text-white
               ${
-                event.highlight
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white/10 text-white'
+                event.type === 'move'
+                  ? 'bg-pink-600'
+                  : event.type === 'igreja-move'
+                  ? 'bg-violet-600'
+                  : 'bg-blue-600'
               }
             `}
           >
-            <span className="text-lg font-black leading-none">
-              {event.date}
-            </span>
+            {event.date}
           </div>
         </div>
 
-        {/* INFORMAÇÕES */}
         <div className="min-w-0 flex-1">
-          {event.weekday && (
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">
-              {event.weekday}
-            </p>
-          )}
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            {event.weekday && (
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
+                {event.weekday}
+              </p>
+            )}
 
-          <h3 className="mt-1 text-lg font-black leading-tight text-white sm:text-xl">
+            <TypeBadge type={event.type} />
+          </div>
+
+          <h3 className="text-lg font-black leading-tight text-white sm:text-xl">
             {event.title}
           </h3>
 
           {(event.time || event.location) && (
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
-
               {event.time && (
                 <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                  <Clock className="h-4 w-4 shrink-0 text-blue-500" />
+                  <Clock
+                    className={`h-4 w-4 shrink-0 ${
+                      event.type === 'move'
+                        ? 'text-pink-500'
+                        : event.type === 'igreja-move'
+                        ? 'text-violet-500'
+                        : 'text-blue-500'
+                    }`}
+                  />
+
                   {event.time}
                 </div>
               )}
 
               {event.location && (
                 <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                  <MapPin className="h-4 w-4 shrink-0 text-blue-500" />
+                  <MapPin
+                    className={`h-4 w-4 shrink-0 ${
+                      event.type === 'move'
+                        ? 'text-pink-500'
+                        : event.type === 'igreja-move'
+                        ? 'text-violet-500'
+                        : 'text-blue-500'
+                    }`}
+                  />
+
                   {event.location}
                 </div>
               )}
-
             </div>
           )}
 
@@ -409,6 +493,55 @@ function EventCard({ event }: { event: AgendaEvent }) {
 }
 
 export default function Agenda() {
+  const [filter, setFilter] = React.useState<FilterType>('todos');
+
+  const filteredAgenda = AGENDA.map((month) => {
+    const events = month.events.filter((event) => {
+      if (filter === 'todos') {
+        return true;
+      }
+
+      if (filter === 'igreja') {
+        return (
+          event.type === 'igreja' ||
+          event.type === 'igreja-move'
+        );
+      }
+
+      if (filter === 'move') {
+        return (
+          event.type === 'move' ||
+          event.type === 'igreja-move'
+        );
+      }
+
+      return true;
+    });
+
+    return {
+      ...month,
+      events
+    };
+  }).filter((month) => month.events.length > 0);
+
+  const filters: {
+    label: string;
+    value: FilterType;
+  }[] = [
+    {
+      label: 'Todos',
+      value: 'todos'
+    },
+    {
+      label: 'Igreja',
+      value: 'igreja'
+    },
+    {
+      label: 'MOVE',
+      value: 'move'
+    }
+  ];
+
   return (
     <div className="mx-auto w-full max-w-5xl p-4 sm:p-6 lg:p-8">
 
@@ -423,27 +556,68 @@ export default function Agenda() {
         </div>
 
         <h1 className="text-4xl font-black uppercase leading-none text-white sm:text-5xl lg:text-6xl">
-          Agenda da
+          Agenda
           <br />
-          Igreja
+          2026
         </h1>
 
         <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400 sm:text-base">
-          Agosto a dezembro. Confira nossa programação, salve as datas e
-          prepare-se para viver tudo o que Deus tem preparado para nós.
+          Confira a programação da Igreja Dinamus Alphaville e
+          os eventos específicos da MOVE.
         </p>
       </header>
 
-      {/* NAVEGAÇÃO RÁPIDA DOS MESES */}
-      <div
-        className="
-          mb-8 flex gap-2
-          overflow-x-auto pb-2
-          [scrollbar-width:none]
-          [&::-webkit-scrollbar]:hidden
-        "
-      >
-        {AGENDA.map((month) => (
+      {/* LEGENDA */}
+      <section className="mb-6 rounded-2xl border border-white/10 bg-neutral-900 p-4">
+        <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
+          Identificação da agenda
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          <TypeBadge type="igreja" />
+          <TypeBadge type="move" />
+          <TypeBadge type="igreja-move" />
+        </div>
+      </section>
+
+      {/* FILTROS */}
+      <div className="sticky top-16 z-20 -mx-4 mb-8 border-y border-white/10 bg-black/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-2xl sm:border">
+        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {filters.map((item) => {
+            const active = filter === item.value;
+
+            return (
+              <button
+                key={item.value}
+                type="button"
+                onClick={() => setFilter(item.value)}
+                className={`
+                  min-h-11 shrink-0 rounded-full
+                  px-5 py-2
+                  text-xs font-black uppercase
+                  tracking-wider transition
+                  active:scale-95
+                  ${
+                    active
+                      ? item.value === 'move'
+                        ? 'bg-pink-600 text-white'
+                        : item.value === 'igreja'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white text-black'
+                      : 'border border-white/10 bg-neutral-900 text-neutral-400'
+                  }
+                `}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* NAVEGAÇÃO DE MESES */}
+      <div className="mb-8 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {filteredAgenda.map((month) => (
           <a
             key={month.month}
             href={`#${month.month.toLowerCase()}`}
@@ -454,10 +628,12 @@ export default function Agenda() {
               border border-white/10
               bg-neutral-900
               px-5
-              text-xs font-black
-              uppercase tracking-wider
+              text-xs font-black uppercase
+              tracking-wider
               text-neutral-300
               transition
+              hover:border-blue-500
+              hover:text-white
               active:scale-95
             "
           >
@@ -466,16 +642,16 @@ export default function Agenda() {
         ))}
       </div>
 
-      {/* MESES */}
+      {/* EVENTOS */}
       <div className="space-y-12">
-        {AGENDA.map((month) => (
+        {filteredAgenda.map((month) => (
           <section
             key={month.month}
             id={month.month.toLowerCase()}
-            className="scroll-mt-24"
+            className="scroll-mt-36"
           >
             <div className="mb-5 flex items-center gap-3">
-              <div className="h-8 w-1 bg-blue-600" />
+              <div className="h-9 w-1 bg-blue-600" />
 
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
@@ -500,7 +676,7 @@ export default function Agenda() {
         ))}
       </div>
 
-      {/* IMPORTANTE */}
+      {/* AVISO */}
       <section className="mt-12 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5 sm:p-6">
         <div className="flex items-start gap-3">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
@@ -511,23 +687,22 @@ export default function Agenda() {
             </h3>
 
             <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-300">
-              Fique atento às comunicações dos líderes e dos GCs para
-              informações adicionais, orientações e possíveis alterações
-              na programação.
+              Fique atento às comunicações dos líderes e dos GCs
+              para informações adicionais, orientações e possíveis
+              alterações na programação.
             </p>
           </div>
         </div>
       </section>
 
-      {/* FINAL */}
+      {/* RODAPÉ */}
       <div className="mt-6 flex items-center justify-center gap-2 pb-4 text-center text-neutral-500">
-        <Heart className="h-4 w-4" />
+        <Heart className="h-4 w-4 shrink-0" />
 
         <p className="text-xs font-bold">
           Salve as datas e compartilhe com quem precisa estar com a gente!
         </p>
       </div>
-
     </div>
   );
 }
