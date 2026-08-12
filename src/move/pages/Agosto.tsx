@@ -255,7 +255,7 @@ export default function Agosto() {
       {event.location}
     </div>
   )
-)}}
+)}
 
                     </div>
                   )}
