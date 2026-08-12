@@ -53,7 +53,6 @@ export default function Sidebar() {
         lg:flex lg:flex-col
       "
     >
-      {/* TOPO */}
       <div className="border-b border-blue-600/40 px-5 py-5">
         <NavLink
           to="/move"
@@ -82,7 +81,6 @@ export default function Sidebar() {
         </a>
       </div>
 
-      {/* MENU */}
       <nav className="flex-1 px-3 py-4">
         {navItems.map(({ name, path, icon: Icon }) => (
           <NavLink
@@ -102,10 +100,7 @@ export default function Sidebar() {
             `}
           >
             <Icon className="h-4 w-4 shrink-0" />
-
-            <span>
-              {name}
-            </span>
+            <span>{name}</span>
           </NavLink>
         ))}
       </nav>
