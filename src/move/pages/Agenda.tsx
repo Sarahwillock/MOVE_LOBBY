@@ -63,7 +63,7 @@ const AGENDA: MonthAgenda[] = [
         type: 'igreja'
       },
       {
-        date: '1/08',
+        date: '14/08',
         weekday: 'SEXTA-FEIRA',
         title: 'Jejum de 40 Horas',
         time: '20h',
