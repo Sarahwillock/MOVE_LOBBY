@@ -8,9 +8,9 @@ export default function MoveHeader() {
         flex min-h-16
         items-center justify-between
         border-b border-blue-600/70
-        bg-black/95
+        bg-black/75
         px-4
-        backdrop-blur
+        backdrop-blur-xl
         sm:px-6
       "
     >
@@ -39,10 +39,6 @@ export default function MoveHeader() {
           @MOVE.ALPHAVILLE
         </a>
 
-        {/* MODO CLARO / ESCURO */}
-      
-
-        {/* CALENDÁRIO */}
         <MoveCalendar />
 
       </div>
