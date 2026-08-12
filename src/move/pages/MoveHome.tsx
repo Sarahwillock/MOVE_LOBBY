@@ -14,25 +14,8 @@ const months = [
     image: '/images/setembro.jpg',
     border: 'border-pink-600'
   },
-  {
-    name: 'OUTUBRO',
-    path: '/move/outubro',
-    image: '/images/outubro.jpg',
-    border: 'border-orange-600'
+ 
   },
-  {
-    name: 'NOVEMBRO',
-    path: '/move/novembro',
-    image: '/images/novembro.jpg',
-    border: 'border-violet-600'
-  },
-  {
-    name: 'DEZEMBRO',
-    path: '/move/dezembro',
-    image: '/images/dezembro.jpg',
-    border: 'border-emerald-600'
-  }
-];
 
 export default function MoveHome() {
   return (
@@ -111,7 +94,7 @@ export default function MoveHome() {
       <section>
         <div className="mb-5">
           <p className="text-xs font-black uppercase tracking-[0.25em] text-neutral-500">
-            Agosto a dezembro
+            Agosto e Setembro
           </p>
 
           <h2 className="mt-1 text-4xl font-black italic uppercase text-blue-600 sm:text-5xl">
