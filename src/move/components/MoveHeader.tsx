@@ -1,5 +1,4 @@
 import MoveCalendar from './MoveCalendar';
-import ThemeToggle from './ThemeToggle';
 
 export default function MoveHeader() {
   return (
@@ -41,7 +40,7 @@ export default function MoveHeader() {
         </a>
 
         {/* MODO CLARO / ESCURO */}
-        <ThemeToggle />
+      
 
         {/* CALENDÁRIO */}
         <MoveCalendar />
