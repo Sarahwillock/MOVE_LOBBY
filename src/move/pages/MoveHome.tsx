@@ -11,6 +11,16 @@ import {
 
 import { moveImages } from '../moveImages';
 
+const heroImages = [...moveImages];
+
+const agostoImages = moveImages.filter(
+  (_, index) => index % 2 === 0
+);
+
+const setembroImages = moveImages.filter(
+  (_, index) => index % 2 !== 0
+);
+
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
@@ -212,8 +222,9 @@ export default function MoveHome() {
         "
       >
         <Slideshow
-          images={moveImages}
+          images={heroImages}
           delay={6500}
+          startOffset={2}
         />
 
         <div className="absolute inset-0 bg-black/35" />
@@ -251,6 +262,7 @@ export default function MoveHome() {
           "
         >
           <div className="max-w-3xl">
+
             <p
               className="
                 text-xs
@@ -299,6 +311,7 @@ export default function MoveHome() {
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
@@ -343,6 +356,7 @@ export default function MoveHome() {
                 CONHECER A MOVE
                 <ArrowRight className="h-4 w-4" />
               </Link>
+
             </div>
           </div>
         </div>
@@ -350,6 +364,7 @@ export default function MoveHome() {
 
       {/* PRÓXIMO EVENTO */}
       <section className="mt-8">
+
         <div className="mb-4">
           <p
             className="
@@ -487,6 +502,7 @@ export default function MoveHome() {
 
       {/* EVENTOS MOVE */}
       <section className="mt-10">
+
         <div className="mb-4">
           <p
             className="
@@ -514,6 +530,7 @@ export default function MoveHome() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
           {visibleMonths.map(
             (month, index) => (
               <Link
@@ -532,18 +549,31 @@ export default function MoveHome() {
                   ${month.border}
                 `}
               >
+
                 <Slideshow
-                  images={moveImages}
+                  images={
+                    month.name === 'AGOSTO'
+                      ? agostoImages
+                      : month.name === 'SETEMBRO'
+                      ? setembroImages
+                      : moveImages
+                  }
                   fallbackImage={
                     month.fallbackImage
                   }
                   delay={
-                    index === 0
+                    month.name === 'AGOSTO'
                       ? 5200
-                      : 6400
+                      : month.name === 'SETEMBRO'
+                      ? 6400
+                      : 6000
                   }
                   startOffset={
-                    index * 4
+                    month.name === 'AGOSTO'
+                      ? 0
+                      : month.name === 'SETEMBRO'
+                      ? 1
+                      : index * 2
                   }
                 />
 
@@ -589,9 +619,11 @@ export default function MoveHome() {
                     {month.name}
                   </h3>
                 </div>
+
               </Link>
             )
           )}
+
         </div>
       </section>
 
@@ -620,6 +652,7 @@ export default function MoveHome() {
           não perder nenhuma novidade.
         </p>
       </section>
+
     </div>
   );
 }
