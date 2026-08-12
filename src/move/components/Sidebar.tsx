@@ -63,9 +63,24 @@ export default function Sidebar() {
           MOVE 2026
         </h1>
 
-        <p className="mt-1 text-[9px] font-black uppercase tracking-widest text-blue-500">
-          @MOVE.ALPHAVILLE
-        </p>
+        <a
+  href="https://www.instagram.com/move.alphaville/"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Instagram MOVE Alphaville"
+  className="
+    mt-1 inline-block
+    text-[9px]
+    font-black uppercase
+    tracking-widest
+    text-blue-500
+    transition-colors
+    hover:text-pink-500
+    hover:underline
+  "
+>
+  @MOVE.ALPHAVILLE
+</a>
       </div>
 
       <nav className="flex-1 px-3 py-4">
