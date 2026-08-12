@@ -12,57 +12,11 @@ import { moveImages } from '../moveImages';
 
 const heroImages = [...moveImages];
 
-const agostoImages = moveImages.filter(
-  (_, index) => index % 2 === 0
-);
-
-const setembroImages = moveImages.filter(
-  (_, index) => index % 2 !== 0
-);
-
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
 const INSTAGRAM_URL =
   'https://www.instagram.com/move.alphaville/';
-
-const months = [
-  {
-    name: 'AGOSTO',
-    monthNumber: 8,
-    path: '/move/agosto',
-    fallbackImage: '/images/agosto.jpg',
-    border: 'border-blue-600'
-  },
-  {
-    name: 'SETEMBRO',
-    monthNumber: 9,
-    path: '/move/setembro',
-    fallbackImage: '/images/setembro.jpg',
-    border: 'border-pink-600'
-  },
-  {
-    name: 'OUTUBRO',
-    monthNumber: 10,
-    path: '/move/outubro',
-    fallbackImage: '/images/outubro.jpg',
-    border: 'border-orange-600'
-  },
-  {
-    name: 'NOVEMBRO',
-    monthNumber: 11,
-    path: '/move/novembro',
-    fallbackImage: '/images/novembro.jpg',
-    border: 'border-violet-600'
-  },
-  {
-    name: 'DEZEMBRO',
-    monthNumber: 12,
-    path: '/move/dezembro',
-    fallbackImage: '/images/dezembro.jpg',
-    border: 'border-emerald-600'
-  }
-];
 
 const nextMoveEvent = {
   title: 'MOVENITE',
@@ -93,12 +47,14 @@ function Slideshow({
 
   const [currentImage, setCurrentImage] =
     React.useState(
-      startOffset % availableImages.length
+      startOffset %
+        availableImages.length
     );
 
   React.useEffect(() => {
     setCurrentImage(
-      startOffset % availableImages.length
+      startOffset %
+        availableImages.length
     );
   }, [
     startOffset,
@@ -128,7 +84,6 @@ function Slideshow({
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-black">
-
       {availableImages.map((image, index) => {
         const isActive =
           index === currentImage;
@@ -137,7 +92,6 @@ function Slideshow({
           <React.Fragment
             key={`${image}-${index}`}
           >
-
             {/* FUNDO DESFOCADO */}
             <img
               src={image}
@@ -179,7 +133,6 @@ function Slideshow({
                 }
               `}
             />
-
           </React.Fragment>
         );
       })}
@@ -190,23 +143,6 @@ function Slideshow({
 }
 
 export default function MoveHome() {
-  const currentMonth =
-    new Date().getMonth() + 1;
-
-  const startMonth =
-    currentMonth < 8
-      ? 8
-      : currentMonth > 12
-      ? 12
-      : currentMonth;
-
-  const visibleMonths =
-    months.filter(
-      (month) =>
-        month.monthNumber >= startMonth &&
-        month.monthNumber <= startMonth + 1
-    );
-
   return (
     <div className="mx-auto w-full max-w-[1500px] px-4 pb-12 pt-4 sm:px-6 lg:px-7">
 
@@ -231,10 +167,8 @@ export default function MoveHome() {
           startOffset={2}
         />
 
-        {/* ESCURECIMENTO */}
         <div className="absolute inset-0 bg-black/35" />
 
-        {/* GRADIENTE LATERAL */}
         <div
           className="
             absolute inset-0
@@ -245,7 +179,6 @@ export default function MoveHome() {
           "
         />
 
-        {/* GRADIENTE INFERIOR */}
         <div
           className="
             absolute inset-0
@@ -256,7 +189,6 @@ export default function MoveHome() {
           "
         />
 
-        {/* CONTEÚDO HERO */}
         <div
           className="
             relative z-10
@@ -318,7 +250,6 @@ export default function MoveHome() {
               o mesmo propósito.
             </p>
 
-            {/* BOTÕES HERO */}
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
 
               {/* INSTAGRAM */}
@@ -341,6 +272,7 @@ export default function MoveHome() {
                 "
               >
                 <Instagram className="h-5 w-5" />
+
                 NOSSO INSTAGRAM
               </a>
 
@@ -377,6 +309,7 @@ export default function MoveHome() {
       <section className="mt-8">
 
         <div className="mb-4">
+
           <p
             className="
               text-[10px]
@@ -400,6 +333,7 @@ export default function MoveHome() {
           >
             PRÓXIMO EVENTO
           </h2>
+
         </div>
 
         <div
@@ -421,6 +355,7 @@ export default function MoveHome() {
               lg:justify-between
             "
           >
+
             <div>
 
               <p
@@ -461,7 +396,6 @@ export default function MoveHome() {
                 "
               >
 
-                {/* DATA */}
                 <span className="flex items-center gap-2">
                   <CalendarDays className="h-4 w-4" />
 
@@ -470,14 +404,12 @@ export default function MoveHome() {
                   {nextMoveEvent.weekday}
                 </span>
 
-                {/* HORÁRIO */}
                 <span className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
 
                   {nextMoveEvent.time}
                 </span>
 
-                {/* LOCALIZAÇÃO */}
                 <a
                   href={CHURCH_MAP_URL}
                   target="_blank"
@@ -495,9 +427,9 @@ export default function MoveHome() {
                 </a>
 
               </div>
+
             </div>
 
-            {/* BOTÃO VER EVENTO */}
             <Link
               to={nextMoveEvent.monthPath}
               className="
@@ -525,143 +457,96 @@ export default function MoveHome() {
       {/* =========================================
           EVENTOS MOVE
       ========================================= */}
-      <section className="mt-10">
+      <section className="mt-8">
 
-        <div className="mb-4">
+        <Link
+          to="/move/eventos"
+          className="
+            group
+            flex w-full
+            flex-col
+            gap-5
+            rounded-2xl
+            border border-pink-500/40
+            bg-black/65
+            px-5 py-6
+            backdrop-blur-md
+            transition
+            hover:border-pink-500
+            hover:bg-black/80
+            active:scale-[0.99]
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+            sm:px-7
+            sm:py-7
+          "
+        >
 
-          <p
+          <div>
+
+            <p
+              className="
+                text-[10px]
+                font-black uppercase
+                tracking-[0.25em]
+                text-pink-500
+              "
+            >
+              PROGRAMAÇÃO
+            </p>
+
+            <h2
+              className="
+                mt-1
+                text-2xl
+                font-black italic
+                uppercase
+                text-white
+                sm:text-3xl
+              "
+            >
+              EVENTOS MOVE
+            </h2>
+
+            <p
+              className="
+                mt-2
+                max-w-xl
+                text-xs
+                font-semibold
+                leading-relaxed
+                text-neutral-400
+                sm:text-sm
+              "
+            >
+              Confira os encontros, Movenites,
+              Hangouts, GCs e toda a programação
+              da MOVE.
+            </p>
+
+          </div>
+
+          <span
             className="
-              text-[10px]
+              inline-flex min-h-[48px]
+              shrink-0
+              items-center justify-center
+              rounded-xl
+              bg-pink-600
+              px-5 py-3
+              text-xs
               font-black uppercase
-              tracking-[0.25em]
-              text-neutral-400
-            "
-          >
-            AGOSTO E SETEMBRO
-          </p>
-
-          <h2
-            className="
-              mt-1
-              text-2xl
-              font-black italic
-              uppercase
               text-white
-              sm:text-3xl
+              transition
+              group-hover:bg-pink-500
             "
           >
-            EVENTOS MOVE
-          </h2>
+            VER EVENTOS
+          </span>
 
-        </div>
+        </Link>
 
-        {/* CARDS DOS MESES */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-
-          {visibleMonths.map(
-            (month, index) => (
-              <Link
-                key={month.name}
-                to={month.path}
-                aria-label={`Abrir eventos de ${month.name}`}
-                className={`
-                  group relative
-                  block
-                  aspect-[16/9]
-                  min-h-[190px]
-                  overflow-hidden
-                  rounded-2xl
-                  border
-                  shadow-xl
-                  transition-transform
-                  duration-300
-                  hover:scale-[1.01]
-                  active:scale-[0.99]
-                  sm:min-h-[220px]
-                  ${month.border}
-                `}
-              >
-
-                {/* SLIDESHOW DO MÊS */}
-                <Slideshow
-                  images={
-                    month.name === 'AGOSTO'
-                      ? agostoImages
-                      : month.name === 'SETEMBRO'
-                      ? setembroImages
-                      : moveImages
-                  }
-                  fallbackImage={
-                    month.fallbackImage
-                  }
-                  delay={
-                    month.name === 'AGOSTO'
-                      ? 5200
-                      : month.name === 'SETEMBRO'
-                      ? 6400
-                      : 6000
-                  }
-                  startOffset={
-                    month.name === 'AGOSTO'
-                      ? 0
-                      : month.name === 'SETEMBRO'
-                      ? 1
-                      : index * 2
-                  }
-                />
-
-                {/* GRADIENTE */}
-                <div
-                  className="
-                    absolute inset-0
-                    bg-gradient-to-t
-                    from-black/85
-                    via-black/10
-                    to-transparent
-                  "
-                />
-
-                {/* NOME DO MÊS */}
-                <div
-                  className="
-                    absolute
-                    bottom-0 left-0 right-0
-                    z-10
-                    p-5
-                  "
-                >
-
-                  <p
-                    className="
-                      text-[9px]
-                      font-black uppercase
-                      tracking-[0.2em]
-                      text-white/70
-                    "
-                  >
-                    Eventos MOVE
-                  </p>
-
-                  <h3
-                    className="
-                      mt-1
-                      text-3xl
-                      font-black italic
-                      uppercase
-                      text-white
-                      sm:text-4xl
-                    "
-                  >
-                    {month.name}
-                  </h3>
-
-                </div>
-
-              </Link>
-            )
-          )}
-
-        </div>
       </section>
 
       {/* =========================================
@@ -677,6 +562,7 @@ export default function MoveHome() {
           backdrop-blur-md
         "
       >
+
         <p
           className="
             text-center
@@ -690,6 +576,7 @@ export default function MoveHome() {
           comunicações dos líderes e dos GCs para
           não perder nenhuma novidade.
         </p>
+
       </section>
 
     </div>
