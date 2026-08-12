@@ -10,405 +10,44 @@ import {
 
 import EventActions from '../components/EventActions';
 
-type AgendaType =
-  | 'igreja'
-  | 'move'
-  | 'igreja-move';
-
-type AgendaEvent = {
-  date: string;
-  weekday: string;
-  title: string;
-  time?: string;
-  location?: string;
-  description?: string;
-  highlight?: boolean;
-  type: AgendaType;
-};
-
-type MonthAgenda = {
-  month: string;
-  events: AgendaEvent[];
-};
+import {
+  EVENTS_2026,
+  MONTHS_2026,
+  sortEvents,
+  type EventType,
+  type MoveEvent
+} from '../data/events2026';
 
 type FilterType =
   | 'todos'
   | 'igreja'
-  | 'move';
+  | 'move'
+  | 'gc';
 
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
-const AGENDA: MonthAgenda[] = [
-  {
-    month: 'AGOSTO',
-    events: [
-      {
-        date: '11/08',
-        weekday: 'TERÇA-FEIRA',
-        title:
-          'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online',
-        description: '1ª aula',
-        type: 'igreja'
-      },
-      {
-        date: '13 a 16/08',
-        weekday: 'QUINTA A DOMINGO',
-        title: 'Jejum de 40 Horas',
-        description:
-          'REVIVA O DOM QUE HÁ EM TI',
-        highlight: true,
-        type: 'igreja'
-      },
-      {
-        date: '14/08',
-        weekday: 'SEXTA-FEIRA',
-        title: 'Jejum de 40 Horas',
-        time: '20h',
-        location: 'Prédio da igreja',
-        description:
-          'Reviva o Dom que Há em Ti',
-        highlight: true,
-        type: 'igreja'
-      },
-      {
-        date: '18/08',
-        weekday: 'TERÇA-FEIRA',
-        title:
-          'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online',
-        description: '2ª aula',
-        type: 'igreja'
-      },
-      {
-        date: '19/08',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Aula Inaugural | Escola Huios',
-        time: '20h',
-        location: 'Prédio da igreja',
-        type: 'igreja'
-      },
-      {
-        date: '25/08',
-        weekday: 'TERÇA-FEIRA',
-        title:
-          'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Online',
-        description: '3ª aula',
-        type: 'igreja'
-      },
-      {
-        date: '26/08',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '28/08',
-        weekday: 'SEXTA-FEIRA',
-        title: 'Chá das Sisters',
-        type: 'igreja-move'
-      },
-      {
-        date: '29/08',
-        weekday: 'SÁBADO',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      }
-    ]
-  },
-
-  {
-    month: 'SETEMBRO',
-    events: [
-      {
-        date: '01/09',
-        weekday: 'TERÇA-FEIRA',
-        title:
-          'Capacitação e Treinamento para Novos Líderes',
-        time: '20h',
-        location: 'Prédio da igreja',
-        description: '4ª e última aula',
-        type: 'igreja'
-      },
-      {
-        date: '06 a 20/09',
-        weekday: '',
-        title: 'Jejum de 14 Dias',
-        highlight: true,
-        type: 'igreja'
-      },
-      {
-        date: '12/09',
-        weekday: 'SÁBADO',
-        title: 'Conferência Kids',
-        location: 'Santo André',
-        description:
-          'Para todos os envolvidos no Ministério Infantil.',
-        type: 'igreja'
-      },
-      {
-        date: '16/09',
-        weekday: 'QUARTA-FEIRA',
-        title:
-          'Oração Geral | Período de Jejum',
-        time: '19h',
-        location: 'Prédio da igreja',
-        type: 'igreja'
-      },
-      {
-        date: '19/09',
-        weekday: 'SÁBADO',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      },
-      {
-        date: '20/09',
-        weekday: 'DOMINGO',
-        title:
-          'Culto de Encerramento do Jejum',
-        type: 'igreja'
-      },
-      {
-        date: '23/09',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '25/09',
-        weekday: 'SEXTA-FEIRA',
-        title: 'Culto das Mulheres',
-        time: '19h',
-        location: 'Prédio da igreja',
-        type: 'igreja'
-      },
-      {
-        date: '26/09',
-        weekday: 'SÁBADO',
-        title: 'Hangout dos Jovens',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      }
-    ]
-  },
-
-  {
-    month: 'OUTUBRO',
-    events: [
-      {
-        date: '06/10',
-        weekday: 'TERÇA-FEIRA',
-        title: 'Encontro para Casais',
-        time: '20h',
-        location: 'Reunião Online',
-        description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
-        type: 'igreja'
-      },
-      {
-        date: '07/10',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '10/10',
-        weekday: 'SÁBADO',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      },
-      {
-        date: '12/10',
-        weekday: 'SEGUNDA-FEIRA',
-        title: 'Dia das Crianças',
-        type: 'igreja'
-      },
-      {
-        date: '13/10',
-        weekday: 'TERÇA-FEIRA',
-        title: 'Encontro para Casais',
-        time: '20h',
-        location: 'Reunião Online',
-        description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
-        type: 'igreja'
-      },
-      {
-        date: '17/10',
-        weekday: 'SÁBADO',
-        title: 'Encontro Kids',
-        type: 'igreja'
-      },
-      {
-        date: '20/10',
-        weekday: 'TERÇA-FEIRA',
-        title: 'Encontro para Casais',
-        time: '20h',
-        location: 'Reunião Online',
-        description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
-        type: 'igreja'
-      },
-      {
-        date: '21/10',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '27/10',
-        weekday: 'TERÇA-FEIRA',
-        title: 'Encontro para Casais',
-        time: '20h',
-        location: 'Reunião Online',
-        description:
-          'Jovens solteiros, viúvos e divorciados + casais de noivos e casados.',
-        type: 'igreja'
-      },
-      {
-        date: '31/10',
-        weekday: 'SÁBADO',
-        title: 'Chá das Sisters',
-        type: 'igreja'
-      }
-    ]
-  },
-
-  {
-    month: 'NOVEMBRO',
-    events: [
-      {
-        date: '04/11',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '07/11',
-        weekday: 'SÁBADO',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      },
-      {
-        date: '13/11',
-        weekday: 'SEXTA-FEIRA',
-        title:
-          'Reunião do Presbitério Geral',
-        type: 'igreja'
-      },
-      {
-        date: '14/11',
-        weekday: 'SÁBADO',
-        title: 'Conferência de Líderes',
-        type: 'igreja'
-      },
-      {
-        date: '18/11',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '27/11',
-        weekday: 'SEXTA-FEIRA',
-        title: 'Culto das Mulheres',
-        type: 'igreja'
-      }
-    ]
-  },
-
-  {
-    month: 'DEZEMBRO',
-    events: [
-      {
-        date: '02/12',
-        weekday: 'QUARTA-FEIRA',
-        title: 'Discipulado de Líderes',
-        location: 'Prédio da igreja',
-        description:
-          '19h — Pastor + Líderes • 20h — Líderes + GCD',
-        type: 'igreja'
-      },
-      {
-        date: '06/12',
-        weekday: 'DOMINGO',
-        title:
-          'Batismo + Aniversário da Igreja',
-        type: 'igreja'
-      },
-      {
-        date: '12/12',
-        weekday: 'SÁBADO',
-        title: 'Movenite',
-        time: '19h',
-        location: 'Prédio da igreja',
-        highlight: true,
-        type: 'move'
-      },
-      {
-        date: '19/12',
-        weekday: 'SÁBADO',
-        title: 'Culto de Natal',
-        description: 'Teatro especial',
-        type: 'igreja'
-      },
-      {
-        date: '31/12',
-        weekday: 'QUINTA-FEIRA',
-        title: 'Culto da Virada',
-        time: '18h às 21h',
-        type: 'igreja'
-      }
-    ]
-  }
-];
+/* =========================================================
+   BADGE
+========================================================= */
 
 function TypeBadge({
   type
 }: {
-  type: AgendaType;
+  type: EventType;
 }) {
   if (type === 'move') {
     return (
       <span className="rounded-full bg-pink-600 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white">
         Agenda MOVE
+      </span>
+    );
+  }
+
+  if (type === 'gc') {
+    return (
+      <span className="rounded-full bg-emerald-600 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white">
+        GC MOVE
       </span>
     );
   }
@@ -428,22 +67,86 @@ function TypeBadge({
   );
 }
 
-function hasSingleDate(date: string) {
-  return /^\d{1,2}\/\d{2}$/.test(
-    date.trim()
-  );
+/* =========================================================
+   ESTILOS
+========================================================= */
+
+function getEventStyles(
+  event: MoveEvent
+) {
+  if (event.type === 'move') {
+    return {
+      card:
+        'border-pink-600/40 bg-pink-600/10',
+      date: 'bg-pink-600',
+      icon: 'text-pink-500'
+    };
+  }
+
+  if (event.type === 'gc') {
+    return {
+      card:
+        'border-emerald-600/40 bg-emerald-600/10',
+      date: 'bg-emerald-600',
+      icon: 'text-emerald-500'
+    };
+  }
+
+  if (
+    event.type ===
+    'igreja-move'
+  ) {
+    return {
+      card:
+        'border-violet-600/40 bg-violet-600/10',
+      date: 'bg-violet-600',
+      icon: 'text-violet-500'
+    };
+  }
+
+  if (event.highlight) {
+    return {
+      card:
+        'border-blue-600/40 bg-blue-600/10',
+      date: 'bg-blue-600',
+      icon: 'text-blue-500'
+    };
+  }
+
+  return {
+    card:
+      'border-white/10 bg-neutral-900/90',
+    date: 'bg-blue-600',
+    icon: 'text-blue-500'
+  };
 }
+
+/* =========================================================
+   CARD
+========================================================= */
 
 function EventCard({
   event
 }: {
-  event: AgendaEvent;
+  event: MoveEvent;
 }) {
+  const styles =
+    getEventStyles(event);
+
   const isChurchLocation =
-    event.location === 'Prédio da igreja';
+    event.location ===
+    'Prédio da igreja';
 
   const canAddToCalendar =
-    hasSingleDate(event.date);
+    !event.endDay;
+
+  const calendarTime =
+    event.time
+      ? event.time.replace(
+          ':',
+          'h'
+        )
+      : undefined;
 
   return (
     <article
@@ -452,18 +155,9 @@ function EventCard({
         rounded-2xl
         border
         p-4
+        backdrop-blur-md
         sm:p-5
-
-        ${
-          event.type === 'move'
-            ? 'border-pink-600/40 bg-pink-600/10'
-            : event.type ===
-              'igreja-move'
-            ? 'border-violet-600/40 bg-violet-600/10'
-            : event.highlight
-            ? 'border-blue-600/40 bg-blue-600/10'
-            : 'border-white/10 bg-neutral-900'
-        }
+        ${styles.card}
       `}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -481,15 +175,7 @@ function EventCard({
               text-center
               font-black
               text-white
-
-              ${
-                event.type === 'move'
-                  ? 'bg-pink-600'
-                  : event.type ===
-                    'igreja-move'
-                  ? 'bg-violet-600'
-                  : 'bg-blue-600'
-              }
+              ${styles.date}
             `}
           >
             {event.date}
@@ -526,18 +212,12 @@ function EventCard({
                 <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
 
                   <Clock
-                    className={`h-4 w-4 shrink-0 ${
-                      event.type ===
-                      'move'
-                        ? 'text-pink-500'
-                        : event.type ===
-                          'igreja-move'
-                        ? 'text-violet-500'
-                        : 'text-blue-500'
-                    }`}
+                    className={`h-4 w-4 shrink-0 ${styles.icon}`}
                   />
 
-                  {event.time}
+                  {event.endTime
+                    ? `${event.time} às ${event.endTime}`
+                    : event.time}
 
                 </div>
               )}
@@ -562,37 +242,25 @@ function EventCard({
                     "
                   >
                     <MapPin
-                      className={`h-4 w-4 shrink-0 ${
-                        event.type ===
-                        'move'
-                          ? 'text-pink-500'
-                          : event.type ===
-                            'igreja-move'
-                          ? 'text-violet-500'
-                          : 'text-blue-500'
-                      }`}
+                      className={`h-4 w-4 shrink-0 ${styles.icon}`}
                     />
 
                     <span className="underline underline-offset-4">
-                      {event.location}
+                      {
+                        event.location
+                      }
                     </span>
                   </a>
                 ) : (
                   <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
 
                     <MapPin
-                      className={`h-4 w-4 shrink-0 ${
-                        event.type ===
-                        'move'
-                          ? 'text-pink-500'
-                          : event.type ===
-                            'igreja-move'
-                          ? 'text-violet-500'
-                          : 'text-blue-500'
-                      }`}
+                      className={`h-4 w-4 shrink-0 ${styles.icon}`}
                     />
 
-                    {event.location}
+                    {
+                      event.location
+                    }
 
                   </div>
                 ))}
@@ -603,17 +271,31 @@ function EventCard({
           {/* DESCRIÇÃO */}
           {event.description && (
             <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
-              {event.description}
+              {
+                event.description
+              }
             </p>
           )}
 
-          {/* ADICIONAR AO CALENDÁRIO */}
+          {/* CALENDÁRIO */}
           {canAddToCalendar && (
             <EventActions
-              title={event.title}
-              date={event.date}
-              time={event.time}
-              location={event.location}
+              title={
+                event.title
+              }
+              date={
+                event.date
+              }
+              time={
+                calendarTime
+              }
+              location={
+                event.location
+              }
+              isGC={
+                event.type ===
+                'gc'
+              }
             />
           )}
 
@@ -623,115 +305,17 @@ function EventCard({
   );
 }
 
+/* =========================================================
+   PÁGINA
+========================================================= */
+
 export default function Agenda() {
-  const [filter, setFilter] =
+  const [
+    filter,
+    setFilter
+  ] =
     React.useState<FilterType>(
       'todos'
-    );
-
-  /*
-    FILTRO:
-    TODOS
-    IGREJA
-    MOVE
-  */
-  const filteredAgenda =
-    AGENDA.map((month) => {
-      const events =
-        month.events.filter(
-          (event) => {
-            if (
-              filter === 'todos'
-            ) {
-              return true;
-            }
-
-            if (
-              filter === 'igreja'
-            ) {
-              return (
-                event.type ===
-                  'igreja' ||
-                event.type ===
-                  'igreja-move'
-              );
-            }
-
-            if (
-              filter === 'move'
-            ) {
-              return (
-                event.type ===
-                  'move' ||
-                event.type ===
-                  'igreja-move'
-              );
-            }
-
-            return true;
-          }
-        );
-
-      return {
-        ...month,
-        events
-      };
-    }).filter(
-      (month) =>
-        month.events.length > 0
-    );
-
-  /*
-    EXIBIÇÃO DE 2 MESES
-
-    Agosto:
-    Agosto + Setembro
-
-    Setembro:
-    Setembro + Outubro
-
-    Outubro:
-    Outubro + Novembro
-
-    Novembro:
-    Novembro + Dezembro
-  */
-  const currentMonth =
-    new Date().getMonth() + 1;
-
-  const startMonth =
-    currentMonth < 8
-      ? 8
-      : currentMonth > 12
-      ? 12
-      : currentMonth;
-
-  const monthNumberMap: Record<
-    string,
-    number
-  > = {
-    AGOSTO: 8,
-    SETEMBRO: 9,
-    OUTUBRO: 10,
-    NOVEMBRO: 11,
-    DEZEMBRO: 12
-  };
-
-  const visibleAgenda =
-    filteredAgenda.filter(
-      (month) => {
-        const monthNumber =
-          monthNumberMap[
-            month.month
-          ];
-
-        return (
-          monthNumber >=
-            startMonth &&
-          monthNumber <=
-            startMonth + 1
-        );
-      }
     );
 
   const filters: {
@@ -749,8 +333,87 @@ export default function Agenda() {
     {
       label: 'MOVE',
       value: 'move'
+    },
+    {
+      label: 'GCs',
+      value: 'gc'
     }
   ];
+
+  /* =======================================================
+     FILTRO
+  ======================================================= */
+
+  const filteredEvents =
+    sortEvents(
+      EVENTS_2026.filter(
+        (event) => {
+          if (
+            filter ===
+            'todos'
+          ) {
+            return true;
+          }
+
+          if (
+            filter ===
+            'igreja'
+          ) {
+            return (
+              event.type ===
+                'igreja' ||
+              event.type ===
+                'igreja-move'
+            );
+          }
+
+          if (
+            filter ===
+            'move'
+          ) {
+            return (
+              event.type ===
+                'move' ||
+              event.type ===
+                'igreja-move'
+            );
+          }
+
+          if (
+            filter ===
+            'gc'
+          ) {
+            return (
+              event.type ===
+              'gc'
+            );
+          }
+
+          return true;
+        }
+      )
+    );
+
+  /* =======================================================
+     AGRUPA POR MÊS
+  ======================================================= */
+
+  const agendaByMonth =
+    MONTHS_2026.map(
+      (month) => {
+        const events =
+          filteredEvents.filter(
+            (event) =>
+              event.month ===
+              month.number
+          );
+
+        return {
+          ...month,
+          events
+        };
+      }
+    );
 
   return (
     <div className="mx-auto w-full max-w-5xl p-4 sm:p-6 lg:p-8">
@@ -775,16 +438,16 @@ export default function Agenda() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400 sm:text-base">
-          Confira a programação da
-          Igreja Dinamus Alphaville e
-          os eventos específicos da
-          MOVE.
+          Confira toda a programação
+          da Igreja Dinamus Alphaville,
+          da MOVE e dos GCs entre agosto
+          e dezembro.
         </p>
 
       </header>
 
       {/* LEGENDA */}
-      <section className="mb-6 rounded-2xl border border-white/10 bg-neutral-900 p-4">
+      <section className="mb-6 rounded-2xl border border-white/10 bg-neutral-900/90 p-4 backdrop-blur-md">
 
         <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
           Identificação da agenda
@@ -792,9 +455,17 @@ export default function Agenda() {
 
         <div className="flex flex-wrap gap-2">
 
-          <TypeBadge type="igreja" />
+          <TypeBadge
+            type="igreja"
+          />
 
-          <TypeBadge type="move" />
+          <TypeBadge
+            type="move"
+          />
+
+          <TypeBadge
+            type="gc"
+          />
 
           <TypeBadge
             type="igreja-move"
@@ -808,11 +479,11 @@ export default function Agenda() {
       <div
         className="
           sticky top-16 z-20
-          -mx-4 mb-8
+          -mx-4 mb-6
           border-y border-white/10
           bg-black/95
           px-4 py-3
-          backdrop-blur
+          backdrop-blur-xl
 
           sm:mx-0
           sm:rounded-2xl
@@ -827,51 +498,61 @@ export default function Agenda() {
             [&::-webkit-scrollbar]:hidden
           "
         >
-          {filters.map((item) => {
-            const active =
-              filter === item.value;
+          {filters.map(
+            (item) => {
+              const active =
+                filter ===
+                item.value;
 
-            return (
-              <button
-                key={item.value}
-                type="button"
-                onClick={() =>
-                  setFilter(
+              return (
+                <button
+                  key={
                     item.value
-                  )
-                }
-                className={`
-                  min-h-11
-                  shrink-0
-                  rounded-full
-                  px-5 py-2
-                  text-xs
-                  font-black uppercase
-                  tracking-wider
-                  transition
-                  active:scale-95
-
-                  ${
-                    active
-                      ? item.value ===
-                        'move'
-                        ? 'bg-pink-600 text-white'
-                        : item.value ===
-                          'igreja'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-black'
-                      : 'border border-white/10 bg-neutral-900 text-neutral-400'
                   }
-                `}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+                  type="button"
+                  onClick={() =>
+                    setFilter(
+                      item.value
+                    )
+                  }
+                  className={`
+                    min-h-11
+                    shrink-0
+                    rounded-full
+                    px-5 py-2
+                    text-xs
+                    font-black uppercase
+                    tracking-wider
+                    transition
+                    active:scale-95
+
+                    ${
+                      active
+                        ? item.value ===
+                          'move'
+                          ? 'bg-pink-600 text-white'
+                          : item.value ===
+                            'igreja'
+                          ? 'bg-blue-600 text-white'
+                          : item.value ===
+                            'gc'
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-white text-black'
+                        : 'border border-white/10 bg-neutral-900 text-neutral-400'
+                    }
+                  `}
+                >
+                  {
+                    item.label
+                  }
+                </button>
+              );
+            }
+          )}
         </div>
       </div>
 
-      {/* MESES */}
+      {/* NAVEGAÇÃO DOS MESES */}
       <div
         className="
           mb-8 flex gap-2
@@ -881,11 +562,13 @@ export default function Agenda() {
           [&::-webkit-scrollbar]:hidden
         "
       >
-        {visibleAgenda.map(
+        {MONTHS_2026.map(
           (month) => (
             <a
-              key={month.month}
-              href={`#${month.month.toLowerCase()}`}
+              key={
+                month.number
+              }
+              href={`#mes-${month.number}`}
               className="
                 flex min-h-11
                 shrink-0
@@ -893,7 +576,7 @@ export default function Agenda() {
                 justify-center
                 rounded-full
                 border border-white/10
-                bg-neutral-900
+                bg-neutral-900/90
                 px-5
                 text-xs
                 font-black uppercase
@@ -905,7 +588,9 @@ export default function Agenda() {
                 active:scale-95
               "
             >
-              {month.month}
+              {
+                month.name
+              }
             </a>
           )
         )}
@@ -914,48 +599,74 @@ export default function Agenda() {
       {/* EVENTOS */}
       <div className="space-y-12">
 
-        {visibleAgenda.map(
+        {agendaByMonth.map(
           (month) => (
             <section
-              key={month.month}
-              id={month.month.toLowerCase()}
-              className="scroll-mt-36"
+              key={
+                month.number
+              }
+              id={`mes-${month.number}`}
+              className="scroll-mt-40"
             >
 
+              {/* CABEÇALHO DO MÊS */}
               <div className="mb-5 flex items-center gap-3">
 
-                <div className="h-9 w-1 bg-blue-600" />
+                <div className="h-9 w-1 rounded-full bg-blue-600" />
 
                 <div>
-
                   <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
                     Agenda 2026
                   </p>
 
                   <h2 className="text-3xl font-black italic uppercase text-blue-500 sm:text-4xl">
-                    {month.month}
+                    {
+                      month.name
+                    }
                   </h2>
+                </div>
+
+              </div>
+
+              {/* EVENTOS DO MÊS */}
+              {month.events.length >
+              0 ? (
+                <div className="space-y-3">
+
+                  {month.events.map(
+                    (event) => (
+                      <EventCard
+                        key={
+                          event.id
+                        }
+                        event={
+                          event
+                        }
+                      />
+                    )
+                  )}
 
                 </div>
-              </div>
-
-              <div className="space-y-3">
-
-                {month.events.map(
-                  (
-                    event,
-                    index
-                  ) => (
-                    <EventCard
-                      key={`${month.month}-${event.date}-${index}`}
-                      event={
-                        event
-                      }
-                    />
-                  )
-                )}
-
-              </div>
+              ) : (
+                <div
+                  className="
+                    rounded-2xl
+                    border
+                    border-dashed
+                    border-white/10
+                    bg-black/40
+                    p-6
+                    text-center
+                    backdrop-blur-md
+                  "
+                >
+                  <p className="text-sm font-bold text-neutral-500">
+                    Nenhum evento
+                    nesta categoria
+                    neste mês.
+                  </p>
+                </div>
+              )}
 
             </section>
           )
@@ -979,10 +690,9 @@ export default function Agenda() {
             <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-300">
               Fique atento às
               comunicações dos líderes
-              e dos GCs para
-              informações adicionais,
-              orientações e possíveis
-              alterações na
+              e dos GCs para informações
+              adicionais, orientações e
+              possíveis alterações na
               programação.
             </p>
 
