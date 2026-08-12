@@ -5,6 +5,9 @@ import {
   MapPin
 } from 'lucide-react';
 
+const CHURCH_MAP_URL =
+  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
+
 const months = [
   {
     name: 'AGOSTO',
@@ -43,21 +46,19 @@ const months = [
   }
 ];
 
+const nextMoveEvent = {
+  title: 'MOVENITE',
+  date: '29 DE AGOSTO',
+  weekday: 'SÁBADO',
+  time: '19H',
+  location: 'Prédio da igreja',
+  monthPath: '/move/agosto'
+};
+
 export default function MoveHome() {
-  const currentMonth = new Date().getMonth() + 1;
+  const currentMonth =
+    new Date().getMonth() + 1;
 
-  /*
-    REGRA DE EXIBIÇÃO
-
-    Agosto   -> Agosto + Setembro
-    Setembro -> Setembro + Outubro
-    Outubro  -> Outubro + Novembro
-    Novembro -> Novembro + Dezembro
-    Dezembro -> Dezembro
-
-    Se o site for acessado antes de agosto,
-    mostramos Agosto + Setembro.
-  */
   const startMonth =
     currentMonth < 8
       ? 8
@@ -73,52 +74,57 @@ export default function MoveHome() {
 
   const visibleMonthsLabel =
     visibleMonths.length === 2
-      ? `${visibleMonths[0].name} e ${visibleMonths[1].name}`
+      ? `${visibleMonths[0].name} E ${visibleMonths[1].name}`
       : visibleMonths[0]?.name ?? '';
 
   return (
     <div className="mx-auto w-full max-w-[1500px] p-4 sm:p-6 lg:p-7">
 
-      {/* PRÓXIMO EVENTO */}
+      {/* PRÓXIMO EVENTO MOVE */}
       <section className="mb-8 overflow-hidden border-l-4 border-white bg-blue-600 p-5 sm:p-7 lg:p-8">
         <p className="text-lg font-black italic uppercase sm:text-xl">
-          PRÓXIMO EVENTO
+          PRÓXIMO EVENTO MOVE
         </p>
 
         <div className="mt-3 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+
           <div className="min-w-0">
             <h1 className="max-w-4xl text-3xl font-black uppercase leading-none sm:text-4xl lg:text-5xl">
-              CAPACITAÇÃO E TREINAMENTO PARA NOVOS LÍDERES
+              {nextMoveEvent.title}
             </h1>
 
             <div className="mt-4 flex flex-col gap-2 text-sm font-black uppercase sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
 
               <span className="flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 shrink-0" />
-                11 DE AGOSTO · TERÇA-FEIRA
+                {nextMoveEvent.date} · {nextMoveEvent.weekday}
               </span>
 
               <span className="flex items-center gap-2">
                 <Clock className="h-4 w-4 shrink-0" />
-                20H
+                {nextMoveEvent.time}
               </span>
 
-              <span className="flex items-center gap-2">
+              <a
+                href={CHURCH_MAP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition hover:text-white/80"
+              >
                 <MapPin className="h-4 w-4 shrink-0" />
-                ONLINE
-              </span>
+
+                <span className="underline underline-offset-4">
+                  {nextMoveEvent.location}
+                </span>
+              </a>
 
             </div>
-
-            <p className="mt-3 text-sm font-bold text-white/80">
-              1ª aula
-            </p>
           </div>
 
           <div className="grid w-full gap-3 sm:grid-cols-2 xl:w-auto">
 
             <Link
-              to="/move/agenda"
+              to="/move/eventos"
               className="
                 flex min-h-[52px]
                 items-center justify-center
@@ -129,11 +135,11 @@ export default function MoveHome() {
                 active:scale-[0.98]
               "
             >
-              VER AGENDA
+              VER EVENTOS MOVE
             </Link>
 
             <Link
-              to="/move/agosto"
+              to={nextMoveEvent.monthPath}
               className="
                 flex min-h-[52px]
                 items-center justify-center
@@ -154,6 +160,7 @@ export default function MoveHome() {
 
       {/* EVENTOS MOVE */}
       <section>
+
         <div className="mb-5">
 
           <p className="text-xs font-black uppercase tracking-[0.25em] text-neutral-500">
@@ -167,6 +174,7 @@ export default function MoveHome() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
           {visibleMonths.map((month) => (
             <Link
               key={month.name}
@@ -210,6 +218,7 @@ export default function MoveHome() {
               </div>
             </Link>
           ))}
+
         </div>
       </section>
 
