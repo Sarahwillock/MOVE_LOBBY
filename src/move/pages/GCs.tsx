@@ -15,6 +15,7 @@ const gcs = [
     leader: 'Hugo',
     schedule: 'Sábado (15 em 15 dias)',
     time: '17:00',
+    description: 'jovens a partir de 20 anos',
     location: 'Alphaville',
     color: 'blue'
   },
@@ -23,6 +24,7 @@ const gcs = [
     leader: 'Guilherme e Bia',
     schedule: 'Quinta (15 em 15 dias)',
     time: '20:00',
+    description: 'jovens a partir de 20 anos',
     location: 'Alphaville',
     color: 'pink'
   },
