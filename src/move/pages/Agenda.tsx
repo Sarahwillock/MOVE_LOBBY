@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   CalendarDays,
   Clock,
@@ -7,7 +8,12 @@ import {
   Heart
 } from 'lucide-react';
 
-type AgendaType = 'igreja' | 'move' | 'igreja-move';
+import EventActions from '../components/EventActions';
+
+type AgendaType =
+  | 'igreja'
+  | 'move'
+  | 'igreja-move';
 
 type AgendaEvent = {
   date: string;
@@ -25,7 +31,10 @@ type MonthAgenda = {
   events: AgendaEvent[];
 };
 
-type FilterType = 'todos' | 'igreja' | 'move';
+type FilterType =
+  | 'todos'
+  | 'igreja'
+  | 'move';
 
 const CHURCH_MAP_URL =
   'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
@@ -37,7 +46,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '11/08',
         weekday: 'TERÇA-FEIRA',
-        title: 'Capacitação e Treinamento para Novos Líderes',
+        title:
+          'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
         description: '1ª aula',
@@ -52,7 +62,7 @@ const AGENDA: MonthAgenda[] = [
         highlight: true,
         type: 'igreja'
       },
-       {
+      {
         date: '1/08',
         weekday: 'SEXTA-FEIRA',
         title: 'Jejum de 40 Horas',
@@ -66,7 +76,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '18/08',
         weekday: 'TERÇA-FEIRA',
-        title: 'Capacitação e Treinamento para Novos Líderes',
+        title:
+          'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
         description: '2ª aula',
@@ -83,7 +94,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '25/08',
         weekday: 'TERÇA-FEIRA',
-        title: 'Capacitação e Treinamento para Novos Líderes',
+        title:
+          'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Online',
         description: '3ª aula',
@@ -122,7 +134,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '01/09',
         weekday: 'TERÇA-FEIRA',
-        title: 'Capacitação e Treinamento para Novos Líderes',
+        title:
+          'Capacitação e Treinamento para Novos Líderes',
         time: '20h',
         location: 'Prédio da igreja',
         description: '4ª e última aula',
@@ -147,7 +160,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '16/09',
         weekday: 'QUARTA-FEIRA',
-        title: 'Oração Geral | Período de Jejum',
+        title:
+          'Oração Geral | Período de Jejum',
         time: '19h',
         location: 'Prédio da igreja',
         type: 'igreja'
@@ -164,7 +178,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '20/09',
         weekday: 'DOMINGO',
-        title: 'Culto de Encerramento do Jejum',
+        title:
+          'Culto de Encerramento do Jejum',
         type: 'igreja'
       },
       {
@@ -311,7 +326,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '13/11',
         weekday: 'SEXTA-FEIRA',
-        title: 'Reunião do Presbitério Geral',
+        title:
+          'Reunião do Presbitério Geral',
         type: 'igreja'
       },
       {
@@ -353,7 +369,8 @@ const AGENDA: MonthAgenda[] = [
       {
         date: '06/12',
         weekday: 'DOMINGO',
-        title: 'Batismo + Aniversário da Igreja',
+        title:
+          'Batismo + Aniversário da Igreja',
         type: 'igreja'
       },
       {
@@ -383,7 +400,11 @@ const AGENDA: MonthAgenda[] = [
   }
 ];
 
-function TypeBadge({ type }: { type: AgendaType }) {
+function TypeBadge({
+  type
+}: {
+  type: AgendaType;
+}) {
   if (type === 'move') {
     return (
       <span className="rounded-full bg-pink-600 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white">
@@ -407,18 +428,37 @@ function TypeBadge({ type }: { type: AgendaType }) {
   );
 }
 
-function EventCard({ event }: { event: AgendaEvent }) {
+function hasSingleDate(date: string) {
+  return /^\d{1,2}\/\d{2}$/.test(
+    date.trim()
+  );
+}
+
+function EventCard({
+  event
+}: {
+  event: AgendaEvent;
+}) {
   const isChurchLocation =
     event.location === 'Prédio da igreja';
+
+  const canAddToCalendar =
+    hasSingleDate(event.date);
 
   return (
     <article
       className={`
-        overflow-hidden rounded-2xl border p-4 sm:p-5
+        overflow-hidden
+        rounded-2xl
+        border
+        p-4
+        sm:p-5
+
         ${
           event.type === 'move'
             ? 'border-pink-600/40 bg-pink-600/10'
-            : event.type === 'igreja-move'
+            : event.type ===
+              'igreja-move'
             ? 'border-violet-600/40 bg-violet-600/10'
             : event.highlight
             ? 'border-blue-600/40 bg-blue-600/10'
@@ -427,17 +467,26 @@ function EventCard({ event }: { event: AgendaEvent }) {
       `}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+
+        {/* DATA */}
         <div className="shrink-0">
           <div
             className={`
-              inline-flex min-w-[80px]
-              items-center justify-center
-              rounded-xl px-3 py-3
-              text-center font-black text-white
+              inline-flex
+              min-w-[80px]
+              items-center
+              justify-center
+              rounded-xl
+              px-3 py-3
+              text-center
+              font-black
+              text-white
+
               ${
                 event.type === 'move'
                   ? 'bg-pink-600'
-                  : event.type === 'igreja-move'
+                  : event.type ===
+                    'igreja-move'
                   ? 'bg-violet-600'
                   : 'bg-blue-600'
               }
@@ -447,52 +496,78 @@ function EventCard({ event }: { event: AgendaEvent }) {
           </div>
         </div>
 
+        {/* CONTEÚDO */}
         <div className="min-w-0 flex-1">
+
           <div className="mb-2 flex flex-wrap items-center gap-2">
+
             {event.weekday && (
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">
                 {event.weekday}
               </p>
             )}
 
-            <TypeBadge type={event.type} />
+            <TypeBadge
+              type={event.type}
+            />
+
           </div>
 
           <h3 className="text-lg font-black leading-tight text-white sm:text-xl">
             {event.title}
           </h3>
 
-          {(event.time || event.location) && (
+          {(event.time ||
+            event.location) && (
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
+
+              {/* HORÁRIO */}
               {event.time && (
                 <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+
                   <Clock
                     className={`h-4 w-4 shrink-0 ${
-                      event.type === 'move'
+                      event.type ===
+                      'move'
                         ? 'text-pink-500'
-                        : event.type === 'igreja-move'
+                        : event.type ===
+                          'igreja-move'
                         ? 'text-violet-500'
                         : 'text-blue-500'
                     }`}
                   />
 
                   {event.time}
+
                 </div>
               )}
 
+              {/* LOCAL */}
               {event.location &&
                 (isChurchLocation ? (
                   <a
-                    href={CHURCH_MAP_URL}
+                    href={
+                      CHURCH_MAP_URL
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
+                    className="
+                      flex items-center
+                      gap-2
+                      text-sm
+                      font-bold
+                      text-neutral-300
+                      transition
+                      hover:text-white
+                    "
                   >
                     <MapPin
                       className={`h-4 w-4 shrink-0 ${
-                        event.type === 'move'
+                        event.type ===
+                        'move'
                           ? 'text-pink-500'
-                          : event.type === 'igreja-move'
+                          : event.type ===
+                            'igreja-move'
                           ? 'text-violet-500'
                           : 'text-blue-500'
                       }`}
@@ -504,27 +579,44 @@ function EventCard({ event }: { event: AgendaEvent }) {
                   </a>
                 ) : (
                   <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+
                     <MapPin
                       className={`h-4 w-4 shrink-0 ${
-                        event.type === 'move'
+                        event.type ===
+                        'move'
                           ? 'text-pink-500'
-                          : event.type === 'igreja-move'
+                          : event.type ===
+                            'igreja-move'
                           ? 'text-violet-500'
                           : 'text-blue-500'
                       }`}
                     />
 
                     {event.location}
+
                   </div>
                 ))}
+
             </div>
           )}
 
+          {/* DESCRIÇÃO */}
           {event.description && (
             <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-400">
               {event.description}
             </p>
           )}
+
+          {/* ADICIONAR AO CALENDÁRIO */}
+          {canAddToCalendar && (
+            <EventActions
+              title={event.title}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+            />
+          )}
+
         </div>
       </div>
     </article>
@@ -533,54 +625,79 @@ function EventCard({ event }: { event: AgendaEvent }) {
 
 export default function Agenda() {
   const [filter, setFilter] =
-    React.useState<FilterType>('todos');
+    React.useState<FilterType>(
+      'todos'
+    );
 
   /*
-    FILTRO POR TIPO:
-    Todos / Igreja / MOVE
+    FILTRO:
+    TODOS
+    IGREJA
+    MOVE
   */
-  const filteredAgenda = AGENDA.map((month) => {
-    const events = month.events.filter((event) => {
-      if (filter === 'todos') {
-        return true;
-      }
+  const filteredAgenda =
+    AGENDA.map((month) => {
+      const events =
+        month.events.filter(
+          (event) => {
+            if (
+              filter === 'todos'
+            ) {
+              return true;
+            }
 
-      if (filter === 'igreja') {
-        return (
-          event.type === 'igreja' ||
-          event.type === 'igreja-move'
+            if (
+              filter === 'igreja'
+            ) {
+              return (
+                event.type ===
+                  'igreja' ||
+                event.type ===
+                  'igreja-move'
+              );
+            }
+
+            if (
+              filter === 'move'
+            ) {
+              return (
+                event.type ===
+                  'move' ||
+                event.type ===
+                  'igreja-move'
+              );
+            }
+
+            return true;
+          }
         );
-      }
 
-      if (filter === 'move') {
-        return (
-          event.type === 'move' ||
-          event.type === 'igreja-move'
-        );
-      }
-
-      return true;
-    });
-
-    return {
-      ...month,
-      events
-    };
-  }).filter((month) => month.events.length > 0);
+      return {
+        ...month,
+        events
+      };
+    }).filter(
+      (month) =>
+        month.events.length > 0
+    );
 
   /*
-    JANELA DE 2 MESES
+    EXIBIÇÃO DE 2 MESES
 
-    Agosto   -> Agosto + Setembro
-    Setembro -> Setembro + Outubro
-    Outubro  -> Outubro + Novembro
-    Novembro -> Novembro + Dezembro
-    Dezembro -> Dezembro
+    Agosto:
+    Agosto + Setembro
 
-    Os meses futuros continuam cadastrados,
-    apenas ficam ocultos.
+    Setembro:
+    Setembro + Outubro
+
+    Outubro:
+    Outubro + Novembro
+
+    Novembro:
+    Novembro + Dezembro
   */
-  const currentMonth = new Date().getMonth() + 1;
+  const currentMonth =
+    new Date().getMonth() + 1;
 
   const startMonth =
     currentMonth < 8
@@ -589,7 +706,10 @@ export default function Agenda() {
       ? 12
       : currentMonth;
 
-  const monthNumberMap: Record<string, number> = {
+  const monthNumberMap: Record<
+    string,
+    number
+  > = {
     AGOSTO: 8,
     SETEMBRO: 9,
     OUTUBRO: 10,
@@ -597,17 +717,22 @@ export default function Agenda() {
     DEZEMBRO: 12
   };
 
-  const visibleAgenda = filteredAgenda.filter(
-    (month) => {
-      const monthNumber =
-        monthNumberMap[month.month];
+  const visibleAgenda =
+    filteredAgenda.filter(
+      (month) => {
+        const monthNumber =
+          monthNumberMap[
+            month.month
+          ];
 
-      return (
-        monthNumber >= startMonth &&
-        monthNumber <= startMonth + 1
-      );
-    }
-  );
+        return (
+          monthNumber >=
+            startMonth &&
+          monthNumber <=
+            startMonth + 1
+        );
+      }
+    );
 
   const filters: {
     label: string;
@@ -632,12 +757,15 @@ export default function Agenda() {
 
       {/* CABEÇALHO */}
       <header className="mb-8">
+
         <div className="mb-3 flex items-center gap-2 text-blue-500">
+
           <CalendarDays className="h-5 w-5" />
 
           <p className="text-xs font-black uppercase tracking-[0.25em]">
             MOVE ALPHAVILLE
           </p>
+
         </div>
 
         <h1 className="text-4xl font-black uppercase leading-none text-white sm:text-5xl lg:text-6xl">
@@ -647,27 +775,58 @@ export default function Agenda() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400 sm:text-base">
-          Confira a programação da Igreja Dinamus
-          Alphaville e os eventos específicos da MOVE.
+          Confira a programação da
+          Igreja Dinamus Alphaville e
+          os eventos específicos da
+          MOVE.
         </p>
+
       </header>
 
       {/* LEGENDA */}
       <section className="mb-6 rounded-2xl border border-white/10 bg-neutral-900 p-4">
+
         <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
           Identificação da agenda
         </p>
 
         <div className="flex flex-wrap gap-2">
+
           <TypeBadge type="igreja" />
+
           <TypeBadge type="move" />
-          <TypeBadge type="igreja-move" />
+
+          <TypeBadge
+            type="igreja-move"
+          />
+
         </div>
+
       </section>
 
       {/* FILTROS */}
-      <div className="sticky top-16 z-20 -mx-4 mb-8 border-y border-white/10 bg-black/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-2xl sm:border">
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div
+        className="
+          sticky top-16 z-20
+          -mx-4 mb-8
+          border-y border-white/10
+          bg-black/95
+          px-4 py-3
+          backdrop-blur
+
+          sm:mx-0
+          sm:rounded-2xl
+          sm:border
+        "
+      >
+        <div
+          className="
+            flex gap-2
+            overflow-x-auto
+            [scrollbar-width:none]
+            [&::-webkit-scrollbar]:hidden
+          "
+        >
           {filters.map((item) => {
             const active =
               filter === item.value;
@@ -677,19 +836,28 @@ export default function Agenda() {
                 key={item.value}
                 type="button"
                 onClick={() =>
-                  setFilter(item.value)
+                  setFilter(
+                    item.value
+                  )
                 }
                 className={`
-                  min-h-11 shrink-0 rounded-full
+                  min-h-11
+                  shrink-0
+                  rounded-full
                   px-5 py-2
-                  text-xs font-black uppercase
-                  tracking-wider transition
+                  text-xs
+                  font-black uppercase
+                  tracking-wider
+                  transition
                   active:scale-95
+
                   ${
                     active
-                      ? item.value === 'move'
+                      ? item.value ===
+                        'move'
                         ? 'bg-pink-600 text-white'
-                        : item.value === 'igreja'
+                        : item.value ===
+                          'igreja'
                         ? 'bg-blue-600 text-white'
                         : 'bg-white text-black'
                       : 'border border-white/10 bg-neutral-900 text-neutral-400'
@@ -703,97 +871,137 @@ export default function Agenda() {
         </div>
       </div>
 
-      {/* NAVEGAÇÃO DE MESES */}
-      <div className="mb-8 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {visibleAgenda.map((month) => (
-          <a
-            key={month.month}
-            href={`#${month.month.toLowerCase()}`}
-            className="
-              flex min-h-11 shrink-0
-              items-center justify-center
-              rounded-full
-              border border-white/10
-              bg-neutral-900
-              px-5
-              text-xs font-black uppercase
-              tracking-wider
-              text-neutral-300
-              transition
-              hover:border-blue-500
-              hover:text-white
-              active:scale-95
-            "
-          >
-            {month.month}
-          </a>
-        ))}
+      {/* MESES */}
+      <div
+        className="
+          mb-8 flex gap-2
+          overflow-x-auto
+          pb-2
+          [scrollbar-width:none]
+          [&::-webkit-scrollbar]:hidden
+        "
+      >
+        {visibleAgenda.map(
+          (month) => (
+            <a
+              key={month.month}
+              href={`#${month.month.toLowerCase()}`}
+              className="
+                flex min-h-11
+                shrink-0
+                items-center
+                justify-center
+                rounded-full
+                border border-white/10
+                bg-neutral-900
+                px-5
+                text-xs
+                font-black uppercase
+                tracking-wider
+                text-neutral-300
+                transition
+                hover:border-blue-500
+                hover:text-white
+                active:scale-95
+              "
+            >
+              {month.month}
+            </a>
+          )
+        )}
       </div>
 
       {/* EVENTOS */}
       <div className="space-y-12">
-        {visibleAgenda.map((month) => (
-          <section
-            key={month.month}
-            id={month.month.toLowerCase()}
-            className="scroll-mt-36"
-          >
-            <div className="mb-5 flex items-center gap-3">
-              <div className="h-9 w-1 bg-blue-600" />
 
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
-                  Agenda 2026
-                </p>
+        {visibleAgenda.map(
+          (month) => (
+            <section
+              key={month.month}
+              id={month.month.toLowerCase()}
+              className="scroll-mt-36"
+            >
 
-                <h2 className="text-3xl font-black italic uppercase text-blue-500 sm:text-4xl">
-                  {month.month}
-                </h2>
+              <div className="mb-5 flex items-center gap-3">
+
+                <div className="h-9 w-1 bg-blue-600" />
+
+                <div>
+
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-neutral-500">
+                    Agenda 2026
+                  </p>
+
+                  <h2 className="text-3xl font-black italic uppercase text-blue-500 sm:text-4xl">
+                    {month.month}
+                  </h2>
+
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-3">
-              {month.events.map(
-                (event, index) => (
-                  <EventCard
-                    key={`${month.month}-${event.date}-${index}`}
-                    event={event}
-                  />
-                )
-              )}
-            </div>
-          </section>
-        ))}
+              <div className="space-y-3">
+
+                {month.events.map(
+                  (
+                    event,
+                    index
+                  ) => (
+                    <EventCard
+                      key={`${month.month}-${event.date}-${index}`}
+                      event={
+                        event
+                      }
+                    />
+                  )
+                )}
+
+              </div>
+
+            </section>
+          )
+        )}
+
       </div>
 
       {/* AVISO */}
       <section className="mt-12 rounded-2xl border border-blue-600/30 bg-blue-600/10 p-5 sm:p-6">
+
         <div className="flex items-start gap-3">
+
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
 
           <div>
+
             <h3 className="font-black uppercase text-white">
               Importante
             </h3>
 
             <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-300">
-              Fique atento às comunicações dos líderes e
-              dos GCs para informações adicionais,
-              orientações e possíveis alterações na
+              Fique atento às
+              comunicações dos líderes
+              e dos GCs para
+              informações adicionais,
+              orientações e possíveis
+              alterações na
               programação.
             </p>
+
           </div>
         </div>
+
       </section>
 
       {/* RODAPÉ */}
       <div className="mt-6 flex items-center justify-center gap-2 pb-4 text-center text-neutral-500">
+
         <Heart className="h-4 w-4 shrink-0" />
 
         <p className="text-xs font-bold">
-          Salve as datas e compartilhe com quem precisa
-          estar com a gente!
+          Salve as datas e compartilhe
+          com quem precisa estar com a
+          gente!
         </p>
+
       </div>
 
     </div>
