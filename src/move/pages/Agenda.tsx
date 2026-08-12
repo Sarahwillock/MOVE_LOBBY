@@ -27,6 +27,9 @@ type MonthAgenda = {
 
 type FilterType = 'todos' | 'igreja' | 'move';
 
+const CHURCH_MAP_URL =
+  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
+
 const AGENDA: MonthAgenda[] = [
   {
     month: 'AGOSTO',
@@ -394,6 +397,9 @@ function TypeBadge({ type }: { type: AgendaType }) {
 }
 
 function EventCard({ event }: { event: AgendaEvent }) {
+  const isChurchLocation =
+    event.location === 'Prédio da igreja';
+
   return (
     <article
       className={`
@@ -463,21 +469,43 @@ function EventCard({ event }: { event: AgendaEvent }) {
                 </div>
               )}
 
-              {event.location && (
-                <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                  <MapPin
-                    className={`h-4 w-4 shrink-0 ${
-                      event.type === 'move'
-                        ? 'text-pink-500'
-                        : event.type === 'igreja-move'
-                        ? 'text-violet-500'
-                        : 'text-blue-500'
-                    }`}
-                  />
+              {event.location &&
+                (isChurchLocation ? (
+                  <a
+                    href={CHURCH_MAP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
+                  >
+                    <MapPin
+                      className={`h-4 w-4 shrink-0 ${
+                        event.type === 'move'
+                          ? 'text-pink-500'
+                          : event.type === 'igreja-move'
+                          ? 'text-violet-500'
+                          : 'text-blue-500'
+                      }`}
+                    />
 
-                  {event.location}
-                </div>
-              )}
+                    <span className="underline underline-offset-4">
+                      {event.location}
+                    </span>
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                    <MapPin
+                      className={`h-4 w-4 shrink-0 ${
+                        event.type === 'move'
+                          ? 'text-pink-500'
+                          : event.type === 'igreja-move'
+                          ? 'text-violet-500'
+                          : 'text-blue-500'
+                      }`}
+                    />
+
+                    {event.location}
+                  </div>
+                ))}
             </div>
           )}
 
@@ -493,8 +521,13 @@ function EventCard({ event }: { event: AgendaEvent }) {
 }
 
 export default function Agenda() {
-  const [filter, setFilter] = React.useState<FilterType>('todos');
+  const [filter, setFilter] =
+    React.useState<FilterType>('todos');
 
+  /*
+    FILTRO POR TIPO:
+    Todos / Igreja / MOVE
+  */
   const filteredAgenda = AGENDA.map((month) => {
     const events = month.events.filter((event) => {
       if (filter === 'todos') {
@@ -523,6 +556,47 @@ export default function Agenda() {
       events
     };
   }).filter((month) => month.events.length > 0);
+
+  /*
+    JANELA DE 2 MESES
+
+    Agosto   -> Agosto + Setembro
+    Setembro -> Setembro + Outubro
+    Outubro  -> Outubro + Novembro
+    Novembro -> Novembro + Dezembro
+    Dezembro -> Dezembro
+
+    Os meses futuros continuam cadastrados,
+    apenas ficam ocultos.
+  */
+  const currentMonth = new Date().getMonth() + 1;
+
+  const startMonth =
+    currentMonth < 8
+      ? 8
+      : currentMonth > 12
+      ? 12
+      : currentMonth;
+
+  const monthNumberMap: Record<string, number> = {
+    AGOSTO: 8,
+    SETEMBRO: 9,
+    OUTUBRO: 10,
+    NOVEMBRO: 11,
+    DEZEMBRO: 12
+  };
+
+  const visibleAgenda = filteredAgenda.filter(
+    (month) => {
+      const monthNumber =
+        monthNumberMap[month.month];
+
+      return (
+        monthNumber >= startMonth &&
+        monthNumber <= startMonth + 1
+      );
+    }
+  );
 
   const filters: {
     label: string;
@@ -562,8 +636,8 @@ export default function Agenda() {
         </h1>
 
         <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-neutral-400 sm:text-base">
-          Confira a programação da Igreja Dinamus Alphaville e
-          os eventos específicos da MOVE.
+          Confira a programação da Igreja Dinamus
+          Alphaville e os eventos específicos da MOVE.
         </p>
       </header>
 
@@ -584,13 +658,16 @@ export default function Agenda() {
       <div className="sticky top-16 z-20 -mx-4 mb-8 border-y border-white/10 bg-black/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-2xl sm:border">
         <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {filters.map((item) => {
-            const active = filter === item.value;
+            const active =
+              filter === item.value;
 
             return (
               <button
                 key={item.value}
                 type="button"
-                onClick={() => setFilter(item.value)}
+                onClick={() =>
+                  setFilter(item.value)
+                }
                 className={`
                   min-h-11 shrink-0 rounded-full
                   px-5 py-2
@@ -617,7 +694,7 @@ export default function Agenda() {
 
       {/* NAVEGAÇÃO DE MESES */}
       <div className="mb-8 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {filteredAgenda.map((month) => (
+        {visibleAgenda.map((month) => (
           <a
             key={month.month}
             href={`#${month.month.toLowerCase()}`}
@@ -644,7 +721,7 @@ export default function Agenda() {
 
       {/* EVENTOS */}
       <div className="space-y-12">
-        {filteredAgenda.map((month) => (
+        {visibleAgenda.map((month) => (
           <section
             key={month.month}
             id={month.month.toLowerCase()}
@@ -665,12 +742,14 @@ export default function Agenda() {
             </div>
 
             <div className="space-y-3">
-              {month.events.map((event, index) => (
-                <EventCard
-                  key={`${month.month}-${event.date}-${index}`}
-                  event={event}
-                />
-              ))}
+              {month.events.map(
+                (event, index) => (
+                  <EventCard
+                    key={`${month.month}-${event.date}-${index}`}
+                    event={event}
+                  />
+                )
+              )}
             </div>
           </section>
         ))}
@@ -687,9 +766,10 @@ export default function Agenda() {
             </h3>
 
             <p className="mt-2 text-sm font-medium leading-relaxed text-neutral-300">
-              Fique atento às comunicações dos líderes e dos GCs
-              para informações adicionais, orientações e possíveis
-              alterações na programação.
+              Fique atento às comunicações dos líderes e
+              dos GCs para informações adicionais,
+              orientações e possíveis alterações na
+              programação.
             </p>
           </div>
         </div>
@@ -700,9 +780,11 @@ export default function Agenda() {
         <Heart className="h-4 w-4 shrink-0" />
 
         <p className="text-xs font-bold">
-          Salve as datas e compartilhe com quem precisa estar com a gente!
+          Salve as datas e compartilhe com quem precisa
+          estar com a gente!
         </p>
       </div>
+
     </div>
   );
 }
