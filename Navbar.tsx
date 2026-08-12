@@ -1,3 +1,4 @@
+import ThemeToggle from './ThemeToggle';
 import { Link, useLocation } from 'react-router-dom';
 import { CalendarDays, Bell, Search } from 'lucide-react';
 import { cn } from '../lib/utils';
