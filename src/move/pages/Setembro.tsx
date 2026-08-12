@@ -4,6 +4,8 @@ import {
   MapPin
 } from 'lucide-react';
 
+import EventActions from '../components/EventActions';
+
 type MoveEvent = {
   date: string;
   weekday: string;
@@ -11,6 +13,9 @@ type MoveEvent = {
   time?: string;
   location?: string;
 };
+
+const CHURCH_MAP_URL =
+  'https://maps.app.goo.gl/Un9HZ4mLqykChKxSA';
 
 const EVENTS: MoveEvent[] = [
   {
@@ -119,13 +124,36 @@ export default function Setembro() {
                   )}
 
                   {event.location && (
-                    <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
-                      <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
-                      {event.location}
-                    </div>
+                    event.location === 'Prédio da igreja' ? (
+                      <a
+                        href={CHURCH_MAP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm font-bold text-neutral-300 transition hover:text-white"
+                      >
+                        <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
+
+                        <span className="underline underline-offset-4">
+                          {event.location}
+                        </span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-2 text-sm font-bold text-neutral-300">
+                        <MapPin className="h-4 w-4 shrink-0 text-pink-500" />
+                        {event.location}
+                      </div>
+                    )
                   )}
 
                 </div>
+
+                <EventActions
+                  title={event.title}
+                  date={event.date}
+                  time={event.time}
+                  location={event.location}
+                />
+
               </div>
 
             </div>
