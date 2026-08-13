@@ -7,28 +7,28 @@ import {
 const leaders = [
   {
     name: 'Hugo',
-    role: 'Líder da Casa',
+    role: 'Líder GC Lobby',
     image: '/images/lider1.jpg',
     bio: 'Líder visionário focado em despertar o propósito em cada jovem.',
     instagram: 'https://www.instagram.com/move.alphaville/'
   },
   {
     name: 'Guilherme e Bia',
-    role: 'Líderes Conecta',
+    role: 'Líder da Casa e GC Conecta',
     image: '/images/lideres.jpeg',
     bio: 'Dedicados a construir conexões reais e profundas através dos GCs.',
     instagram: 'https://www.instagram.com/move.alphaville/'
   },
   {
     name: 'Robinho e Bea',
-    role: 'Rock de 12 a 14 anos',
+    role: 'Líder Rock de 12 a 14 anos',
     image: '/images/robinho-bea.JPEG',
     bio: 'Liderando os pré-adolescentes com propósito, cuidado e identidade em Cristo.',
     instagram: 'https://www.instagram.com/move.alphaville/'
   },
   {
     name: 'Gab',
-    role: 'Rock de 15 a 18 anos',
+    role: 'Líder Rock de 15 a 18 anos',
     image: '/images/IMG_3794.jpg',
     bio: 'Ajudando adolescentes a crescerem em fé, maturidade e propósito.',
     instagram: 'https://www.instagram.com/move.alphaville/'
